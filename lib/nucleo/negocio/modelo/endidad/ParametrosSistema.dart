@@ -20,11 +20,12 @@ class ParametrosSistema {
   //static String formatoFecha='MM-dd-yyyy';
   static String formatoFecha = 'dd-MM-yyyy';
   static String formatoHora = 'hh:mm';
-  static String formatoImporte = 'azulclaro';
+  static String formatoImporte = '';
 
-  static String colorTema = 'azulclaro';
+  static String colorTema = 'azul';
+  static String colorPrimario = 'azul';
   static String colorSecundario = 'azul';
-  static String colorTitulo = 'azulclaro';
+  static String colorTitulo = 'azul';
   static String colorSubTitulo = 'moradoclaro';
 
   static String colorFondo = 'blanco';
@@ -42,7 +43,7 @@ class ParametrosSistema {
   static String colorBotonTexto = 'negro';
   static String colorBotonFondo = 'amarillo';
   static String colorBotonBorde = 'negro';
-  static String colorBotonIcono = 'gris';
+  static String colorBotonIcono = 'negro';
 
   static String colorOpcionMenuTexto = 'blanco';
   static String colorOpcionMenuFondo = 'negro';
@@ -53,11 +54,11 @@ class ParametrosSistema {
   static String colorItemListaFondo = 'azul';
   static String colorItemListaBorde = 'negro';
   static String colorItemListaIcono = 'negro';
-
+  static String colorError = 'rojo';
   static bool esModoObscuro = false;
 
   static double tamanoFuente = 30;
-  static double tamanoIcono = 12;
+  static double tamanoIcono = 18;
   static double ancho = 50;
   static double minAncho = 50;
   static double alto = 30;

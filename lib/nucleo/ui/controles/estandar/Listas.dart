@@ -25,10 +25,11 @@ class Listas {
   //
 
   static Widget mostrarLista(List<dynamic> lista, BuildContext context,
-      ElementoLista elemento, Function metodoCrearElemento) {
-    if (lista == null)
+      ElementoLista acciones, Function metodoCrearElemento,
+      [bool enProceso = true]) {
+    if (enProceso != null && enProceso == true)
       return Center(child: CircularProgressIndicator());
-    else if (lista.length == 0)
+    else if (enProceso != null && enProceso == false && lista.length == 0)
       return Center(child: Text("No  hay  información"));
     else {
       return Container(
@@ -36,20 +37,20 @@ class Listas {
           Expanded(
               //child:  mostrarElementosFiltro(lista,context, elemento)
               child: mostrarElementos(
-                  lista, context, elemento, metodoCrearElemento)),
+                  lista, context, acciones, metodoCrearElemento)),
         ]),
       );
     }
   }
 
   static Widget mostrarElementos(List<dynamic> lista, BuildContext context,
-      ElementoLista elemento, Function metodoCrearElemento) {
+      ElementoLista acciones, Function metodoCrearElemento) {
     // if (lista != null) {
     return ListView.separated(
       itemCount: lista.length,
       itemBuilder: (context, position) {
         dynamic entidad = lista[position];
-        return metodoCrearElemento(context, entidad, elemento);
+        return metodoCrearElemento(context, entidad, acciones);
       },
       separatorBuilder: (context, position) {
         return Container(
@@ -107,7 +108,7 @@ class Listas {
   static Widget crearElementoListaDismisible(
       BuildContext context,
       ElementoLista elemento,
-      dynamic controlModelo,
+      dynamic argumentos,
       // AccionModificarElementoLista metodoModificarElementoLista,
       // AccionEliminarElementoLista metodoEliminarElementoLista
       Function metodoModificarElementoLista,
@@ -120,7 +121,7 @@ class Listas {
         background: Container(
             color: Theme.of(context).selectedRowColor.withOpacity(0.6)),
         child: ElementoAccion(
-            context: context, elemento: elemento, argumentos: controlModelo));
+            context: context, elemento: elemento, argumentos: argumentos));
   }
 
   static Widget crearElementoListaDismisibleConAcciones(

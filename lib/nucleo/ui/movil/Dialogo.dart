@@ -185,7 +185,7 @@ Widget crearMarcoAlerta(BuildContext context, String titulo, String mensaje,
 Widget crearIconoAlerta(BuildContext context, String icono) {
   return Positioned(
       top: 7,
-      left: 240,
+      left: 20,
       child: CircleAvatar(
         backgroundColor: Theme.of(context).primaryColor, //  Colores.fondoIcono,
         radius: 30.0,

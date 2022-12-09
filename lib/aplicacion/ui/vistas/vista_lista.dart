@@ -7,23 +7,23 @@ import 'package:provider/provider.dart';
 
 import '../../../nucleo/nucleo.dart';
 
-
-
 class Vista_lista extends StatefulWidget {
   Vista_lista(
       {Key? key,
       this.pagina,
       this.context,
       this.lista,
-       this.metodoCrearElemento,
-      this.acciones})
+      this.metodoCrearElemento,
+      this.acciones,
+      this.enProceso})
       : super(key: key);
-
+  //  parametros de  clase
   String? pagina = "";
   BuildContext? context;
   List<dynamic>? lista;
   Function? metodoCrearElemento;
   ElementoLista? acciones;
+  bool? enProceso;
 
   @override
   _Vista_lista_estatus createState() => _Vista_lista_estatus();
@@ -53,7 +53,7 @@ class _Vista_lista_estatus extends State<Vista_lista> {
     // Provider.of<ControladorEstadoUI>(context, listen: false).actualizarControles;
     // listaEntidad=regresarListaEntidad();
     return Listas.mostrarLista(widget.lista!, widget.context!, widget.acciones!,
-        widget.metodoCrearElemento!);
+        widget.metodoCrearElemento!, widget.enProceso!);
   }
 
   //

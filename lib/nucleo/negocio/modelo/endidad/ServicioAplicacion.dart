@@ -6,7 +6,7 @@ import 'dart:convert';
 
 //  librerias  proyecto
 
-import '../../../../nucleo/negocio/modelo/endidad/EntidadBase.dart';
+import 'EntidadBase.dart';
 
 class ServicioAplicacion extends EntidadBase {
   //    variables

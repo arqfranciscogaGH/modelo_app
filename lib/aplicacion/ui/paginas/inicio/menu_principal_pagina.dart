@@ -5,9 +5,10 @@ import 'dart:math';
 import 'dart:ui';
 
 //  librerias importadas flutter
+// import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
-
 
 import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
@@ -18,83 +19,83 @@ import '../../../../aplicacion/aplicacion.dart';
 
 import '../../../../nucleo/negocio/controladorEstado/controladorEstado.dart';
 
-
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-
-
-
 class menu_principal_pagina extends StatefulWidget {
   menu_principal_pagina(
       {Key? key,
-      this.titulo,
-      this.pagina,
       this.paginaSiguiente,
       this.paginaAnterior,
-      this.accionPagina,
       this.activarAcciones})
       : super(key: key);
 
-  String? titulo;
-  String? pagina= "";
   String? paginaSiguiente = "";
-  String? paginaAnterior= "";
-  String? accionPagina = ""; // avanzar, regresar
+  String? paginaAnterior = "";
   bool? activarAcciones = false;
-  static String ruta = "menu_principal_pagina";
 
   @override
   _menu_principal_pagina_state createState() => _menu_principal_pagina_state();
 }
+
 class _menu_principal_pagina_state extends State<menu_principal_pagina> {
   //  declaración de variables
+  // KEYS
 
- 
+  //  KEY Scaffold
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
   //  inicializar  widget
   @override
   void initState() {
-    widget.pagina =menu_principal_pagina.ruta;
     super.initState();
   }
+
   @override
   void dispose() {
-      super.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-      Responsivo.identifciarDispositivo(context);
-
-    widget.titulo=Traductor.obtenerEtiquetaSeccion(menu_principal_pagina.ruta,'titulo');
-    print (widget.titulo);
+    Responsivo.identifciarDispositivo(context);
 
     print(ParametrosSistema.idioma);
     print(ParametrosSistema.colorTema);
 
-    late  ElementoLista elementoLista;
-  
-    elementoLista= ElementoLista();
-    elementoLista.titulo="fga2";
+    late ElementoLista elementoLista;
 
-    elementoLista =InjeccionDependencia.obtener<ElementoLista>();
-    elementoLista.titulo="XXX";
-  
-    elementoLista =InjeccionDependencia.obtener<ElementoLista>();
+    elementoLista = ElementoLista();
+    elementoLista.titulo = "fga2";
+
+    elementoLista = InjeccionDependencia.obtener<ElementoLista>();
+    elementoLista.titulo = "XXX";
+
+    elementoLista = InjeccionDependencia.obtener<ElementoLista>();
 
     // widget.titulo==null ?? "";
-        // idioma = IdiomaAplicacion.obt(context);
-        // idioma = IdiomaAplicacion.obtener(context, idioma);
+    // idioma = IdiomaAplicacion.obt(context);
+    // idioma = IdiomaAplicacion.obtener(context, idioma);
 
-        // widget.titulo = idioma.obtenerElemento('pagina_menu_principal', "titulo");
-        
-        // widget.titulo = idioma.obtenerElemento(widget.pagina, "titulo");
+    // widget.titulo = idioma.obtenerElemento('pagina_menu_principal', "titulo");
 
+    // widget.titulo = idioma.obtenerElemento(widget.pagina, "titulo");
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.titulo!)),
-      drawer: Menulateral.crearMenu(context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!, ParametrosSistema.paginaAccesso),
+      key: scaffoldKey,
+      appBar: NewGradientAppBar(
+          title: Text(ContextoUI.obtenerTitulo(widget)),
+          gradient: LinearGradient(colors: [
+            //Theme.of(context).primaryColor,
+            Colores.obtener(ParametrosSistema.colorPrimario),
+            Colores.obtener(ParametrosSistema.colorSecundario)
+          ])),
+      drawer: Menulateral.crearMenu(
+          context,
+          OpcionesMenus.obtenerMenuPrincipal(),
+          ContextoUI.obtenerTitulo(widget),
+          ParametrosSistema.paginaAccesso),
       body: Stack(
         children: <Widget>[
           _fondoApp(),

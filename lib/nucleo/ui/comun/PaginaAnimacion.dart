@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class SlideRightRoute extends PageRouteBuilder {
   final Widget page;
-  SlideRightRoute({ required this.page})
+  SlideRightRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -34,7 +34,7 @@ class SlideRightRoute extends PageRouteBuilder {
 
 class ScaleRoute extends PageRouteBuilder {
   final Widget page;
-  ScaleRoute({ required this.page})
+  ScaleRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -65,7 +65,7 @@ class ScaleRoute extends PageRouteBuilder {
 
 class RotationRoute extends PageRouteBuilder {
   final Widget page;
-  RotationRoute({ required this.page})
+  RotationRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -97,7 +97,7 @@ class RotationRoute extends PageRouteBuilder {
 
 class SizeRoute extends PageRouteBuilder {
   final Widget page;
-  SizeRoute({ required this.page})
+  SizeRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -122,7 +122,7 @@ class SizeRoute extends PageRouteBuilder {
 
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
-  FadeRoute({ required this.page})
+  FadeRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -145,7 +145,7 @@ class FadeRoute extends PageRouteBuilder {
 
 class ScaleRotateRoute extends PageRouteBuilder {
   final Widget page;
-  ScaleRotateRoute({ required this.page})
+  ScaleRotateRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
@@ -189,7 +189,7 @@ class ScaleRotateRoute extends PageRouteBuilder {
 class EnterExitRoute extends PageRouteBuilder {
   final Widget enterPage;
   final Widget exitPage;
-  EnterExitRoute({ required this.exitPage, required this.enterPage})
+  EnterExitRoute({required this.exitPage, required this.enterPage})
       : super(
           pageBuilder: (
             BuildContext context,

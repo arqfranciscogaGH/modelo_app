@@ -14,8 +14,8 @@ export './../../../nucleo/negocio/modelo/ModeloBase.dart';
 import '../modelo/entidad/Cliente.dart';
 export '../modelo/entidad/Cliente.dart';
 
-import '../modelo/entidad/ServicioAplicacion.dart';
-export '../modelo/entidad/ServicioAplicacion.dart';
+import '../../../nucleo/negocio/modelo/endidad/ServicioAplicacion.dart';
+export '../../../nucleo/negocio/modelo/endidad/ServicioAplicacion.dart';
 
 import '../modelo/entidad/Venta.dart';
 export '../modelo/entidad/Venta.dart';

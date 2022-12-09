@@ -7,9 +7,9 @@ import 'dart:ui';
 //  librerias importadas flutter
 
 import 'package:provider/provider.dart';
-
+// import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 //  librerias  proyecto
-
 
 import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
@@ -17,55 +17,46 @@ import '../../../../administracion/administracion.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../aplicacion.dart';
+import '../../../contexto/contexto.dart';
+import '../../../negocio/negocio.dart';
 
 import '../../../../nucleo/negocio/controladorEstado/controladorEstado.dart';
-
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-
-  class tema_pagina extends StatefulWidget {
+class tema_pagina extends StatefulWidget {
   tema_pagina(
       {Key? key,
-      this.titulo,
-      this.pagina,
       this.paginaSiguiente,
       this.paginaAnterior,
-      this.accionPagina,
       this.activarAcciones})
       : super(key: key);
 
-  String? titulo;
-  String? pagina= "";
   String? paginaSiguiente = "";
-  String? paginaAnterior= "";
-  String? accionPagina = ""; // avanzar, regresar
+  String? paginaAnterior = "";
   bool? activarAcciones = false;
-  static String ruta = "tema_pagina";
-
 
   @override
   _tema_pagina_state createState() => _tema_pagina_state();
 }
 
 class _tema_pagina_state extends State<tema_pagina> {
-
   //  propiedades  widget
 
   // entidad
 
   dynamic entidadCaptura;
 
-    //    control de estado  con provider
+  //    control de estado  con provider
 
-  ParametrosSistemaCE? prov;  
-  
+  ParametrosSistemaCE? prov;
+
   // captura
   final formKey = GlobalKey<FormState>();
 
-   //  controladores
+  //  controladores
 
   TextEditingController _controllerListaColor = new TextEditingController();
   TextEditingController _controllerColorSecundario = TextEditingController();
@@ -75,46 +66,59 @@ class _tema_pagina_state extends State<tema_pagina> {
   //  inicializar  widget
   @override
   void initState() {
-    widget.pagina = tema_pagina.ruta;
-    
     super.initState();
   }
 
- //  dispose widget
+  //  dispose widget
   @override
   void dispose() {
     super.dispose();
   }
- //  build widget
+
+  //  build widget
   @override
   Widget build(BuildContext context) {
-
-    widget.titulo=Traductor.obtenerEtiquetaSeccion(widget.pagina!,'titulo');
-    print (widget.titulo);
-    prov =Provider.of<ParametrosSistemaCE>(context,listen: true);
+    prov = Provider.of<ParametrosSistemaCE>(context, listen: true);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.titulo!)),
-      drawer: Menulateral.crearMenu(context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
-      body: mostrarCaptura(context, formKey, cambiarValor, validar, definicionControles, entidadCaptura),
+      appBar: NewGradientAppBar(
+        title: Text(ContextoUI.obtenerTitulo(widget)),
+        gradient: LinearGradient(colors: [
+          //Theme.of(context).primaryColor,
+          Colores.obtener(ParametrosSistema.colorPrimario),
+          Colores.obtener(ParametrosSistema.colorSecundario)
+        ]),
+      ),
+      drawer: Menulateral.crearMenu(
+          context,
+          OpcionesMenus.obtenerMenuPrincipal(),
+          ContextoUI.obtenerTitulo(widget)),
+      body: mostrarCaptura(context, formKey, cambiarValor, validar,
+          definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(context, ElementoLista( icono: "save", accion: guardar ),
+      floatingActionButton: Boton.crearBotonFlotante(
+        context,
+        ElementoLista(icono: "save", accion: guardar),
       ),
     );
   }
 
-  //    metodos 
+  //    metodos
 
   Widget mostrarCaptura(
-      BuildContext context, GlobalKey<FormState> formKey, Function cambiarValor, Function validar, Function metodoDefinicionControles, dynamic entidadCaptura)
-  {
-          return /* SingleChildScrollView(
+      BuildContext context,
+      GlobalKey<FormState> formKey,
+      Function cambiarValor,
+      Function validar,
+      Function metodoDefinicionControles,
+      dynamic entidadCaptura) {
+    return /* SingleChildScrollView(
                     child:  */
-              Container(
-                  padding: EdgeInsets.all(15.0),
-                  child: Captura.mostrarFormulario(context, formKey, cambiarValor, validar,
-                      metodoDefinicionControles, entidadCaptura),
-            //)
-          );
+        Container(
+      padding: EdgeInsets.all(15.0),
+      child: Captura.mostrarFormulario(context, formKey, cambiarValor, validar,
+          metodoDefinicionControles, entidadCaptura),
+      //)
+    );
   }
 
   List<Widget> definicionControles(
@@ -126,8 +130,10 @@ class _tema_pagina_state extends State<tema_pagina> {
     List<Control> controles = [];
 
     List<ElementoLista> _listaColores = [];
+    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azulclaro"));
     _listaColores.add(ElementoLista(valor: "rojo", titulo: "rojo"));
-    _listaColores.add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
+    _listaColores
+        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
     _listaColores.add(ElementoLista(valor: "azul", titulo: "azul"));
     _listaColores.add(ElementoLista(valor: "azulindigo", titulo: "azulindigo"));
     _listaColores.add(ElementoLista(valor: "verde", titulo: "verde"));
@@ -141,12 +147,16 @@ class _tema_pagina_state extends State<tema_pagina> {
     _listaColores.add(ElementoLista(valor: "gris", titulo: "gris"));
 
     List<ElementoLista> _listaColoresII = [];
+    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azulclaro"));
     _listaColoresII.add(ElementoLista(valor: "rojo", titulo: "rojo"));
-    _listaColoresII.add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
+    _listaColoresII
+        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
     _listaColoresII.add(ElementoLista(valor: "azul", titulo: "azul"));
-    _listaColoresII.add(ElementoLista(valor: "azulindigo", titulo: "azulindigo"));
+    _listaColoresII
+        .add(ElementoLista(valor: "azulindigo", titulo: "azulindigo"));
     _listaColoresII.add(ElementoLista(valor: "verde", titulo: "verde"));
-    _listaColoresII.add(ElementoLista(valor: "verdeclaro", titulo: "verdeclaro"));
+    _listaColoresII
+        .add(ElementoLista(valor: "verdeclaro", titulo: "verdeclaro"));
     _listaColoresII.add(ElementoLista(valor: "lima", titulo: "lima"));
     _listaColoresII.add(ElementoLista(valor: "amarillo", titulo: "amarillo"));
     _listaColoresII.add(ElementoLista(valor: "naranja", titulo: "naranja"));
@@ -158,24 +168,26 @@ class _tema_pagina_state extends State<tema_pagina> {
           _listaColores.add(ElementoLista(valor:"negroclaro" , titulo:"negroclaro" ));  
           _listaColores.add(ElementoLista(valor:"negrofuerte" , titulo:"negrofuerte" )); */
 
-    print(ParametrosSistema.colorTema);
+    print(ParametrosSistema.colorPrimario);
     Control lisColoresTema = new Control(
-      idControl: "lisColoresTema",
+      idControl: "colorPrimario",
     );
 
-    lisColoresTema = lisColoresTema.asignar(
-        '', widget.pagina!, ParametrosSistema.colorTema, cambiarValor, validar);
+    lisColoresTema = lisColoresTema.asignar('', ContextoUI.obtenerTipo(widget),
+        ParametrosSistema.colorPrimario, cambiarValor, validar);
     lisColoresTema.controlEdicion = _controllerListaColor;
     lisColoresTema.lista = _listaColores;
     controles.add(lisColoresTema);
 
-  
-
     Control colorSecundario = new Control(
       idControl: "colorSecundario",
     );
-    colorSecundario = colorSecundario.asignar('', widget.pagina!,
-        ParametrosSistema.colorSecundario, cambiarValor, validar);
+    colorSecundario = colorSecundario.asignar(
+        '',
+        ContextoUI.obtenerTipo(widget),
+        ParametrosSistema.colorSecundario,
+        cambiarValor,
+        validar);
     colorSecundario.controlEdicion = _controllerColorSecundario;
     colorSecundario.lista = _listaColoresII;
     controles.add(colorSecundario);
@@ -183,8 +195,8 @@ class _tema_pagina_state extends State<tema_pagina> {
     // controles.add(Control().crear('', widget.pagina!, "apaBrillo",
     //     ParametrosSistema.esModoObscuro == 1 ? true : false, cambiarValor, validar));
 
-    controles.add(Control().crear('', widget.pagina!, "apaBrillo",
-        ParametrosSistema.esModoObscuro , cambiarValor, validar));
+    controles.add(Control().crear('', ContextoUI.obtenerTipo(widget),
+        "apaBrillo", ParametrosSistema.esModoObscuro, cambiarValor, validar));
 
 /* 
 
@@ -232,9 +244,8 @@ class _tema_pagina_state extends State<tema_pagina> {
 
     */
 
-    
-    
-    return cargarControlesCaptura( context, controles, '', widget.pagina!, cambiarValor, validar,[]);
+    return cargarControlesCaptura(context, controles, '',
+        ContextoUI.obtenerTipo(widget), cambiarValor, validar, []);
     //return crearControlesCaptura(context,controles).toList();
   }
 
@@ -246,36 +257,37 @@ class _tema_pagina_state extends State<tema_pagina> {
   dynamic cambiarValor(Control control, dynamic valor) {
     // setState(() {
 
-      switch (control.idControl) {
-        case "lisColoresTema":
-          print(valor);
-          prov!.cambiarColorTema(valor);
-          print(ParametrosSistema.colorTema);
-          break;
-        case "colorSecundario":
-          print(valor);
-          prov!.cambiarColorSecundario(valor);
-          print(ParametrosSistema.colorSecundario);
-          break;
-        case "apaBrillo":
-          // ParametrosSistema.esModoObscuro = valor ;
-          //ParametrosSistema.esModoObscuro = valor == true ? 1 : 0;
-          print(valor);
-          prov!.cambiarEsModoObscuro(valor);
-          print(ParametrosSistema.esModoObscuro);
-          break;
-      }
+    switch (control.idControl) {
+      case "colorPrimario":
+        print(valor);
+        prov!.cambiarColorPrimario(valor);
+        print(ParametrosSistema.colorPrimario);
+        break;
+      case "colorSecundario":
+        print(valor);
+        prov!.cambiarColorSecundario(valor);
+        print(ParametrosSistema.colorSecundario);
+        break;
+      case "apaBrillo":
+        // ParametrosSistema.esModoObscuro = valor ;
+        //ParametrosSistema.esModoObscuro = valor == true ? 1 : 0;
+        print(valor);
+        prov!.cambiarEsModoObscuro(valor);
+        print(ParametrosSistema.esModoObscuro);
+        break;
+    }
 
     // });
 
     return entidadCaptura;
   }
 
-  void guardar(BuildContext context, ElementoLista elemento, [dynamic argumentos]) {
-     if (!formKey.currentState!.validate()) return;
-     formKey.currentState!.save();
-     prov!.guardarTema();
- 
+  void guardar(BuildContext context, ElementoLista elemento,
+      [dynamic argumentos]) {
+    if (!formKey.currentState!.validate()) return;
+    formKey.currentState!.save();
+    prov!.guardarTema();
+
     // setState(() {
 
     // });

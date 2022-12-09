@@ -36,16 +36,16 @@ List<ElementoLista> definirPaginas() {
   paginas.add(ElementoLista(pagina: botones_pagina(), ruta: 'botones_pagina'));
   paginas.add(ElementoLista(pagina: prueba_pagina(), ruta: 'prueba_pagina'));
   paginas.add(ElementoLista(
-    pagina: Venta_lista(
-      paginaSiguiente: 'Venta_captura',
+    pagina: venta_lista_pagina(
+      paginaSiguiente: 'venta_captura_pagina',
     ),
-    ruta: 'Venta_lista',
+    ruta: 'venta_lista_pagina',
   ));
   paginas.add(ElementoLista(
-      pagina: Venta_captura(
-        paginaAnterior: 'Venta_lista',
+      pagina: venta_captura_pagina(
+        paginaAnterior: 'venta_lista_pagina',
       ),
-      ruta: 'Venta_captura'));
+      ruta: 'venta_captura_pagina'));
   return paginas;
 }
 

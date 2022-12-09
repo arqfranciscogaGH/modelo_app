@@ -46,9 +46,7 @@ class Accion {
 
   static ejecutarRuta(BuildContext context, ElementoLista elemento,
       [dynamic argumento]) {
-    if (elemento.ruta == null ||
-        elemento.ruta == "" ||
-        elemento.ruta!.toUpperCase().contains("REGRESAR")) {
+    if (elemento.ruta!.toUpperCase().contains("REGRESAR")) {
       Navigator.pop(context);
     } else if ((elemento.ruta != null || elemento.ruta != "") &&
         argumento == null) {
@@ -103,7 +101,7 @@ class Accion {
     }
   }
 
-  static visitarPagina(BuildContext context, dynamic widget) {
+  static mostrarSiguientePagina(BuildContext context, dynamic widget) {
     if (widget == null)
       Accion.regresar(context);
     else if (widget.paginaAnterior == null && widget.paginaSiguiente == null)

@@ -124,7 +124,7 @@ class ClienteCE extends ChangeNotifier {
 
   modificarEntidad(BuildContext context, ElementoLista elemento,
       Cliente entidad, Function metodoRespuestaModificar) {
-    ContextoAplicacion.db.tablaCliente!.actualizar(entidad).then((respuesta) {
+    ContextoAplicacion.db.tablaCliente!.modificar(entidad).then((respuesta) {
       this.entidad = respuesta;
       if (metodoRespuestaModificar != null)
         metodoRespuestaModificar(context, elemento, entidad);

@@ -1,12 +1,7 @@
 //  librerias internas de flutter
 import 'package:flutter/material.dart';
 
-
-
 //  librerias importadas flutter
-
-
-
 
 //  librerias  proyecto
 
@@ -16,10 +11,7 @@ import '../../../paquetesExternos/paquetesExternos.dart';
 
 //  librerias externas  flutter
 
-
-class ParametrosSistemaCE  extends ChangeNotifier {
-
-  
+class ParametrosSistemaCE extends ChangeNotifier {
   // ThemeData temaActual;
   // controladorEstadoTema({
   //   required bool esModoObscuro
@@ -28,36 +20,45 @@ class ParametrosSistemaCE  extends ChangeNotifier {
   // cambiarModoObscuro (){ temaActual = ThemeData.dark(); notifyListeners(); }
   // cambiarModoClaro (){ temaActual = ThemeData.light(); notifyListeners();  }
 
-  controladorEstadoParametrosSistema() { 
+  controladorEstadoParametrosSistema() {
     //  obtener();
-  }  
-  void  obtenerTema (){ 
-     AdministradorTema.obtenerTema();
   }
-  guardarTema() {
-     AdministradorTema.guardarTema();
-     notifyListeners(); 
-  }
-  cambiarColorTema(String color) {
-     AdministradorTema.cambiarColorTema(color);
-     AdministradorTema.cambiarTema();
-     notifyListeners(); 
-  }
-  cambiarColorSecundario(String color) {
-     AdministradorTema.cambiarColorSecundario(color);
-     AdministradorTema.cambiarTema();
-     notifyListeners(); 
-  }
-  cambiarEsModoObscuro(bool esModoObscuro) {
-     AdministradorTema.cambiarEsModoObscuro(esModoObscuro);
-     AdministradorTema.cambiarTema();
-     notifyListeners(); 
+  void obtenerTema() {
+    AdministradorTema.obtenerTema();
   }
 
-  crearTemaPersonalizado()
-  {
-     AdministradorTema.crearTemaPersonalizado();
-     notifyListeners();  
+  guardarTema() {
+    AdministradorTema.guardarTema();
+    notifyListeners();
+  }
+
+  cambiarColorTema(String color) {
+    AdministradorTema.cambiarColorTema(color);
+    AdministradorTema.cambiarTema();
+    notifyListeners();
+  }
+
+  cambiarColorPrimario(String color) {
+    AdministradorTema.cambiarColorPrimario(color);
+    AdministradorTema.cambiarTema();
+    notifyListeners();
+  }
+
+  cambiarColorSecundario(String color) {
+    AdministradorTema.cambiarColorSecundario(color);
+    AdministradorTema.cambiarTema();
+    notifyListeners();
+  }
+
+  cambiarEsModoObscuro(bool esModoObscuro) {
+    AdministradorTema.cambiarEsModoObscuro(esModoObscuro);
+    AdministradorTema.cambiarTema();
+    notifyListeners();
+  }
+
+  crearTemaPersonalizado() {
+    AdministradorTema.crearTemaPersonalizado();
+    notifyListeners();
   }
 
   /* 
@@ -67,14 +68,14 @@ class ParametrosSistemaCE  extends ChangeNotifier {
   } 
   */
   cambiarIdioma(String idioma) {
-     AdministradorIdioma.cambiarIdioma(idioma);
-     Traductor.cargar();
-     OpcionesMenus.limpiar();
-     notifyListeners(); 
-  }
-    guardarIdioma() {
-     AdministradorIdioma.guardarIdioma();
-     notifyListeners(); 
+    AdministradorIdioma.cambiarIdioma(idioma);
+    Traductor.cargar();
+    OpcionesMenus.limpiar();
+    notifyListeners();
   }
 
+  guardarIdioma() {
+    AdministradorIdioma.guardarIdioma();
+    notifyListeners();
+  }
 }

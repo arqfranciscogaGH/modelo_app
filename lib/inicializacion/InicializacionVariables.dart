@@ -61,97 +61,9 @@ class InicializacionVariables {
     await _verEntidad();
   }
 
-  static AccesoTabla<T> agregarTabla<T extends EntidadBase>(
-      T entidad, ConfiguracionAccesoBD configuracion) {
-    if (configuracion.tablas == null) configuracion.tablas = [];
-    configuracion.tablas!.add(entidad);
-    return AccesoTabla<T>(claseEntidad: entidad, configuracion: configuracion);
-  }
-
-  void respuestaSeleccionar(
-      BuildContext context, ElementoLista elemento, dynamic entidad) {}
-  void respuestaConsultar(dynamic resouesta) {}
   static _verEntidad() async {
     // declarar  variables
     // declarar configuracion
-
-    //  ConfiguracionAccesoBD configuracionPersitenciaMemoria =
-    //       ConfiguracionAccesoBD(
-    //     persitencia: ePersitencia.Memoria,
-    //     tipoDB: eTipoDB.Ninguna,
-    //     nombreBD: '',
-    //     version: 1,
-    //     persitenciaPorDefecto: false,
-    //     contadorRegistros: true,
-    //     dominioApi: '',
-    //     sincronizarServidor: true,
-    //   );
-
-    // ConfiguracionAccesoBD _configuracionPersitenciaSqlLite =
-    //         ConfiguracionAccesoBD(
-    //       persitencia: ePersitencia.BaseDatos,
-    //       tipoDB: eTipoDB.SQLLITE,
-    //       nombreBD: 'prueba',
-    //       version: 1,
-    //       persitenciaPorDefecto: true,
-    //       contadorRegistros: false,
-    //       dominioApi: '',
-    //       sincronizarServidor: true,
-    //     );
-
-    //   ConfiguracionAccesoBD configuracionPersitenciaApiControlConsecutivos = ConfiguracionAccesoBD(
-    //     persitencia: ePersitencia.ApiREST,
-    //     tipoDB: eTipoDB.Ninguna,
-    //     nombreBD: '',
-    //     version: 1,
-    //     persitenciaPorDefecto: false,
-    //     contadorRegistros: true,
-    //    // dominioApi: 'arqfranciscoga-002-site3.btempurl.com',
-    //     dominioApi: 'kungio.com',
-    //     sitioApi:'/api/',
-    //     llaveApi:'prueba',
-    //     sincronizarServidor: true,
-    //   );
-    //   ConfiguracionAccesoBD configuracionPersitenciaApiIdentity =
-    //       ConfiguracionAccesoBD(
-    //     persitencia: ePersitencia.ApiREST,
-    //     tipoDB: eTipoDB.Ninguna,
-    //     nombreBD: '',
-    //     version: 1,
-    //     persitenciaPorDefecto: false,
-    //     contadorRegistros: false,
-    //    // dominioApi: 'arqfranciscoga-002-site3.btempurl.com',
-    //     dominioApi: 'kungio.com',
-    //     sitioApi:'/api/',
-    //     llaveApi:'prueba',
-    //     sincronizarServidor: true,
-    //   );
-
-    //   ConfiguracionAccesoBD configuracionApiParametros = ConfiguracionAccesoBD(
-    //     persitencia: ePersitencia.ApiREST,
-    //     tipoDB: eTipoDB.Ninguna,
-    //     nombreBD: '',
-    //     version: 1,
-    //     persitenciaPorDefecto: false,
-    //     contadorRegistros: false,
-    //    // dominioApi: 'arqfranciscoga-002-site3.btempurl.com',
-    //     dominioApi: 'kungio.com',
-    //     sitioApi:'/api/',
-    //     llaveApi:'prueba',
-    //     sincronizarServidor: true,
-    //   );
-
-    //   ConfiguracionAccesoBD configuracionPersitenciaFireBase =
-    //       ConfiguracionAccesoBD(
-    //     persitencia: ePersitencia.NoSQLBaseDatos,
-    //     tipoDB: eTipoDB.FireStore,
-    //     nombreBD: 'prueba',
-    //     version: 1,
-    //     persitenciaPorDefecto: false,
-    //     contadorRegistros: true,
-    //     dominioApi: '',
-    //     sincronizarServidor: true,
-    //   );
 
     // declarar entidades
 

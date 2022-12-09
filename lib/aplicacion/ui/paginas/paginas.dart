@@ -9,8 +9,8 @@ export 'ejemplos/prueba_pagina.dart';
 export 'ejemplos/botones_pagina.dart';
 export 'ejemplos/Modelo_pagina_lista.dart';
 export 'ejemplos/Modelo_pagina_captura.dart';
-export 'ventas/Venta_lista.dart';
-export 'ventas/Venta_captura.dart';
+export 'ventas/venta_lista_pagina.dart';
+export 'ventas/venta_captura_pagina.dart';
 
 
 

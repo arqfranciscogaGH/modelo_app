@@ -1,5 +1,6 @@
 //  librerias internas de flutter
 
+import 'dart:async';
 import 'dart:convert';
 
 //  librerias importadas flutter
@@ -129,42 +130,61 @@ class AccesoTabla<T extends EntidadBase> {
   Future<List<dynamic>> consultarTabla(T e,
       [Function? metodoRespuesta = null]) async {
     List<dynamic> respuesta = [];
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
     _abd!.configuracion = this.configuracion!;
     respuesta = await _abd!.consultarTabla(e.nombreTabla!);
-    resultado.datos = respuesta;
-    List<dynamic> lista = [];
-    lista = respuesta != null && respuesta.isNotEmpty
-        ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
-        : [];
-    if (metodoRespuesta != null)
-      metodoRespuesta(lista);
-    else if (controlEstadoUI != null) controlEstadoUI!.actualizar();
+    // Timer(Duration(seconds: 30), () {
+    //   print("Yeah, this line is printed after 3 seconds");
+    // });
+    if (respuesta != null) {
+      resultado.datos = respuesta;
+      List<dynamic> lista = [];
+      lista = respuesta != null && respuesta.isNotEmpty
+          ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
+          : [];
+      if (metodoRespuesta != null)
+        metodoRespuesta(lista);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
+    }
     return lista;
   }
 
   Future<List<dynamic>> filtrarTabla(T e, String campo, dynamic valor,
       [Function? metodoRespuesta = null]) async {
     List<dynamic> respuesta = [];
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.filtrar, eEstatus.iniciado);
     _abd!.configuracion = this.configuracion!;
     respuesta =
         await _abd!.filtrarTabla(e.nombreTabla!, e.toMap(), campo, valor);
-    List<dynamic> lista = [];
-    lista = respuesta != null && respuesta.isNotEmpty
-        ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
-        : [];
-    if (metodoRespuesta != null)
-      metodoRespuesta(lista);
-    else if (controlEstadoUI != null) controlEstadoUI!.actualizar();
+    if (respuesta != null) {
+      List<dynamic> lista = [];
+      lista = respuesta != null && respuesta.isNotEmpty
+          ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
+          : [];
+      if (metodoRespuesta != null)
+        metodoRespuesta(lista);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.filtrar, eEstatus.filtrado);
+    }
     return lista;
   }
 
-  Future<T> obtener(T e) async {
+  Future<T> obtener(T e, [Function? metodoRespuesta = null]) async {
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.obtener, eEstatus.iniciado);
     _abd!.configuracion = this.configuracion!;
     dynamic respuesta = await _abd!.obtener(
         e.nombreTabla!, e.toMap(), e.campoLLave!, e.toMap()[e.campoLLave!]);
     if (respuesta != null) {
       this.entidad = e.fromMap(respuesta) as T;
       registro.datos = e.toMap();
+      if (metodoRespuesta != null)
+        metodoRespuesta(this.entidad);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.obtener, eEstatus.obtenido);
     }
     return this.entidad;
   }
@@ -190,7 +210,7 @@ class AccesoTabla<T extends EntidadBase> {
     return mapRegistro;
   }
 
-  Future<dynamic> insertar(T e) async {
+  Future<dynamic> insertar(T e, [Function? metodoRespuesta = null]) async {
     Map<String, dynamic> map = e.toMap();
     if (configuracion!.contadorRegistros == true) {
       map = await incrementarConsecutivo(e);
@@ -199,26 +219,38 @@ class AccesoTabla<T extends EntidadBase> {
     if (respuesta != null) {
       this.entidad = e.fromMap(respuesta) as T;
       registro.datos = e.toMap();
+      if (metodoRespuesta != null)
+        metodoRespuesta(this.entidad);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.insertar, eEstatus.insertado);
     }
     return this.entidad;
   }
 
-  Future<T> actualizar(T e) async {
+  Future<T> modificar(T e, [Function? metodoRespuesta = null]) async {
     dynamic respuesta = await _abd!.actualizar(
         e.nombreTabla!, e.toMap(), e.campoLLave!, e.toMap()[e.campoLLave!]);
     if (respuesta != null) {
       this.entidad = e.fromMap(respuesta) as T;
       registro.datos = e.toMap();
+      if (metodoRespuesta != null)
+        metodoRespuesta(this.entidad);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.modificar, eEstatus.modificado);
     }
     return this.entidad;
   }
 
-  Future<dynamic> eliminar(T e) async {
+  Future<dynamic> eliminar(T e, [Function? metodoRespuesta = null]) async {
     dynamic respuesta = await _abd!.eliminar(
         e.nombreTabla!, e.toMap(), e.campoLLave!, e.toMap()[e.campoLLave!]);
     if (respuesta != null) {
       this.entidad = e.fromMap(respuesta) as T;
       registro.datos = e.toMap();
+      if (metodoRespuesta != null)
+        metodoRespuesta(this.entidad);
+      else if (controlEstadoUI != null)
+        controlEstadoUI!.actualizarUI(eProceso.eliminar, eEstatus.eliminado);
     }
     return this.entidad;
   }

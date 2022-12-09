@@ -11,10 +11,7 @@ import '../../../../nucleo/negocio/modelo/endidad/EntidadBase.dart';
 class Cliente extends EntidadBase {
   //    variables
 
-
-
   //    propiedades
-
 
   String? idTipoCliente;
   int? idEstado;
@@ -43,7 +40,7 @@ class Cliente extends EntidadBase {
   String? fecha;
   String? fechaRegistro;
   String? fechaEntrega;
- 
+
   String? fechaEstatus;
   int? estatus;
 
@@ -81,16 +78,15 @@ class Cliente extends EntidadBase {
     this.idSuscriptor,
     this.estatus,
   }) : super(
-            id: id,
-            nombre: nombre,
-            clave: clave,
-            llave: llave,
-            descripcion: descripcion,
-            nombreTabla: 'Clientes',
-            campoLLave: 'id',
-            );
+          id: id,
+          nombre: nombre,
+          clave: clave,
+          llave: llave,
+          descripcion: descripcion,
+          nombreTabla: 'Clientes',
+          campoLLave: 'id',
+        );
   //    métodos
-
 
   factory Cliente.fromMap(Map<String, dynamic> map) => new Cliente(
         id: map["id"],
@@ -121,51 +117,50 @@ class Cliente extends EntidadBase {
         urlFoto: map["urlFoto"],
         fechaNacimiento: map["fechaNacimiento"],
         fecha: map["fecha"],
-        fechaEntrega: map["fechaEntrega"],    
+        fechaEntrega: map["fechaEntrega"],
         fechaRegistro: map["fechaRegistro"],
-         idSuscriptor: map["idSuscriptor"],
+        idSuscriptor: map["idSuscriptor"],
         fechaEstatus: map["fechaEstatus"],
         //activo: int.parse(map["activo"].toString()),
         estatus: map["estatus"],
       );
   Cliente fromMap(Map<String, dynamic> map) {
-      id= map["id"];
-      llave= map["llave"];
-      clave= map["clave"];
-      nombre= map["nombre"];
-      descripcion= map["descripcion"];
+    id = map["id"];
+    llave = map["llave"];
+    clave = map["clave"];
+    nombre = map["nombre"];
+    descripcion = map["descripcion"];
 
-      idTipoCliente= map["idTipoCliente"];
-      idUsuario= map["idUsuario"];
+    idTipoCliente = map["idTipoCliente"];
+    idUsuario = map["idUsuario"];
 
-      apellidoPaterno= map["apellidoPaterno"];
-      apellidoMaterno= map["apellidoMaterno"];
-      rfc= map["rfc"];
-      curp= map["curp"];
-      telefono= map["telefono"];
-      telefonoMovil= map["telefonoMovil"];
-      correo= map["correo"];
-      genero= map["genero"];
-      direccion= map["direccion"];
+    apellidoPaterno = map["apellidoPaterno"];
+    apellidoMaterno = map["apellidoMaterno"];
+    rfc = map["rfc"];
+    curp = map["curp"];
+    telefono = map["telefono"];
+    telefonoMovil = map["telefonoMovil"];
+    correo = map["correo"];
+    genero = map["genero"];
+    direccion = map["direccion"];
 
-      referencia= map["referencia"];
-      banco= map["banco"];
-      cuentaBanco= map["cuentaBanco"];
-      importe= map["importe"];
-      saldo= map["saldo"];
-      rutaFoto= map["rutaFoto"];
-      urlFoto= map["urlFoto"];
-      fechaNacimiento= map["fechaNacimiento"];
-      fecha= map["fecha"];
-      fechaEntrega= map["fechaEntrega"];      
-      fechaRegistro= map["fechaRegistro"];
-      idSuscriptor= map["idSuscriptor"];
-      fechaEstatus= map["fechaEstatus"];
-      //activo= int.parse(map["activo"].toString()),
-      estatus= map["estatus"];
-      
-      return this;
+    referencia = map["referencia"];
+    banco = map["banco"];
+    cuentaBanco = map["cuentaBanco"];
+    importe = map["importe"];
+    saldo = map["saldo"];
+    rutaFoto = map["rutaFoto"];
+    urlFoto = map["urlFoto"];
+    fechaNacimiento = map["fechaNacimiento"];
+    fecha = map["fecha"];
+    fechaEntrega = map["fechaEntrega"];
+    fechaRegistro = map["fechaRegistro"];
+    idSuscriptor = map["idSuscriptor"];
+    fechaEstatus = map["fechaEstatus"];
+    //activo= int.parse(map["activo"].toString()),
+    estatus = map["estatus"];
 
+    return this;
   }
 
   Map<String, dynamic> toMap() => {
@@ -194,7 +189,7 @@ class Cliente extends EntidadBase {
         "urlFoto": urlFoto,
         "fechaNacimiento": fechaNacimiento,
         "fecha": fecha,
-        "fechaEntrega": fechaEntrega,      
+        "fechaEntrega": fechaEntrega,
         "fechaRegistro": fechaRegistro,
         "idSuscriptor": idSuscriptor,
         "fechaEstatus": fechaEstatus,
@@ -229,7 +224,7 @@ class Cliente extends EntidadBase {
             "urlFoto TEXT , "
             "fechaNacimiento TEXT , "
             "fecha TEXT , "
-            "fechaEntrega TEXT , "            
+            "fechaEntrega TEXT , "
             "fechaRegistro TEXT , "
             "idSuscriptor INTEGER , "
             "fechaEstatus TEXT , "
@@ -239,8 +234,8 @@ class Cliente extends EntidadBase {
 
   Cliente iniciar() {
     Cliente e = Cliente();
-    e.nombreTabla='Clientes';
-    e.campoLLave='id';
+    e.nombreTabla = 'Clientes';
+    e.campoLLave = 'id';
 
     e.id = 0;
     e.clave = "";
@@ -277,42 +272,37 @@ class Cliente extends EntidadBase {
     return e;
   }
 
-
-
-  
   //  metodos conversion  a cadena  json
 
- 
-   // conversión de  entidad a  cadena Json  
+  // conversión de  entidad a  cadena Json
 
-  String entidadtoJson() => json.encode(this.toMap());
+  String toJson() => json.encode(this.toMap());
 
-  // conversión de  cadena Json  a entidad 
- 
-  Cliente fromJsonToEntidad(String cadenaJson)  =>this.fromMap(json.decode(cadenaJson));
-  
+  // conversión de  cadena Json  a entidad
 
-  // conversión de Json String  a map 
-  Map<String, dynamic> fromJsonToMap(String cadenaJson) => json.decode(cadenaJson);
-  
+  Cliente fromJson(String cadenaJson) => this.fromMap(json.decode(cadenaJson));
+
+  // conversión de Json String  a map
+  Map<String, dynamic> fromJsonToMap(String cadenaJson) =>
+      json.decode(cadenaJson);
 
   // metodos conversion listas
 
+  // metodos conversion cadena Json a  lista
 
-  // metodos conversion cadena Json a  lista  de 
- 
-  List<Cliente> jsonToListEntidad(String cadenaJson) {
-    List<dynamic> listaMap = json.decode(cadenaJson);
-    List<Cliente> lista = mapTolistaEntidad(listaMap);
-    return lista;
-  }
- // metodos conversion lista map a  lista  de entidades
-
-  List<Cliente> mapTolistaEntidad(List<dynamic> listaMapa) {
+  @override
+  List<Cliente> mapTolista(List<dynamic> listaMapa) {
     List<Cliente> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
-  }
+  } 
 
+  // metodos conversion lista map a  lista  de entidades
+  @override
+  List<Cliente> jsonToLista(String cadenaJson) {
+    List<dynamic> listaMap = json.decode(cadenaJson);
+    List<Cliente> lista = mapTolista(listaMap);
+    return lista;
+  }
 }

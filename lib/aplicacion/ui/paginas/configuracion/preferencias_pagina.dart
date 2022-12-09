@@ -7,9 +7,10 @@ import 'dart:ui';
 //  librerias importadas flutter
 
 import 'package:provider/provider.dart';
+// import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
-
 
 import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
@@ -20,38 +21,27 @@ import '../../../aplicacion.dart';
 
 import '../../../../nucleo/negocio/controladorEstado/ParametrosSistemaCE.dart';
 
-
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-
-  class preferencias_pagina extends StatefulWidget {
+class preferencias_pagina extends StatefulWidget {
   preferencias_pagina(
       {Key? key,
-      this.titulo,
-      this.pagina,
       this.paginaSiguiente,
       this.paginaAnterior,
-      this.accionPagina,
       this.activarAcciones})
       : super(key: key);
 
-  String? titulo;
-  String? pagina= "";
   String? paginaSiguiente = "";
-  String? paginaAnterior= "";
-  String? accionPagina = ""; // avanzar, regresar
+  String? paginaAnterior = "";
   bool? activarAcciones = false;
-  static String ruta = "preferencias_pagina";
-
 
   @override
-  _preferencias_paginas_state createState() => _preferencias_paginas_state();
+  _preferencias_pagina_state createState() => _preferencias_pagina_state();
 }
 
-class _preferencias_paginas_state extends State<preferencias_pagina> {
-
+class _preferencias_pagina_state extends State<preferencias_pagina> {
   //  propiedades  widget
 
   // entidad
@@ -60,11 +50,15 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
 
   //    control de estado  con provider
 
-  ParametrosSistemaCE? prov;  
+  ParametrosSistemaCE? prov;
+
+  // KEYS
 
   // captura
   final formKey = GlobalKey<FormState>();
 
+  //  KEY Scaffold
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   //  controladores
 
@@ -72,16 +66,13 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
 
   //  otros
 
-
-
   //  inicializar  widget
   @override
   void initState() {
     super.initState();
-    widget.pagina = preferencias_pagina.ruta;
   }
 
- //  dispose widget
+  //  dispose widget
   @override
   void dispose() {
     super.dispose();
@@ -90,22 +81,33 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
   //   construir  interfaz de usuario
   //
 
- @override
+  @override
   Widget build(BuildContext context) {
-
-    widget.titulo=Traductor.obtenerEtiquetaSeccion(widget.pagina!,'titulo');
-    print (widget.titulo);
-    prov =Provider.of<ParametrosSistemaCE>(context,listen: true);
+    prov = Provider.of<ParametrosSistemaCE>(context, listen: true);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.titulo!)),
-      drawer: Menulateral.crearMenu(context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
-      body: mostrarCaptura(context, formKey, cambiarValor, validar, definicionControles, entidadCaptura),
+      key: scaffoldKey,
+      appBar: NewGradientAppBar(
+          title: Text(ContextoUI.obtenerTitulo(widget)),
+          gradient: LinearGradient(colors: [
+            //Theme.of(context).primaryColor,
+            Colores.obtener(ParametrosSistema.colorPrimario),
+            Colores.obtener(ParametrosSistema.colorSecundario)
+          ])),
+      drawer: Menulateral.crearMenu(
+          context,
+          OpcionesMenus.obtenerMenuPrincipal(),
+          ContextoUI.obtenerTitulo(widget)),
+      body: mostrarCaptura(context, formKey, cambiarValor, validar,
+          definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(context, ElementoLista( icono: "save", accion: guardar ),
+      floatingActionButton: Boton.crearBotonFlotante(
+        context,
+        ElementoLista(icono: "save", accion: guardar),
       ),
     );
   }
+
   Widget mostrarCaptura(
       BuildContext context,
       GlobalKey<FormState> formKey,
@@ -132,23 +134,26 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
       dynamic entidadCaptura) {
     List<Control> controles = [];
 
+    List<ElementoLista> _listaIdiomas = [];
+    _listaIdiomas.add(ElementoLista(
+        valor: "es",
+        titulo: Traductor.obtenerEtiquetaSeccion('comun_pagina', 'idiomaES')));
+    _listaIdiomas.add(ElementoLista(
+        valor: "en",
+        titulo: Traductor.obtenerEtiquetaSeccion('comun_pagina', 'idiomaEN')));
 
-  List<ElementoLista> _listaIdiomas = [];
-    _listaIdiomas.add(ElementoLista(valor: "es", titulo: Traductor.obtenerEtiquetaSeccion('pagina_Comun','idiomaES') ));
-    _listaIdiomas.add(ElementoLista(valor: "en", titulo: Traductor.obtenerEtiquetaSeccion('pagina_Comun','idiomaEN') ));
-  
-   Control listaIdiomas = new Control(
+    Control listaIdiomas = new Control(
       idControl: "listaIdiomas",
     );
 
-    listaIdiomas = listaIdiomas.asignar(
-        '', widget.pagina!, ParametrosSistema.idioma, cambiarValor, validar);
+    listaIdiomas = listaIdiomas.asignar('', ContextoUI.obtenerTipo(widget),
+        ParametrosSistema.idioma, cambiarValor, validar);
     listaIdiomas.controlEdicion = _controllerListaIdioma;
     listaIdiomas.lista = _listaIdiomas;
     controles.add(listaIdiomas);
 
-
-    return cargarControlesCaptura( context, controles, '', widget.pagina!, cambiarValor, validar,[]);
+    return cargarControlesCaptura(context, controles, '',
+        ContextoUI.obtenerTipo(widget), cambiarValor, validar, []);
     //return crearControlesCaptura(context,controles).toList();
   }
 
@@ -159,13 +164,13 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
   dynamic validar(Control control, dynamic valor) {}
   dynamic cambiarValor(Control control, dynamic valor) {
     // setState(() {
-     switch (control.idControl) {
-        case "listaIdiomas":
-          print(valor);
-          prov!.cambiarIdioma(valor);
-          print(ParametrosSistema.idioma);
-          break;
-      }
+    switch (control.idControl) {
+      case "listaIdiomas":
+        print(valor);
+        prov!.cambiarIdioma(valor);
+        print(ParametrosSistema.idioma);
+        break;
+    }
     // });
 
     return entidadCaptura;
@@ -177,5 +182,4 @@ class _preferencias_paginas_state extends State<preferencias_pagina> {
     formKey.currentState!.save();
     prov!.guardarIdioma();
   }
-
 }

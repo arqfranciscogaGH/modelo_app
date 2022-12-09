@@ -25,33 +25,27 @@ import 'VentaUI.dart';
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class Venta_lista extends StatefulWidget {
-  Venta_lista(
-      {this.titulo,
-      this.pagina,
-      this.paginaSiguiente,
-      this.paginaAnterior,
-      this.activarAcciones});
-  String? titulo;
-  String? pagina;
+class venta_lista_pagina extends StatefulWidget {
+  venta_lista_pagina(
+      {this.paginaSiguiente, this.paginaAnterior, this.activarAcciones});
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
   bool? activarAcciones = false;
-  static String ruta = "Venta_lista";
 
   @override
-  _Venta_lista_state createState() => _Venta_lista_state();
+  _venta_lista_pagina_state createState() => _venta_lista_pagina_state();
 }
 
-class _Venta_lista_state extends State<Venta_lista> {
+class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
 
   //ComunCE? provider;
+  //  controlador  de estado comun para  actulizar la UI
   ControlEstadoUI? controlEstadoUI;
   //  Interfaz  comun
-  VentaUI ui = VentaUI();
+  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
 
   // entidad
 
@@ -80,15 +74,12 @@ class _Venta_lista_state extends State<Venta_lista> {
   @override
   void initState() {
     super.initState();
-    widget.pagina = Venta_lista.ruta;
 
     entidadCaptura = Venta().iniciar();
     ContextoAplicacion.db.tablaVenta!.entidad = entidadCaptura;
 
     controlEstadoUI = ControlEstadoUI();
-    ui = VentaUI(
-        tabla: ContextoAplicacion
-            .db.tablaVenta! /* , controlEstadoUI: controlEstadoUI  */);
+    ui = VentaUI(tabla: ContextoAplicacion.db.tablaVenta!);
 
     // provider.limpiar();
 
@@ -98,49 +89,49 @@ class _Venta_lista_state extends State<Venta_lista> {
     accionAgregar = ElementoLista(
         id: 1,
         icono: "add_circle",
-        // ruta: widget.paginaSiguiente,
-        ruta: "Venta_captura",
+        ruta: widget.paginaSiguiente,
         accion: ui.agregarElemento,
         callBackAccion: ui.respuestaAgregar);
     //  accion para consultar  y modificar y eliminar un elemento de la lista consultada
 
     accionConsultar = ElementoLista(
       id: 2,
+      operacion: eOperacion.consultar,
       icono: "edit",
       ruta: widget.paginaSiguiente,
-      operacion: eOperacion.consultar,
       accion: ui.seleccionarElemento,
       callBackAccion: ui.respuestaSeleccionar,
+      icono2: "documentos",
+      ruta2: widget.paginaSiguiente,
       accion2: ui.eliminarElemento,
       callBackAccion2: ui.respuestaEliminar,
       icono3: "documentos",
-      ruta3: "Venta_Captura",
+      ruta3: widget.paginaSiguiente,
       accion3: ui.seleccionarElemento3,
       callBackAccion3: ui.respuestaSeleccionar3,
     );
     //  accion para filtrar y modificar y eliminar un elementos de la lista filtrada
     accionFiltrar = ElementoLista(
       id: 2,
+      operacion: eOperacion.filtrar,
       icono: "edit",
       ruta: widget.paginaSiguiente,
-      operacion: eOperacion.filtrar,
       accion: ui.seleccionarElemento,
       callBackAccion: ui.respuestaSeleccionar,
-      accion2: ui.seleccionarElemento,
-      callBackAccion2: ui.respuestaSeleccionar,
+      icono2: "documentos",
+      ruta2: widget.paginaSiguiente,
+      accion2: ui.eliminarElemento,
+      callBackAccion2: ui.respuestaEliminar,
       icono3: "documentos",
-      ruta3: "Venta_Captura",
+      ruta3: widget.paginaSiguiente,
       accion3: ui.seleccionarElemento3,
       callBackAccion3: ui.respuestaSeleccionar3,
     );
 
-    // print(ContextoAplicacion.db.tablaVenta!.lista.length);
+    ContextoAplicacion.db.tablaVenta!.controlEstadoUI = controlEstadoUI!;
 
-    // provider!.ver(entidadCaptura);
-
-    // ContextoAplicacion.db.tablaVenta!
-    //     .consultarTabla(ContextoAplicacion.db.tablaVenta!.entidad)
-    //     .then((respuesta) => {print(respuesta)});
+    ContextoAplicacion.db.tablaVenta!
+        .consultarTabla(ContextoAplicacion.db.tablaVenta!.entidad);
 
     // ContextoAplicacion.db.tablaVenta!.consultarTabla(
     //     ContextoAplicacion.db.tablaVenta!.entidad, actualizarEstadoLista);
@@ -150,11 +141,6 @@ class _Venta_lista_state extends State<Venta_lista> {
     //     .then((respuesta) {
     //   print(respuesta);
     // });
-    ui.controlEstado = controlEstadoUI!;
-    ui.consultarTabla(context, ContextoAplicacion.db.tablaVenta!.entidad);
-
-    //controlEstadoUI!.consultarTabla( ContextoAplicacion.db.tablaVenta!);
-    //controlEstadoUI!.consultarTabla( ContextoAplicacion.db.tablaVenta!, actualizarEstadoLista);
     // provider.addListener(() {
     //      print("  actualizo, numero ${provider.entidad.id} ");
     // }) ;
@@ -173,10 +159,7 @@ class _Venta_lista_state extends State<Venta_lista> {
   //
   @override
   Widget build(BuildContext context) {
-    // contextoAplicacion=ContextoAplicacion.obtener(ModalRoute.of(context).settings.arguments);
     ui.iniciar(context, scaffoldKey, widget);
-    widget.titulo =
-        Traductor.obtenerEtiquetaSeccion(widget.pagina!, 'titulo') ?? 'Tema';
     print("build lista");
     print(ContextoAplicacion.db.tablaVenta!.entidad.id);
     print(entidadCaptura.id);
@@ -185,10 +168,10 @@ class _Venta_lista_state extends State<Venta_lista> {
       child: Scaffold(
         key: scaffoldKey,
         appBar: NewGradientAppBar(
-          title: Text(widget.titulo!),
+          title: Text(ContextoUI.obtenerTitulo(widget)),
           gradient: LinearGradient(colors: [
             //Theme.of(context).primaryColor,
-            Colores.obtener(ParametrosSistema.colorTema),
+            Colores.obtener(ParametrosSistema.colorPrimario),
             Colores.obtener(ParametrosSistema.colorSecundario)
           ]),
           actions: <Widget>[
@@ -212,7 +195,9 @@ class _Venta_lista_state extends State<Venta_lista> {
           ],
         ),
         drawer: Menulateral.crearMenu(
-            context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
+            context,
+            OpcionesMenus.obtenerMenuPrincipal(),
+            ContextoUI.obtenerTitulo(widget)),
         body: mostrarContenido(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Boton.crearBotonFlotante(context, accionAgregar!),
@@ -235,8 +220,6 @@ class _Venta_lista_state extends State<Venta_lista> {
 
   Widget mostrarContenido() {
     print("mostrarContenido");
-    print(ContextoAplicacion.db.tablaVenta!.entidad.id);
-    print(entidadCaptura.id);
     return Consumer<ControlEstadoUI>(
         builder: (context, _provider, widgetPadre) {
       return Vista_lista(
@@ -246,7 +229,8 @@ class _Venta_lista_state extends State<Venta_lista> {
           acciones: accionConsultar,
           metodoCrearElemento: ui.crearElementoEntidad,
           context: context,
-          pagina: widget.pagina!);
+          pagina: ContextoUI.obtenerTipo(widget),
+          enProceso: _provider.enProceso);
     });
   }
 
@@ -254,10 +238,8 @@ class _Venta_lista_state extends State<Venta_lista> {
   //  filtar  informacion
   //
   Widget filtrarElementos(String query) {
-    //List<dynamic> lista = provider!.lista!;
-    //List<dynamic> lista = listaEntidad;
-    List<dynamic> lista =
-        controlEstadoUI!.lista(ContextoAplicacion.db.tablaVenta!);
+    print("filtrarElementos");
+    List<dynamic> lista = ContextoAplicacion.db.tablaVenta!.lista;
     if (lista != null && query != "")
       lista = lista
           .where((s) => s.nombre.toLowerCase().contains(query.toLowerCase()))
@@ -267,7 +249,8 @@ class _Venta_lista_state extends State<Venta_lista> {
         acciones: accionFiltrar,
         metodoCrearElemento: ui.crearElementoEntidad,
         context: context,
-        pagina: widget.pagina);
+        pagina: ContextoUI.obtenerTipo(widget),
+        enProceso: controlEstadoUI!.enProceso);
   }
 }
 //

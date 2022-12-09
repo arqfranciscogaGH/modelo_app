@@ -1,15 +1,16 @@
 menu_principal:
-      opcion1 : { id : 1 ,ruta : menu_principal_pagina , pagina : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Main Menu, subtitulo : ,  icono: menu, iconoLateral : arrow_right , activo : 1 } 
-      opcion2 : {id : 2 , ruta : prueba_pagina , pagina : prueba_pagina , animacionPagina: rotationRoute , titulo :  Test , subtitulo : ,   icono: menu,  iconoLateral : arrow_right , activo: 1 }         
-      opcion3 : { id : 3 ,ruta : tema_pagina , pagina : tema_pagina , animacionPagina: rotationRoute ,  titulo : Theme , subtitulo : ,  icono: tema , iconoLateral : arrow_right , activo : 1 } 
-      opcion4 : { id : 4 ,ruta : preferencias_pagina , pagina : preferencias_pagina , animacionPagina: rotationRoute ,   titulo : References , subtitulo : ,  icono: settings , iconoLateral : arrow_right , activo : 1 } 
-      opcion5 : { id : 5 , ruta : botones_pagina , pagina : botones_pagina , animacionPagina: rotationRoute ,      titulo : buttons , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion6 : { id : 6 , ruta : Modelo_pagina_lista , pagina : Modelo_pagina_lista , animacionPagina: rotationRoute ,      titulo : query list , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion7 : { id : 7 , ruta : Modelo_pagina_captura , pagina : Modelo_pagina_captura , animacionPagina: rotationRoute ,      titulo : Capture data, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion8 : { id : 8 , ruta : Venta_lista , pagina : Venta_lista , animacionPagina: rotationRoute ,      titulo : List Self , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion9 : { id : 9 , ruta : Venta_captura , pagina : Venta_captura , animacionPagina: rotationRoute ,      titulo : Capture Self, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
 
-pagina_Comun:
+      opcion1 : { id : 1 ,ruta : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Main Menu, subtitulo : ,  icono: menu, iconoLateral : arrow_right , activo : 1 } 
+      opcion2 : { id : 2 , ruta : prueba_pagina , animacionPagina: rotationRoute , titulo :  Test , subtitulo : ,   icono: menu,  iconoLateral : arrow_right , activo: 1 }         
+      opcion3 : { id : 3 ,ruta : tema_pagina , animacionPagina: rotationRoute ,  titulo : Theme , subtitulo : ,  icono: tema , iconoLateral : arrow_right , activo : 1 } 
+      opcion4 : { id : 4 ,ruta : preferencias_pagina , animacionPagina: rotationRoute ,   titulo : Preferences , subtitulo : ,  icono: settings , iconoLateral : arrow_right , activo : 1 } 
+      opcion5 : { id : 5 , ruta : botones_pagina , animacionPagina: rotationRoute ,   titulo : buttons , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion6 : { id : 6 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,  titulo : query list , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion7 : { id : 7 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,   titulo : Capture data, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion8 : { id : 8 , ruta : venta_lista_pagina ,  animacionPagina: rotationRoute ,  titulo : List Self , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion9 : { id : 9 , ruta : venta_captura_pagina ,  animacionPagina: rotationRoute ,   titulo : Capture Self, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+
+comun_pagina:
       borde :  Lineal        
       colorBorde : rojo   
       idiomaES : Spanish  
@@ -19,17 +20,17 @@ pagina_Comun:
       nombre : { titulo : Name }
       grupo : { titulo : Group }
       perfil : { titulo : Profile } 
-      accionAgregar : { titulo : Agregar , icono: add_circle  ,  mensaje :  Se ha agregado  un  Elemento  }
-      accionSeleccionar : { titulo : Seleccionar , icono: edit  ,mensaje : Se ha seleccionado el Elemento     }
-      accionFiltrar : { titulo : Filtrar , icono: list  ,mensaje : Consultando infromación     }
-      accionConfirmarEliminacion : { titulo : Confirmar eliminación , icono: info , mensaje : Desea eliminar elemento seleccionado ? , opciones : Si No  }
-      accionEliminar : { titulo : Eliminar , icono:  info  , mensaje :  Se ha eliminado Elemento  , opciones : Aceptar   }
-      accionInsertar : { titulo : Insertar , icono:  info , mensaje :  Se ha insertado Elemento  , opciones : Aceptar   }
-      accionModificar : { titulo : Modificar , icono: info  , mensaje : Se ha actulizado  Elemento  , opciones : Aceptar   }
-      accionGuardar : { titulo : Guardar , icono: save  , mensaje : Se ha guardado la información   } 
-      operacionExitosa : { titulo : Operacion , icono: info  , mensaje : La operación se realizó correctamente , opciones : Aceptar }
-      cargando : { titulo : Cargando , icono:  , mensaje : obteniendo información }
-      noInformacion : { titulo : Consultar ,  icono:  , mensaje : No hay información   }
+      accionAgregar : { titulo : Add , icono: add_circle  ,  mensaje :  Element has been added  , opciones : to accept }
+      accionSeleccionar : { titulo : Select , icono: edit  , mensaje : Element has been selected ,  opciones : to accept  }
+      accionFiltrar : { titulo : Filter , icono: list  ,mensaje : Consulting information ,opciones : to accept  }
+      accionConfirmarEliminacion : { titulo : Confirmar eliminación , icono: info , mensaje : Do you want to delete selected item ? , opciones : Yes No  }
+      accionEliminar : { titulo : Delete , icono:  info  , mensaje :  Element has been removed , opciones : to accept   }
+      accionInsertar : { titulo : Insert , icono:  info , mensaje :  Element has been inserted  , opciones : to accept   }
+      accionModificar : { titulo : Modify , icono: info  , mensaje : Element has been updated , opciones : to accept   }
+      accionGuardar : { titulo : Save , icono: save  , mensaje : Information has been saved   ,opciones : to accept } 
+      operacionExitosa : { titulo : Operation  , icono: info  , mensaje : The operation was successful, opciones : to accept }
+      cargando : { titulo : Loading , icono:  , mensaje : Loading information ,opciones : to accept }
+      noInformacion : { titulo : Consultar ,  icono:  , mensaje : There is no information  ,opciones : to accept }
 
 pagina_inicio:
       titulo: Home
@@ -67,8 +68,8 @@ tema_pagina:
       colorBorde : rojo    
       textoContador : N       
       botGuardar : guardar   
-      lisColoresTema : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color Theme , textoAyuda:  , marcaAguaTexto: select color ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }     
-      colorSecundario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color secondary , textoAyuda:  , marcaAguaTexto: select color secondary ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }    
+      colorPrimario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color Primary , textoAyuda:  , marcaAguaTexto: Seleccione color ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }     
+      colorSecundario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color secondary , textoAyuda:  , marcaAguaTexto: Seleccione color ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }      
       apaBrillo : { tipo : Apagador , tipoEntrada : text,  textoEtiqueta: brightness  , textoAyuda:  , marcaAguaTexto:  brightness ,icono: brillo, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }   
 
 preferencias_pagina:
@@ -78,7 +79,31 @@ preferencias_pagina:
       textoContador :     
       botGuardar : guardar   
       listaIdiomas : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: idiom , textoAyuda:  , marcaAguaTexto: Select idiom ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }     
-            
+ 
+venta_lista_pagina:
+      titulo:  Self  List
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar   
+
+venta_captura_pagina:
+      titulo: Capture Self
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar 
+      lisVariables : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Lista , textoAyuda:  , marcaAguaTexto: Seleccione  ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }    
+      txtHoraCU : { tipo : HoraSelectorCupertino , tipoEntrada : text,  textoEtiqueta: hora Cuper, textoAyuda:  , marcaAguaTexto:  Hora Cuper ,icono: calendar_today, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  }   
+      txtfechaCU : { tipo : FechaSelectorCupertino , tipoEntrada : datetime, textoEtiqueta: Fecha Cuper , textoAyuda:  , marcaAguaTexto: Fecha Cuper ,icono: calendar_today, iconoInterno:   , textoCapitalizacion : words , protegerTextoEscrito : false  }   
+      txtfechaCalendario : { tipo : Calendario , tipoEntrada : datetime,  textoEtiqueta: calendario , textoAyuda:  , marcaAguaTexto:  v  ,icono: calendar_today, iconoInterno:   , textoCapitalizacion : words , protegerTextoEscrito : false  }   
+      txtfechaSelector : { tipo : FechaSelector , tipoEntrada : datetime,  textoEtiqueta: Selector Fecha , textoAyuda:  , marcaAguaTexto:  Selector Fecha  ,icono: calendar_today, iconoInterno:   , textoCapitalizacion : words , protegerTextoEscrito : false  }    
+
+      txtimporte : { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Operation Amount , textoAyuda:  , marcaAguaTexto:  Operation Amount ,icono: money, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txttelefono: { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Telephone , textoAyuda: , marcaAguaTexto:  Telephone Capture   ,icono: telefono, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtcorreo : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Email , textoAyuda: Capture Email , marcaAguaTexto:  Captura Correo  ,icono: email, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtruta : { tipo : Foto , tipoEntrada : text,  textoEtiqueta: Imagen , textoAyuda:  , marcaAguaTexto:  Seleccione Imagen  ,icono: foto, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  }          
+
 prueba_pagina:
       titulo: Test
       borde :  Lineal        

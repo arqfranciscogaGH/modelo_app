@@ -27,28 +27,23 @@ import 'VentaUI.dart';
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class Venta_captura extends StatefulWidget {
-  Venta_captura(
+class venta_captura_pagina extends StatefulWidget {
+  venta_captura_pagina(
       {Key? key,
-      this.titulo,
-      this.pagina,
       this.paginaSiguiente,
       this.paginaAnterior,
       this.activarAcciones})
       : super(key: key);
 
-  String? titulo;
-  String? pagina = "";
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
   bool? activarAcciones = false;
-  static String ruta = "Venta_captura";
 
   @override
-  _Venta_captura_state createState() => _Venta_captura_state();
+  _venta_captura_pagina_state createState() => _venta_captura_pagina_state();
 }
 
-class _Venta_captura_state extends State<Venta_captura> {
+class _venta_captura_pagina_state extends State<venta_captura_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -56,7 +51,7 @@ class _Venta_captura_state extends State<Venta_captura> {
   ControlEstadoUI? controlEstadoUI;
 
   //  Interfaz  comun
-  VentaUI ui = VentaUI();
+  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
 
   // entidad
   Venta entidadCaptura = Venta();
@@ -86,18 +81,15 @@ class _Venta_captura_state extends State<Venta_captura> {
   @override
   void initState() {
     super.initState();
-    widget.pagina = Venta_captura.ruta;
 
     entidadCaptura = ContextoAplicacion.db.tablaVenta!.entidad;
     controlEstadoUI = ControlEstadoUI();
+
+    ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
     print("initState");
     print(ContextoAplicacion.db.tablaVenta!.entidad.id);
     print(entidadCaptura.id);
-    ui = VentaUI(
-        tabla: ContextoAplicacion.db.tablaVenta!,
-        controlEstadoUI: controlEstadoUI);
-    ui.controlEstado = controlEstadoUI!;
-    ContextoUI.guadarKey(widget.pagina!, keyFormulario);
+    ui = VentaUI(tabla: ContextoAplicacion.db.tablaVenta!);
   }
 
   //  dispose widget
@@ -115,25 +107,26 @@ class _Venta_captura_state extends State<Venta_captura> {
   @override
   Widget build(BuildContext context) {
     ui.iniciar(context, scaffoldKey, widget);
-    widget.titulo = Traductor.obtenerEtiquetaSeccion(widget.pagina!, 'titulo');
+    ui.keyFormulario = keyFormulario;
     print("build");
     print(ContextoAplicacion.db.tablaVenta!.entidad.id);
     print(entidadCaptura.id);
-    print(widget.titulo);
 
     // provider = Provider.of<ControlEstadoUI>(context, listen: false);
 
     return Scaffold(
       key: scaffoldKey,
       appBar: NewGradientAppBar(
-          title: Text(widget.titulo!),
+          title: Text(ContextoUI.obtenerTitulo(widget)),
           gradient: LinearGradient(colors: [
             //Theme.of(context).primaryColor,
-            Colores.obtener(ParametrosSistema.colorTema),
+            Colores.obtener(ParametrosSistema.colorPrimario),
             Colores.obtener(ParametrosSistema.colorSecundario)
           ])),
       drawer: Menulateral.crearMenu(
-          context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
+          context,
+          OpcionesMenus.obtenerMenuPrincipal(),
+          ContextoUI.obtenerTitulo(widget)),
       body: mostrarCaptura(context, keyFormulario, cambiarValor, validar,
           definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -141,8 +134,13 @@ class _Venta_captura_state extends State<Venta_captura> {
         context,
         ElementoLista(
             icono: "save",
-            accion: guardar,
-            callBackAccion: ui.respuestaGuardar),
+            accion: ui.guardar,
+            ruta: widget.paginaAnterior,
+            accion2: ui.insertar,
+            accion3: ui.modificar,
+            // callBackAccion: ui.respuestaGuardar,
+            callBackAccion2: ui.respuestaInsertar,
+            callBackAccion3: ui.respuestaModificar),
       ),
     );
   }
@@ -184,49 +182,45 @@ class _Venta_captura_state extends State<Venta_captura> {
     Control lisVariables = new Control(
       idControl: "lisVariables",
     );
+    String pagina = ContextoUI.obtenerTitulo(widget);
     lisVariables =
-        lisVariables.asignar('', widget.pagina!, "si", cambiarValor, validar);
+        lisVariables.asignar('', pagina, "si", cambiarValor, validar);
     lisVariables.controlEdicion = _controllerListaColor;
     lisVariables.lista = _lista;
     controles.add(lisVariables);
 
-    Control txtHoraCU = Control().crear('', widget.pagina!, "txtHoraCU",
-        entidadCaptura.clave, cambiarValor, validar);
+    Control txtHoraCU = Control().crear(
+        '', pagina, "txtHoraCU", entidadCaptura.clave, cambiarValor, validar);
     txtHoraCU.controlEdicion = _controller_txtHoraCU;
     controles.add(txtHoraCU);
 
-    Control txtfechaCU = Control().crear('', widget.pagina!, "txtfechaCU",
-        entidadCaptura.llave, cambiarValor, validar);
+    Control txtfechaCU = Control().crear(
+        '', pagina, "txtfechaCU", entidadCaptura.llave, cambiarValor, validar);
     txtfechaCU.controlEdicion = _controller_txtfechaCU;
     controles.add(txtfechaCU);
 
-    Control txtfechaCalendario = Control().crear('', widget.pagina!,
+    Control txtfechaCalendario = Control().crear('', pagina,
         "txtfechaCalendario", entidadCaptura.llave, cambiarValor, validar);
     txtfechaCalendario.controlEdicion = _controller_txtfechaCalendario;
     controles.add(txtfechaCalendario);
 
-    Control txtfechaSelector = Control().crear('', widget.pagina!,
-        "txtfechaSelector", entidadCaptura.llave, cambiarValor, validar);
+    Control txtfechaSelector = Control().crear('', pagina, "txtfechaSelector",
+        entidadCaptura.llave, cambiarValor, validar);
     txtfechaSelector.controlEdicion = _controller_txtfechaSelector;
     controles.add(txtfechaSelector);
 
     // controles.add(Control().crear('', widget.pagina!, "txtimporte",
     //     entidadCaptura.id, cambiarValor, validar));
 
-    controles.add(Control().crear('', widget.pagina!, "txttelefono",
+    controles.add(Control().crear('', pagina, "txttelefono",
         entidadCaptura.clave, cambiarValor, validar));
-    controles.add(Control().crear('', widget.pagina!, "txtcorreo",
-        entidadCaptura.nombre, cambiarValor, validar));
-    controles.add(Control().crear('', widget.pagina!, "txtruta",
+    controles.add(Control().crear(
+        '', pagina, "txtcorreo", entidadCaptura.nombre, cambiarValor, validar));
+    controles.add(Control().crear('', pagina, "txtruta",
         entidadCaptura.descripcion, cambiarValor, validar));
 
-    return cargarControlesCaptura(
-        context,
-        controles,
-        '',
-        /* widget.pagina! */ "Modelo_pagina_captura",
-        cambiarValor,
-        validar, []);
+    return cargarControlesCaptura(context, controles, '',
+        ContextoUI.obtenerTipo(widget), cambiarValor, validar, []);
   }
 
   //
@@ -261,57 +255,25 @@ class _Venta_captura_state extends State<Venta_captura> {
       case "txtruta":
         break;
     }
-
+    ContextoAplicacion.db.tablaVenta!.entidad = entidadCaptura;
     // });
 
     return entidadCaptura;
   }
 
   // guardar  información
-  void guardar(BuildContext context, ElementoLista elemento,
-      [dynamic argumentos]) {
-    if (!keyFormulario.currentState!.validate()) return;
-    keyFormulario.currentState!.save();
+  // void guardar(BuildContext context, ElementoLista elemento,
+  //     [dynamic argumentos]) {
+  //   if (!keyFormulario.currentState!.validate()) return;
+  //   keyFormulario.currentState!.save();
 
-    print("guardar");
-    print(ContextoAplicacion.db.tablaVenta!.entidad.id);
-    print(entidadCaptura.id);
+  //   print("guardar");
+  //   print(ContextoAplicacion.db.tablaVenta!.entidad.id);
+  //   print(entidadCaptura.id);
 
-    String mensaje =
-        Traductor.obtenerAtrbuto('pagina_Comun', 'operacionExitosa', 'mensaje');
-
-    ElementoLista elementoDialogo = ElementoLista(
-        titulo: 'Guardar Información',
-        tituloAccion: 'Aceptar',
-        icono: 'info',
-        mensaje: mensaje + " : " + entidadCaptura.nombre!,
-        argumento: entidadCaptura,
-        accion: elemento.callBackAccion);
-
-    // ScaffoldMessenger.of(context).showSnackBar(
-    if (entidadCaptura.id == null || entidadCaptura.id == 0)
-      ContextoAplicacion.db.tablaVenta!
-          .insertar(entidadCaptura)
-          .then((respuesta) {
-        print("insertar");
-        entidadCaptura = respuesta;
-        print(ContextoAplicacion.db.tablaVenta!.entidad);
-        print(respuesta);
-        Dialogo.mostrarAlerta(context, elementoDialogo);
-        // if (elemento.callBackAccion != null)
-        //   elemento.callBackAccion!(context, elemento, entidadCaptura);
-      });
-    else
-      ContextoAplicacion.db.tablaVenta!
-          .actualizar(entidadCaptura)
-          .then((respuesta) {
-        print("actualizar");
-        entidadCaptura = respuesta;
-        print(ContextoAplicacion.db.tablaVenta!.entidad);
-        print(respuesta);
-        Dialogo.mostrarAlerta(context, elementoDialogo);
-        // if (elemento.callBackAccion != null)
-        //   elemento.callBackAccion!(context, elemento, entidadCaptura);
-      });
-  }
+  //   if (entidadCaptura.id == null || entidadCaptura.id == 0)
+  //     ui.insertar(context, elemento, entidadCaptura);
+  //   else
+  //     ui.modificar(context, elemento, entidadCaptura);
+  // }
 }

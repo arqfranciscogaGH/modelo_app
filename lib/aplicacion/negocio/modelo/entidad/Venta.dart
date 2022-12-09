@@ -163,7 +163,7 @@ class Venta extends EntidadBase {
   }
 
   @override
-  List<Venta> jsonToList(String cadenaJson) {
+  List<Venta> jsonToLista(String cadenaJson) {
     List<dynamic> listaMap = json.decode(cadenaJson);
     List<Venta> lista = mapTolista(listaMap);
     return lista;

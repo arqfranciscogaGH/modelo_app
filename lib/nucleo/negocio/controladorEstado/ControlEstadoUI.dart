@@ -6,10 +6,64 @@ import 'package:flutter/material.dart';
 
 import '../../../aplicacion/contexto/ContextoAplicacion.dart';
 
+enum eProceso {
+  ninguno,
+  iniciar,
+  terminar,
+  insertar,
+  modificar,
+  eliminar,
+  consultar,
+  obtener,
+  filtrar,
+}
+
+enum eEstatus {
+  ninguno,
+  iniciado,
+  enProceso,
+  terminado,
+  insertado,
+  modificado,
+  eliminado,
+  consultado,
+  obtenido,
+  filtrado,
+}
+
 class ControlEstadoUI extends ChangeNotifier {
+  //
+  //  propiedade
+  //
+  dynamic tabla;
+  eProceso proceso = eProceso.ninguno;
+  eEstatus estatus = eEstatus.ninguno;
+  bool? enProceso;
   //
   //  metodos
   //
+  //
+  //  metodos para  actualizar Interface de  Usuario  con  Provider
+  //
+  void iniciarProceso(
+      [eProceso proceso = eProceso.iniciar,
+      eEstatus estatus = eEstatus.enProceso]) {
+    enProceso = true;
+    this.proceso = proceso;
+    this.estatus = estatus;
+  }
+
+  //
+  //  metodos para  actualizar Interface de  Usuario  con  Provider
+  //
+  void actualizarUI(
+      [eProceso proceso = eProceso.iniciar,
+      eEstatus estatus = eEstatus.enProceso]) {
+    enProceso = false;
+    this.proceso = proceso;
+    this.estatus = estatus;
+    notifyListeners();
+  }
 
   //
   //  metodos de negocio y actualizar  el estado de  entidades
@@ -19,15 +73,29 @@ class ControlEstadoUI extends ChangeNotifier {
     return tabla.entidad;
   }
 
-  consultarTabla<T extends EntidadBase>(AccesoTabla<T> tabla,
-      [Function? metodoRespuesta = null]) {
-    tabla.consultarTabla(tabla.entidad).then((respuesta) {
-      if (metodoRespuesta != null)
-        metodoRespuesta(respuesta);
-      else
-        this.actualizar();
-    });
+  dynamic entidad<T extends EntidadBase>(AccesoTabla<T> tabla) {
+    return tabla.entidad;
   }
+
+  List<dynamic> lista<T extends EntidadBase>(AccesoTabla<T> tabla) {
+    return tabla.lista;
+  }
+
+  // no usar
+  // List<dynamic> consultarTabla<T extends EntidadBase>(AccesoTabla<T> tabla,
+  //     [Function? metodoRespuesta = null, bool regresar = false]) {
+  //   List<dynamic>? lista = [];
+  //   tabla.consultarTabla(tabla.entidad, metodoRespuesta).then((respuesta) {
+  //     print(respuesta);
+  //     if (respuesta != null) {
+  //       lista = respuesta;
+  //       if (metodoRespuesta != null)
+  //         metodoRespuesta(respuesta);
+  //       else if (!regresar) actualizar();
+  //     }
+  //   });
+  //   return lista!;
+  // }
 
   filtrarTabla<T extends EntidadBase>(
       AccesoTabla<T> tabla, String campo, dynamic valor,
@@ -36,7 +104,7 @@ class ControlEstadoUI extends ChangeNotifier {
       if (metodoRespuesta != null)
         metodoRespuesta(respuesta);
       else
-        this.actualizar();
+        this.actualizarUI();
     });
   }
 
@@ -52,35 +120,5 @@ class ControlEstadoUI extends ChangeNotifier {
         respuesta != null ? tabla.entidad.fromMap(respuesta) : tabla.iniciar();
     if (metodorRespuestaObtener != null)
       metodorRespuestaObtener(context, elemento, tabla.entidad);
-  }
-
-  void obtener<T extends EntidadBase>(
-      AccesoTabla<T> tabla, BuildContext context, ElementoLista elemento,
-      [Function? metodoRespuesta = null]) {
-    dynamic entidad = tabla!.iniciar();
-    entidad.id = elemento.id;
-    tabla.obtener(entidad).then((respuesta) {
-      print(respuesta);
-      if (respuesta != null) {
-        tabla.entidad = respuesta;
-        if (metodoRespuesta != null)
-          metodoRespuesta(context, elemento, entidad);
-      }
-    });
-  }
-
-  dynamic entidad<T extends EntidadBase>(AccesoTabla<T> tabla) {
-    return tabla.entidad;
-  }
-
-  List<dynamic> lista<T extends EntidadBase>(AccesoTabla<T> tabla) {
-    return tabla.lista;
-  }
-
-  //
-  //  metodos para  actualizar Interface de  Usuario  con  Provider
-  //
-  void actualizar() {
-    notifyListeners();
   }
 }
