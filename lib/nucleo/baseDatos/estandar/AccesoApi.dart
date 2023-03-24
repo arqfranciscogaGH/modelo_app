@@ -40,51 +40,83 @@ class AccesoApi implements IAccesoBD {
   void cerrar() {}
 
   @override
-  Future ejecutar(String sql) async {}
+  Future<dynamic> ejecutar(
+      String nombreTabla, Map<String, String> parametros) async {
+    dynamic cuerpo;
+    Uri uri = generarUriParametros(nombreTabla, parametros);
+    dynamic respuesta = await ServicioRest.get(uri);
+
+    if (respuesta.statusCode ==
+        200) // cuando  se presenta error el codigo 400,404 409
+      cuerpo = json.decode(respuesta.body);
+    print(cuerpo.runtimeType.toString());
+    //listaMap = json.decode(respuesta.body).cast<Map<String, dynamic>>();
+    return cuerpo;
+  }
 
   @override
-  Future<List<dynamic>> consultarTabla(String nombreTabla) async {
-    List<dynamic>? listaMap;
+  Future<dynamic> consultarTabla(String nombreTabla) async {
+    dynamic cuerpo = [];
     // String url = generarUrl(nombreTabla, null);
     Uri uri = generarUri(nombreTabla, null);
     dynamic respuesta = await ServicioRest.get(uri);
     if (respuesta.statusCode ==
         200) // cuando  se presenta error el codigo 400,404 409
-      listaMap = json.decode(respuesta.body);
+      cuerpo = json.decode(respuesta.body);
+    print(cuerpo.runtimeType.toString());
     //listaMap = json.decode(respuesta.body).cast<Map<String, dynamic>>();
-    return listaMap!;
+    return cuerpo!;
   }
 
   @override
-  Future<Map<String, dynamic>> filtrarTabla(String nombreTabla,
-      Map<String, dynamic> map, String campo, dynamic valor) async {
-    Map<String, dynamic>? listaMap;
-    // String url = generarUrl(nombreTabla, valor);
-    Uri uri = generarUri(nombreTabla, null);
+  //Future<Map<String, dynamic>> consultarPaginacionTabla(
+  Future<dynamic> consultarPaginacionTabla(
+      String nombreTabla, Map<String, dynamic> paginacion) async {
+    // Map<String, dynamic>? resultado;
+    dynamic cuerpo;
+    // String url = generarUrl(nombreTabla, null);
+    Uri uri = generarUri(nombreTabla, null, paginacion);
     dynamic respuesta = await ServicioRest.get(uri);
     if (respuesta.statusCode ==
         200) // cuando  se presenta error el codigo 400,404 409
-      listaMap = json.decode(respuesta.body);
-    return listaMap!;
+      cuerpo = json.decode(respuesta.body);
+    print(cuerpo.runtimeType.toString());
+    //listaMap = json.decode(respuesta.body).cast<Map<String, dynamic>>();
+    return cuerpo;
+  }
+
+  @override
+  Future<dynamic> filtrarTabla(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {
+    dynamic cuerpo;
+    // String url = generarUrl(nombreTabla, valor);
+    Uri uri =
+        generarUri(nombreTabla, null, null, campo + "|" + valor.toString());
+    dynamic respuesta = await ServicioRest.get(uri);
+    if (respuesta.statusCode ==
+        200) // cuando  se presenta error el codigo 400,404 409
+      cuerpo = json.decode(respuesta.body);
+    print(cuerpo.runtimeType.toString());
+    return cuerpo;
   }
 
   @override
   Future<Map<String, dynamic>> obtener(String nombreTabla,
       Map<String, dynamic> map, String campo, dynamic valor) async {
-    Map<String, dynamic>? listaMap;
+    Map<String, dynamic>? cuerpo;
     // String url = generarUrl(nombreTabla, valor);
-    Uri uri = generarUri(nombreTabla, null);
+    Uri uri = generarUri(nombreTabla, valor);
     dynamic respuesta = await ServicioRest.get(uri);
     if (respuesta.statusCode ==
         200) // cuando  se presenta error el codigo 400,404 409
-      listaMap = json.decode(respuesta.body);
-    return listaMap!;
+      cuerpo = json.decode(respuesta.body);
+    return cuerpo!;
   }
 
   @override
   Future<Map<String, dynamic>> insertar(
       String nombreTabla, Map<String, dynamic> map) async {
-    Map<String, dynamic>? listaMap;
+    Map<String, dynamic>? cuerpo;
     // String url = generarUrl(nombreTabla, null);
     Uri uri = generarUri(nombreTabla, null);
     print(json.encode(map));
@@ -93,14 +125,14 @@ class AccesoApi implements IAccesoBD {
     if (respuesta.statusCode == 200 ||
         respuesta.statusCode ==
             201) // cuando  se presenta error es  el codigo 400,404 409
-      listaMap = json.decode(respuesta.body);
-    return listaMap!;
+      cuerpo = json.decode(respuesta.body);
+    return cuerpo!;
   }
 
   @override
   Future<dynamic> actualizar(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {
-    Map<String, dynamic>? listaMap;
+    Map<String, dynamic>? cuerpo;
     // String url = generarUrl(nombreTabla, valor);
     Uri uri = generarUri(nombreTabla, valor);
     print(json.encode(map));
@@ -108,14 +140,14 @@ class AccesoApi implements IAccesoBD {
     print(respuesta.statusCode);
     if (respuesta.statusCode !=
         204) // cuando  se presenta error el codigo 400,404 409
-      map = listaMap!;
+      map = cuerpo!;
     return map;
   }
 
   @override
   Future<Map<String, dynamic>> eliminar(String nombreTabla,
       Map<String, dynamic> map, String campo, dynamic valor) async {
-    Map<String, dynamic>? listaMap;
+    Map<String, dynamic>? cuerpo;
     // String url = generarUrl(nombreTabla, valor);
     Uri uri = generarUri(nombreTabla, valor);
     dynamic respuesta = await ServicioRest.delete(uri, json.encode(map));
@@ -125,29 +157,67 @@ class AccesoApi implements IAccesoBD {
       //listaMap = json.decode(respuesta.body);
       return map;
     else
-      return listaMap!;
+      return cuerpo!;
   }
 
-  Uri generarUri(String nombreTabla, dynamic valor) {
-    String dominio = configuracion.dominioApi!;
+  Uri generarUriParametros(
+      String nombreTabla, Map<String, dynamic> parametros) {
     String complUrl = '';
     complUrl = configuracion.sitioApi!;
+    complUrl += nombreTabla.toLowerCase();
+
+    // if (parametros != "") complUrl += parametros;
+    if (configuracion.llaveApi != null && configuracion.llaveApi != "")
+      complUrl += "/" + configuracion.llaveApi! + "/";
+    Uri uri;
+    if (configuracion.protocolo == null ||
+        configuracion.protocolo == '' ||
+        configuracion.protocolo == 'http')
+      uri = Uri.http(configuracion.dominioApi!, complUrl, parametros);
+    else
+      uri = Uri.https(configuracion.dominioApi!, complUrl, parametros);
+    return uri;
+  }
+
+  Uri generarUri(String nombreTabla,
+      [dynamic valor, dynamic paginacion, String filtro = ""]) {
+    String complUrl = '';
+    complUrl = configuracion.sitioApi!;
+    complUrl += nombreTabla.toLowerCase();
     if (configuracion.parmetros != null && configuracion.parmetros != "") {
       complUrl += configuracion.parmetros;
       if (configuracion.filtro != null && configuracion.filtro != "")
         complUrl += "/" + configuracion.filtro;
     } else {
-      complUrl += nombreTabla.toLowerCase();
       if (valor != null && valor != 0)
         complUrl += "/" + valor.toString();
       else {
-        if (configuracion.filtro != null && configuracion.filtro != '')
-          complUrl += "/0/" + configuracion.filtro;
+        if (paginacion != null &&
+            paginacion.isNotEmpty &&
+            paginacion["estatus"] == 1) {
+          complUrl += "/" + paginacion["paginaActual"].toString();
+          complUrl += "/" + paginacion["registrosPorPagina"].toString();
+        }
+        if (filtro != null && filtro != '') {
+          if (paginacion != null &&
+              paginacion.isNotEmpty &&
+              paginacion["estatus"] == 1)
+            complUrl += "/" + filtro;
+          else
+            complUrl += "//0/" + filtro;
+        }
       }
     }
     if (configuracion.llaveApi != null && configuracion.llaveApi != "")
       complUrl += "/" + configuracion.llaveApi! + "/";
-    Uri uri = Uri.http(dominio, complUrl);
+    Uri uri;
+    if (configuracion.protocolo == null ||
+        configuracion.protocolo == '' ||
+        configuracion.protocolo == 'http')
+      uri = Uri.http(configuracion.dominioApi!, complUrl);
+    else
+      uri = Uri.https(configuracion.dominioApi!, complUrl);
+
     return uri;
   }
 

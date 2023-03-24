@@ -46,6 +46,7 @@ Decoration crearDecoracionContenedor(BuildContext context, Control control) {
 }
 
 InputDecoration crearDecoracionInput(Control control) {
+  FocusNode focusNode = new FocusNode();
   return InputDecoration(
     border: control.borde == null || control.borde == eTipoBorde.ninguno
         ? InputBorder.none
@@ -62,6 +63,10 @@ InputDecoration crearDecoracionInput(Control control) {
     counter: mostrarContadorLetras(control),
     hintText: control.marcaAguaTexto != null ? control.marcaAguaTexto : null,
     labelText: control.textoEtiqueta != null ? control.textoEtiqueta : null,
+    labelStyle: TextStyle(
+        color: focusNode.hasFocus
+            ? Colores.obtener(ParametrosSistema.colorPrimario)
+            : Colores.obtener(ParametrosSistema.colorSecundario)),
     helperText: control.textoAyuda != null ? control.textoAyuda : null,
     suffixIcon: control.iconoInterno != null
         ? Icono.crear(control.iconoInterno!)

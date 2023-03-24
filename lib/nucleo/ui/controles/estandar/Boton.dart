@@ -30,6 +30,25 @@ class Boton {
     );
   }
 
+  static Widget crearElevadoTexto(
+      BuildContext context, ElementoLista elemento) {
+    elemento = cambioColores(elemento);
+    return ElevatedButton(
+      // minWidth: ParametrosSistema.minAncho,
+      // height: ParametrosSistema.alto,
+      style: ElevatedButton.styleFrom(
+        primary: Colores.obtener(elemento.colorFondo), // Background color
+        onPrimary: Colors.blue, // Text Color (Foreground color)
+      ),
+      child: Text(elemento.tituloAccion!,
+          style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+      onPressed: () {
+        print(" on tap ");
+        Accion.hacer(context, elemento);
+      },
+    );
+  }
+
   static Widget crearBotonLinkIcono(
       BuildContext context, ElementoLista elemento) {
     elemento = cambioColores(elemento);
@@ -52,7 +71,7 @@ class Boton {
       highlightColor: Colors.grey.withOpacity(0.4),
       splashColor: Colors.black.withOpacity(0.5),
       borderRadius: BorderRadius.circular(1000),
-      child: Text(elemento.titulo!,
+      child: Text(elemento.tituloAccion!,
           style: TextStyle(
               fontSize: elemento.tamanoFuente!,
               color: Colores.obtener(elemento.colorTexto))),
@@ -90,7 +109,7 @@ class Boton {
           elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!);
     Widget boton = TextButton.icon(
         icon: icono!,
-        label: Text(elemento.titulo == null ? '' : elemento.titulo!,
+        label: Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
             style: TextStyle(
                 fontSize: elemento.tamanoFuente!,
                 color: Colores.obtener(elemento.colorTexto))),
@@ -129,7 +148,7 @@ class Boton {
     Widget boton = OutlinedButton.icon(
         icon: Icono.crear(
             elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
-        label: Text(elemento.titulo!,
+        label: Text(elemento.tituloAccion!,
             style: TextStyle(
                 fontSize: elemento.tamanoFuente!,
                 color: Colores.obtener(elemento.colorTexto))),

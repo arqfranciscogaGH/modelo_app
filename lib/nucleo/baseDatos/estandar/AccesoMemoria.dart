@@ -57,7 +57,8 @@ class AccesoMemoria implements IAccesoBD {
   // metodos  ABC  base de datos
 
   @override
-  Future ejecutar(String sql) async {}
+  Future<dynamic> ejecutar(
+      String nombreTabla, Map<String, String> parametros) async {}
 
   @override
   Future<List<dynamic>> consultarTabla(String nombreTabla) async {
@@ -65,11 +66,17 @@ class AccesoMemoria implements IAccesoBD {
   }
 
   @override
-  Future<Map<String, dynamic>> filtrarTabla(String nombreTabla,
+  Future<List<dynamic>> consultarPaginacionTabla(
+      String nombreTabla, Map<String, dynamic> paginacion) async {
+    return _datos!;
+  }
+
+  @override
+  Future<List<dynamic>> filtrarTabla(String nombreTabla,
       Map<String, dynamic> map, String campo, dynamic valor) async {
-    Map<String, dynamic> resultado;
+    List<dynamic>? resultado;
     resultado = _datos!.firstWhere((o) => o[campo] == valor);
-    return resultado;
+    return resultado!;
   }
 
   @override

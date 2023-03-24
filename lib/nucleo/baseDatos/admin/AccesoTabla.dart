@@ -11,11 +11,13 @@ import 'IAccesoBD.dart';
 import 'ConfiguracionAccesoBD.dart';
 import 'AdministradorAcceso.dart';
 import '../../negocio/controladorEstado/ControlEstadoUI.dart';
+import 'Paginador.dart';
 
 class AccesoTabla<T extends EntidadBase> {
   // variables
 
   ConfiguracionAccesoBD? configuracion;
+  Paginador<T>? _paginador = Paginador<T>();
   T claseEntidad;
   List<T> _lista = [];
   int consecutivo = 0;
@@ -37,10 +39,17 @@ class AccesoTabla<T extends EntidadBase> {
     _registro = EntidadRegistro();
     _resultado!.campoLLave = claseEntidad.campoLLave;
     entidad = claseEntidad;
+    _paginador = Paginador<T>();
+
     if (configuracion!.persitenciaPorDefecto != true) _abd!.iniciar();
   }
 
   //  propiedades
+
+//  obtener paginador
+  Paginador<T> get paginador {
+    return _paginador!;
+  }
 
 //  obtener lista tabla  map texto, se obtiene  resultado  de api o db
   EntidadResultado get resultado {
@@ -123,23 +132,37 @@ class AccesoTabla<T extends EntidadBase> {
   }
 
   //  metodos  ABC  tablas
-  Future ejecutar(String sql) async {
-    final baseDatos = await _abd!.ejecutar(sql);
-  }
 
-  Future<List<dynamic>> consultarTabla(T e,
+  Future<dynamic> ejecutar(T e, Map<String, String> parametros,
       [Function? metodoRespuesta = null]) async {
-    List<dynamic> respuesta = [];
+    dynamic respuesta;
     if (controlEstadoUI != null)
       controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
     _abd!.configuracion = this.configuracion!;
+    respuesta = await _abd!.ejecutar(e.nombreTabla!, parametros);
+    if (metodoRespuesta != null)
+      metodoRespuesta(lista);
+    else if (controlEstadoUI != null)
+      controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
+
+    return respuesta;
+  }
+
+  Future<dynamic> consultarTabla(T e,
+      [Function? metodoRespuesta = null]) async {
+    dynamic respuesta;
+    dynamic lista;
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
+    _abd!.configuracion = this.configuracion!;
+
     respuesta = await _abd!.consultarTabla(e.nombreTabla!);
     // Timer(Duration(seconds: 30), () {
     //   print("Yeah, this line is printed after 3 seconds");
     // });
     if (respuesta != null) {
+      print(respuesta.runtimeType.toString());
       resultado.datos = respuesta;
-      List<dynamic> lista = [];
       lista = respuesta != null && respuesta.isNotEmpty
           ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
           : [];
@@ -151,25 +174,139 @@ class AccesoTabla<T extends EntidadBase> {
     return lista;
   }
 
+  Future<dynamic> consultarPaginacionTabla(T e,
+      [Function? metodoRespuesta = null]) async {
+    dynamic respuesta;
+    dynamic lista;
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
+    _abd!.configuracion = this.configuracion!;
+    respuesta = await _abd!
+        .consultarPaginacionTabla(e.nombreTabla!, _paginador!.toMap());
+    // Timer(Duration(seconds: 30), () {
+    //   print("Yeah, this line is printed after 3 seconds");
+    // });
+    lista = paginar(e, respuesta);
+
+    // if (respuesta != null) {
+    //   print(respuesta.runtimeType.toString());
+    //   if (respuesta.runtimeType.toString().contains("Map")) {
+    //     paginador.fromMap(respuesta);
+    //     resultado.datos = respuesta["resultado"];
+    //     resultado.datos = paginador.resultado as List<dynamic>;
+    //     lista = resultado.datos;
+    //   } else {
+    //     resultado.datos = respuesta;
+    //     paginador.totalRegistros = respuesta.length;
+    //     if (paginador.registrosPorPagina == 0) {
+    //       paginador.registrosPorPagina = paginador.totalRegistros;
+    //       paginador.paginaActual = 1;
+    //     }
+    //     paginador.totalPaginas =
+    //         (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
+    //     int salto = ((paginador.paginaActual as int) - 1) *
+    //         (paginador.registrosPorPagina as int);
+    //     lista =
+    //         respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
+    //     lista = lista != null && lista.isNotEmpty
+    //         ? lista.map((c) => e.iniciar().fromMap(c)).toList()
+    //         : [];
+    //     paginador.resultado = lista;
+    //   }
+
+    if (metodoRespuesta != null)
+      metodoRespuesta(lista);
+    else if (controlEstadoUI != null)
+      controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
+
+    return lista;
+  }
+
   Future<List<dynamic>> filtrarTabla(T e, String campo, dynamic valor,
       [Function? metodoRespuesta = null]) async {
-    List<dynamic> respuesta = [];
+    dynamic respuesta;
+    List<dynamic> lista = [];
     if (controlEstadoUI != null)
       controlEstadoUI!.iniciarProceso(eProceso.filtrar, eEstatus.iniciado);
     _abd!.configuracion = this.configuracion!;
     respuesta =
         await _abd!.filtrarTabla(e.nombreTabla!, e.toMap(), campo, valor);
+    lista = paginar(e, respuesta);
+    // if (respuesta != null) {
+    //   print(respuesta.runtimeType.toString());
+    //   if (respuesta.runtimeType.toString().contains("Map")) {
+    //     paginador.fromMap(respuesta);
+    //     resultado.datos = respuesta["resultado"];
+    //     resultado.datos = paginador.resultado as List<dynamic>;
+    //     lista = resultado.datos;
+    //   } else {
+    //     resultado.datos = respuesta;
+    //     paginador.totalRegistros = respuesta.length;
+    //     if (paginador.registrosPorPagina == 0) {
+    //       paginador.registrosPorPagina = paginador.totalRegistros;
+    //       paginador.paginaActual = 1;
+    //     }
+    //     paginador.totalPaginas =
+    //         (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
+
+    //     int salto = ((paginador.paginaActual as int) - 1) *
+    //         (paginador.registrosPorPagina as int);
+    //     lista =
+    //         respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
+    //     lista = lista != null && lista.isNotEmpty
+    //         ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
+    //         : [];
+    //     paginador.resultado = lista;
+    //   }
+    if (metodoRespuesta != null)
+      metodoRespuesta(lista);
+    else if (controlEstadoUI != null)
+      controlEstadoUI!.actualizarUI(eProceso.filtrar, eEstatus.filtrado);
+    // }
+    return lista;
+  }
+
+  dynamic paginar(T e, dynamic respuesta) {
+    dynamic lista;
+
     if (respuesta != null) {
-      List<dynamic> lista = [];
-      lista = respuesta != null && respuesta.isNotEmpty
-          ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
-          : [];
-      if (metodoRespuesta != null)
-        metodoRespuesta(lista);
-      else if (controlEstadoUI != null)
-        controlEstadoUI!.actualizarUI(eProceso.filtrar, eEstatus.filtrado);
+      print(respuesta.runtimeType.toString());
+      if (respuesta.runtimeType.toString().contains("Map")) {
+        paginador.fromMap(respuesta);
+        resultado.datos = respuesta["resultado"];
+        resultado.datos = paginador.resultado as List<dynamic>;
+        lista = resultado.datos;
+      } else {
+        resultado.datos = respuesta;
+        paginador.totalRegistros = respuesta.length;
+        if (paginador.registrosPorPagina == 0) {
+          paginador.registrosPorPagina = paginador.totalRegistros;
+          paginador.paginaActual = 1;
+        }
+        paginador.totalPaginas =
+            (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
+        int salto = ((paginador.paginaActual as int) - 1) *
+            (paginador.registrosPorPagina as int);
+        lista =
+            respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
+        lista = lista != null && lista.isNotEmpty
+            ? lista.map((c) => e.iniciar().fromMap(c)).toList()
+            : [];
+        paginador.resultado = lista;
+      }
     }
     return lista;
+  }
+
+  Future<List<dynamic>> filtrarLista(T e, String campo, dynamic valor,
+      [Function? metodoRespuesta = null]) async {
+    List<dynamic> lista = resultado.datos;
+    List<dynamic>? respuesta;
+    if (lista != null && campo != '' && valor != '')
+      respuesta = lista.where((s) => s[campo] == valor).toList();
+
+    if (metodoRespuesta != null) metodoRespuesta(respuesta!);
+    return respuesta!;
   }
 
   Future<T> obtener(T e, [Function? metodoRespuesta = null]) async {

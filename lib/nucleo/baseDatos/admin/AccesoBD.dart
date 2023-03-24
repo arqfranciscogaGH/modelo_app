@@ -10,7 +10,7 @@ import 'AdministradorAcceso.dart';
 
 class AccesoBD extends IAccesoBD {
   // variables
-  //  instancia de  AccesoBD 
+  //  instancia de  AccesoBD
   static final AccesoBD _instancia = AccesoBD._();
   //  instancia de  IAccesoBD por defecto
   static IAccesoBD? _abd;
@@ -27,51 +27,62 @@ class AccesoBD extends IAccesoBD {
   static AccesoBD get instancia {
     return _instancia;
   }
+
   // regresa instancia de  IAccesoBD por defecto
   static IAccesoBD get abd {
     return _abd!;
   }
+
   // verifica existencia  instancia de  IAccesoBD por defecto
-   static bool get isDB {
-    return _abd==null?false:true;
+  static bool get isDB {
+    return _abd == null ? false : true;
   }
+
   // verifica existencia  instancia de  IAccesoBD por defecto
   definirPersistencia(ConfiguracionAccesoBD configuracion) {
     this.configuracion = configuracion;
-    if (_abd==null)
-        _abd = AdministradorAcceso.definirPersistencia(configuracion);
+    if (_abd == null)
+      _abd = AdministradorAcceso.definirPersistencia(configuracion);
   }
 
   @override
   iniciar() async {
-     if (_abd != null) {
+    if (_abd != null) {
       _abd!.iniciar();
     }
   }
+
   @override
   abrir() async {
     if (_abd! != null) {
-     await  _abd!.abrir();
+      await _abd!.abrir();
     }
   }
 
- 
-  
-
   @override
-  Future ejecutar(String sql) async {
-    await _abd!.ejecutar(sql);
+  Future<dynamic> ejecutar(
+      String nombreTabla, Map<String, String> parametros) async {
+    dynamic respuesta = await _abd!.ejecutar(nombreTabla, parametros);
+    return respuesta;
   }
 
   @override
-  Future<List<dynamic>> consultarTabla(String nombreTabla) async {
+  Future<dynamic> consultarTabla(String nombreTabla) async {
     dynamic respuesta = await _abd!.consultarTabla(nombreTabla);
     return respuesta;
   }
 
   @override
+  Future<dynamic> consultarPaginacionTabla(
+      String nombreTabla, Map<String, dynamic> paginacion) async {
+    dynamic respuesta =
+        await _abd!.consultarPaginacionTabla(nombreTabla, paginacion);
+    return respuesta;
+  }
+
+  @override
   Future<dynamic> consultar(String nombreTabla, Map<String, dynamic> map,
-      String campo,dynamic valor) async {
+      String campo, dynamic valor) async {
     dynamic res = await _abd!.obtener(nombreTabla, map, campo, valor);
     return res;
   }
@@ -84,21 +95,21 @@ class AccesoBD extends IAccesoBD {
 
   @override
   Future<dynamic> actualizar(String nombreTabla, Map<String, dynamic> map,
-      String campo,dynamic valor) async {
+      String campo, dynamic valor) async {
     dynamic res = await _abd!.actualizar(nombreTabla, map, campo, valor);
     return res;
   }
 
   @override
   Future<Map<String, dynamic>> eliminar(String nombreTabla,
-      Map<String, dynamic> map, String campo,dynamic valor) async {
+      Map<String, dynamic> map, String campo, dynamic valor) async {
     dynamic res = await _abd!.eliminar(nombreTabla, map, campo, valor);
     return res;
   }
 
   @override
   Future<dynamic> obtener(String nombreTabla, Map<String, dynamic> map,
-      String campo,dynamic valor) async {
+      String campo, dynamic valor) async {
     dynamic res = await _abd!.obtener(nombreTabla, map, campo, valor);
     return res;
   }

@@ -77,9 +77,13 @@ class Buscador extends SearchDelegate<EntidadBase> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
-    Widget? w = Row();
-    return const Text('leading');
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.pop(context);
+        // close(context,"");
+      },
+    );
   }
 
   @override

@@ -1,5 +1,3 @@
-
-
 //  librerias internas de flutter
 
 //  librerias importadas flutter
@@ -7,58 +5,49 @@
 //  librerias  proyecto
 
 export 'InicializacionServicios.dart';
-
 export 'InicializacionVariables.dart';
+export 'InicializacionEntidades.dart';
 
 //  librerias externas  flutter
 
-// Descripcion de funcionalidad 
+// Descripcion de funcionalidad
 //
 //  Inicializacion
 //
 
-
-
-// Descripcion de funcionalidad 
+// Descripcion de funcionalidad
 // inicializacion de  clases para inciar la aplicacion
 //
 
-
-
-
 class Inicializacion {
+  // inicializar  servicios
+  static void iniciar() async {
+    // serviciosSincronos() ;
+    // await serviciosAsincronos() ;
 
-  // inicializar  servicios 
-   static void iniciar  () async
-   {
-      // serviciosSincronos() ;
-      // await serviciosAsincronos() ;
-
-      // valoresSincronos  () ;
-      // await valoresAsicronos () ;
-    
-   }
-  //   static void serviciosSincronos  () 
+    // valoresSincronos  () ;
+    // await valoresAsicronos () ;
+  }
+  //   static void serviciosSincronos  ()
   //  {
   //     InjeccionDependencia.iniciar();
-    
+
   //  }
   //  static Future serviciosAsincronos  () async
   //  {
   //       await Preferencias.instanciar();
   //  }
 
-  //  static void valoresSincronos  () 
+  //  static void valoresSincronos  ()
   //  {
- 
+
   //       late  ElementoLista elementoLista;
 
   //       elementoLista= ElementoLista();
   //       elementoLista.titulo="fga";
-       
+
   //       InjeccionDependencia.agregar<ElementoLista>(elementoLista);
   //       ParametrosSistema.dato="prueba";
-
 
   //      //     ContextoAplicacion.iniciar();
   //  }
@@ -74,6 +63,4 @@ class Inicializacion {
 
   //  }
 
-
 }
-

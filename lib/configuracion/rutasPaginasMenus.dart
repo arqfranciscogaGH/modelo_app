@@ -22,6 +22,9 @@ import '../aplicacion/aplicacion.dart';
 List<ElementoLista> definirPaginas() {
   List<ElementoLista> paginas = [];
 
+  paginas.add(ElementoLista(pagina: inicio_pagina(), ruta: 'inicio_pagina'));
+  paginas.add(ElementoLista(pagina: acceso_pagina(), ruta: 'acceso_pagina'));
+
   paginas.add(ElementoLista(
       pagina: menu_principal_pagina(), ruta: 'menu_principal_pagina'));
   paginas.add(ElementoLista(pagina: tema_pagina(), ruta: 'tema_pagina'));
@@ -35,17 +38,37 @@ List<ElementoLista> definirPaginas() {
 
   paginas.add(ElementoLista(pagina: botones_pagina(), ruta: 'botones_pagina'));
   paginas.add(ElementoLista(pagina: prueba_pagina(), ruta: 'prueba_pagina'));
+
   paginas.add(ElementoLista(
     pagina: venta_lista_pagina(
+      paginaAnterior: 'venta_lista_pagina',
       paginaSiguiente: 'venta_captura_pagina',
     ),
     ruta: 'venta_lista_pagina',
   ));
+
   paginas.add(ElementoLista(
       pagina: venta_captura_pagina(
         paginaAnterior: 'venta_lista_pagina',
+        paginaSiguiente: 'venta_captura_pagina',
       ),
       ruta: 'venta_captura_pagina'));
+
+  paginas.add(ElementoLista(
+    pagina: Producto_lista_pagina(
+      paginaAnterior: 'Producto_lista_pagina',
+      paginaSiguiente: 'Producto_captura_pagina',
+    ),
+    ruta: 'Producto_lista_pagina',
+  ));
+
+  paginas.add(ElementoLista(
+      pagina: Producto_captura_pagina(
+        paginaAnterior: 'Producto_lista_pagina',
+        paginaSiguiente: 'Producto_captura_pagina',
+      ),
+      ruta: 'Producto_captura_pagina'));
+
   return paginas;
 }
 
@@ -74,12 +97,9 @@ Map<String, WidgetBuilder> ObtenerRutas() {
     // '/': (BuildContext context) => pagina_inicio(),
     // 'pagina_inicio': (BuildContext context) => pagina_inicio(),
     // 'pagina_acceso': (BuildContext context) => pagina_acceso(),
-    'pagina_menu_principal': (BuildContext context) => menu_principal_pagina(),
-    'pagina_prueba': (BuildContext context) => prueba_pagina(),
-    'pagina_preferencias': (BuildContext context) => preferencias_pagina(),
-    'pagina_tema': (BuildContext context) => tema_pagina(),
-
-    // 'pagina_Seguimiento_lista': (BuildContext context) => pagina_Seguimiento_lista(),
+    'menu_principal_pagina': (BuildContext context) => menu_principal_pagina(),
+    'preferencias_pagina': (BuildContext context) => preferencias_pagina(),
+    'tema_pagina': (BuildContext context) => tema_pagina(),
 
     // 'pagina_Suscripcion_lista': (BuildContext context) =>
     //     pagina_Suscripcion_lista(

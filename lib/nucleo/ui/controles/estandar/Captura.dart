@@ -1,4 +1,3 @@
-
 //  librerias internas de flutter
 
 import 'package:flutter/material.dart';
@@ -10,11 +9,9 @@ import 'package:intl/intl.dart';
 // import 'package:intl/intl_browser.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
- import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 //  librerias  proyecto
-
 
 import '../../../nucleo.dart';
 import '../../color/color.dart';
@@ -35,8 +32,6 @@ class Captura {
       Function validar,
       Function metodoDefinicionControles,
       dynamic entidadCaptura) {
-
-    
     return Form(
       key: formKey,
       child: ListView(
@@ -74,7 +69,7 @@ List<Widget> cargarControlesCaptura(
     String pagina,
     Function metooCambiarValor,
     Function metodoValidar,
-    List<Widget> widgets   ) {
+    List<Widget> widgets) {
   controles.forEach((Control control) {
     control = control.asignar(
         idioma, pagina, control.valor, metooCambiarValor, metodoValidar);
@@ -83,8 +78,7 @@ List<Widget> cargarControlesCaptura(
 }
 
 List<Widget> crearControlesCaptura(
-    BuildContext context, List<Control> controles,
-    List<Widget> widgets) {
+    BuildContext context, List<Control> controles, List<Widget> widgets) {
   List<ElementoLista> lista;
   if (widgets == null) widgets = [];
   controles.forEach((Control control) {
@@ -94,9 +88,12 @@ List<Widget> crearControlesCaptura(
       widgets.add(crearEtiqueta(context, control));
     else if (control.tipo == eTipoControl.cajaTextoForma)
       widgets.add(crearCajaTextoForma(context, control));
-    else if (control.tipo == eTipoControl.calendario || control.tipo == eTipoControl.fechaSelector  || control.tipo == eTipoControl.horaSelector )
+    else if (control.tipo == eTipoControl.calendario ||
+        control.tipo == eTipoControl.fechaSelector ||
+        control.tipo == eTipoControl.horaSelector)
       widgets.add(crearCajaTexto(context, control));
-     else if (control.tipo == eTipoControl.horaSelectorCupertino || control.tipo == eTipoControl.fechaSelectorCupertino )
+    else if (control.tipo == eTipoControl.horaSelectorCupertino ||
+        control.tipo == eTipoControl.fechaSelectorCupertino)
       widgets.add(crearCajaTexto(context, control));
     else if (control.tipo == eTipoControl.apagador)
       widgets.add(crearSwitch(context, control));
@@ -114,8 +111,6 @@ List<Widget> crearControlesCaptura(
       widgets.add(crearVerficadorHorizontal(context, control, control.lista!));
     else if (control.tipo == eTipoControl.selectorDeslizante)
       widgets.add(crearSelectorDeslizante(context, control));
-
-
 
     /*  
 
@@ -170,7 +165,7 @@ Widget crearEtiqueta(BuildContext context, Control control) {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.max,
             children: [
-          Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */ ),
+          Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
           SizedBox(
             width: 16.0,
             height: 30.0,
@@ -183,7 +178,7 @@ Widget crearEtiqueta(BuildContext context, Control control) {
                   padding: const EdgeInsets.all(0.0),
                   decoration: crearDecoracionContenedor(context, control),
                   child: Text(
-                    control.valor==null?"":control.valor,
+                    control.valor == null ? "" : control.valor,
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
                     //style: TextStyle(fontWeight: FontWeight.bold),
@@ -220,21 +215,22 @@ Widget crearEtiqueta(BuildContext context, Control control) {
          );
 } */
 seleccionarFechaCalendario(BuildContext context, Control control) async {
-      Duration duration = new Duration(days: 365*100);
-      DateTime? fechaSeleccionada = await showDatePicker(
-                    context: context,
-                    // locale : const Locale("fr","FR"),
-                    helpText: 'Fecha',
-                    confirmText:'Aceptar',
-                     cancelText:'Cancelar',
-                    // locale: Locale( 'es') ,
-                    // locale : const Locale("fr","FR"),
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now().subtract(duration),
-                    //DateTime.now() - not to allow to choose before today.
-                    lastDate: DateTime.now().add(duration),  );
-    control.accion!(control, asignarFecha(control, fechaSeleccionada));    
-               
+  Duration duration = new Duration(days: 365 * 100);
+  DateTime? fechaSeleccionada = await showDatePicker(
+    context: context,
+    // locale : const Locale("fr","FR"),
+    helpText: 'Fecha',
+    confirmText: 'Aceptar',
+    cancelText: 'Cancelar',
+    // locale: Locale( 'es') ,
+    // locale : const Locale("fr","FR"),
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now().subtract(duration),
+    //DateTime.now() - not to allow to choose before today.
+    lastDate: DateTime.now().add(duration),
+  );
+  control.accion!(control, asignarFecha(control, fechaSeleccionada));
+
   // DateTime fechaSeleccionada = await showDatePicker(
   //   context: context,
 
@@ -249,89 +245,94 @@ seleccionarFechaCalendario(BuildContext context, Control control) async {
 }
 
 seleccionarFechaBotones(BuildContext context, Control control) async {
+  // DatePicker.showTimePicker(context, showTitleActions: true,
+  //           onChanged: (date) {
+  //         print('change $date in time zone ' +
+  //             date.timeZoneOffset.inHours.toString());
+  //       }, onConfirm: (date) {
+  //         print('confirm $date');
+  //       }, currentTime: DateTime.now());
 
-      // DatePicker.showTimePicker(context, showTitleActions: true,
-      //           onChanged: (date) {
-      //         print('change $date in time zone ' +
-      //             date.timeZoneOffset.inHours.toString());
-      //       }, onConfirm: (date) {
-      //         print('confirm $date');
-      //       }, currentTime: DateTime.now());
+  Duration duration = new Duration(days: 365 * 100);
 
-  
+  DateTime fechaSeleccionada;
 
-   Duration duration = new Duration(days: 365*100);
+  DatePicker.showDatePicker(
+    context,
+    showTitleActions: true,
+    locale: LocaleType.es,
+    currentTime: DateTime.now(),
+    minTime: DateTime.now().subtract(duration),
+    maxTime: DateTime.now().add(duration),
+    //maxTime: DateTime(2022, 12, 31),
 
-   DateTime fechaSeleccionada;
-   
-   DatePicker.showDatePicker(context,
-               showTitleActions: true,
-          locale: LocaleType.es,
-          currentTime: DateTime.now(),
-          minTime: DateTime.now().subtract(duration),  
-          maxTime: DateTime.now().add(duration),
-          //maxTime: DateTime(2022, 12, 31),
-          
-         
-          onChanged: (fecha) {
-            print('change $fecha');
-            fechaSeleccionada = fecha;
-        },
-        onConfirm: (fecha) {
-            print('confirm $fecha');
-            fechaSeleccionada = fecha;
-            asignarFecha(control, fechaSeleccionada);
-            control.accion!(control, asignarFecha(control, fechaSeleccionada));
-        },
-      );
-      
-  
+    onChanged: (fecha) {
+      print('change $fecha');
+      fechaSeleccionada = fecha;
+    },
+    onConfirm: (fecha) {
+      print('confirm $fecha');
+      fechaSeleccionada = fecha;
+      asignarFecha(control, fechaSeleccionada);
+      control.accion!(control, asignarFecha(control, fechaSeleccionada));
+    },
+  );
 }
 
-  // Show the modal that contains the CupertinoDatePicker
-  void seleccionarFechaHoraCupertino(BuildContext context, Control control) async {
-    // showCupertinoModalPopup is a built-in function of the cupertino library
-    showCupertinoModalPopup(
-        context: context,
-        builder: (_) => Container(
-              height: 500,
-              color: const Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 400,
-                    child: CupertinoDatePicker(
-                        initialDateTime: DateTime.now(),
-                        //maximumYear: 2018,
-                        minimumYear: 1900,
-                        mode:  control.tipo==eTipoControl.fechaSelectorCupertino?CupertinoDatePickerMode.date: CupertinoDatePickerMode.time,
-                        onDateTimeChanged: (fechaSeleccionada) {
-                            control.valor=fechaSeleccionada;
-                         }),
-                  ),
+// Show the modal that contains the CupertinoDatePicker
+void seleccionarFechaHoraCupertino(
+    BuildContext context, Control control) async {
+  Responsivo.identifciarDispositivo(context);
+  // control.valor = control.valor != "" ? DateTime.now() : control.valor;
+  // showCupertinoModalPopup is a built-in function of the cupertino library
+  showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+            height: Responsivo.height / 3,
+            color: const Color.fromARGB(255, 255, 255, 255),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 400,
+                  child: CupertinoDatePicker(
+                      initialDateTime: DateTime.now(),
+                      maximumYear: 2022,
+                      minimumYear: 1900,
+                      mode: control.tipo == eTipoControl.fechaSelectorCupertino
+                          ? CupertinoDatePickerMode.date
+                          : CupertinoDatePickerMode.time,
+                      onDateTimeChanged: (fechaSeleccionada) {
+                        control.valor = fechaSeleccionada;
+                      }),
+                ),
 
-                  // Close the modal
-                  CupertinoButton(
-                    child: const Text('Aceptar'),
-                    onPressed: () 
-                    {
-                         control.accion!(control, asignarFecha(control,control.valor));
-                         Navigator.of(context).pop();
-                    } ,
-                  )
-                ],
-              ),
-            ));
-  }
+                // Close the modal
+                CupertinoButton(
+                  child: const Text('Aceptar'),
+                  onPressed: () {
+                    if (control.valor != "")
+                      control.accion!(
+                          control, asignarFecha(control, control.valor));
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          ));
+}
 
 String asignarFecha(Control control, DateTime? fechaSeleccionada) {
   String cadenafecha = "";
   if (fechaSeleccionada != null && fechaSeleccionada != "") {
     // cadenafecha = DateFormat('MM-dd-yyyy',Intl.defaultLocale ).format(fechaSeleccionada);
-    if  (control.tipo== eTipoControl.fechaSelector || control.tipo== eTipoControl.fechaSelectorCupertino || control.tipo== eTipoControl.calendario  )
-        cadenafecha = DateFormat(ParametrosSistema.formatoFecha).format(fechaSeleccionada);
+    if (control.tipo == eTipoControl.fechaSelector ||
+        control.tipo == eTipoControl.fechaSelectorCupertino ||
+        control.tipo == eTipoControl.calendario)
+      cadenafecha =
+          DateFormat(ParametrosSistema.formatoFecha).format(fechaSeleccionada);
     else
-        cadenafecha = DateFormat(ParametrosSistema.formatoHora).format(fechaSeleccionada);
+      cadenafecha =
+          DateFormat(ParametrosSistema.formatoHora).format(fechaSeleccionada);
     control.valor = cadenafecha;
     if (control.controlEdicion != null)
       control.controlEdicion!.text = cadenafecha;
@@ -340,15 +341,14 @@ String asignarFecha(Control control, DateTime? fechaSeleccionada) {
   return cadenafecha;
 }
 
-
-
 Widget crearCajaTexto(BuildContext context, Control control) {
   // este  control requiere  TextEditingController _controller1 = new TextEditingController();
   // este  control NO ejecuta cuando el metodo validar cuanso se ejecuta al guardar formKey.currentState.validate()
-  if (control.controlEdicion != null && control.valor!=null)
+  if (control.controlEdicion != null && control.valor != null)
     control.controlEdicion!.text = control.valor;
   final Cajatexto = TextField(
     // autofocus: true,
+    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
     enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
             control.tipo == eTipoControl.fechaSelector
         ? false
@@ -363,19 +363,22 @@ Widget crearCajaTexto(BuildContext context, Control control) {
     //keyboardType: (control.tipoEntrada !=null)?control.tipoEntrada : TextInputType.text,
     decoration: crearDecoracionInput(control),
     onTap: () {
-      if (control.tipo == eTipoControl.calendario || control.tipo == eTipoControl.fechaSelector || control.tipo == eTipoControl.horaSelector 
-      || control.tipo == eTipoControl.fechaSelectorCupertino || control.tipo == eTipoControl.horaSelectorCupertino ) {
+      if (control.tipo == eTipoControl.calendario ||
+          control.tipo == eTipoControl.fechaSelector ||
+          control.tipo == eTipoControl.horaSelector ||
+          control.tipo == eTipoControl.fechaSelectorCupertino ||
+          control.tipo == eTipoControl.horaSelectorCupertino) {
         FocusScope.of(context).requestFocus(new FocusNode());
         if (control.tipo == eTipoControl.calendario)
           seleccionarFechaCalendario(context, control);
         else if (control.tipo == eTipoControl.fechaSelector)
           seleccionarFechaBotones(context, control);
         else if (control.tipo == eTipoControl.horaSelector)
-          seleccionarFechaBotones(context, control);          
+          seleccionarFechaBotones(context, control);
         else if (control.tipo == eTipoControl.fechaSelectorCupertino)
-          seleccionarFechaHoraCupertino(context, control); 
+          seleccionarFechaHoraCupertino(context, control);
         else if (control.tipo == eTipoControl.horaSelectorCupertino)
-          seleccionarFechaHoraCupertino(context, control);  
+          seleccionarFechaHoraCupertino(context, control);
       }
     },
     // se ejecuta cuando se termina la captura
@@ -398,6 +401,7 @@ Widget crearCajaTextoForma(BuildContext context, Control control) {
   //     control.controlEdicion.text,
   //   );
   Widget Cajatexto = TextFormField(
+    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
     // autofocus: true,
     initialValue: control.valor != null ? control.valor : null,
     // controller: control.controlEdicion != null && control.valor == null
@@ -406,7 +410,7 @@ Widget crearCajaTextoForma(BuildContext context, Control control) {
     enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
             control.tipo == eTipoControl.fechaSelector ||
             control.tipo == eTipoControl.fechaSelectorCupertino ||
-            control.tipo == eTipoControl.horaSelectorCupertino  ||   
+            control.tipo == eTipoControl.horaSelectorCupertino ||
             control.tipo == eTipoControl.horaSelector
         ? false
         : true,
@@ -443,29 +447,28 @@ Widget crearCajaTextoForma(BuildContext context, Control control) {
 
 Widget crearDropdownFijo(
     BuildContext context, Control control, List<ElementoLista> lista) {
+  if (control.valor.runtimeType.toString() == "String")
+    return DropdownButton<String>(
+      value: control.valor,
+      items: obtenerLista(lista),
+      icon: Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (valorIngresado) {
+        control.valor = valorIngresado;
+        if (control.controlEdicion != null)
+          control.controlEdicion!.text = valorIngresado.toString();
 
-  if  (control.valor.runtimeType.toString()=="String"  )    
-      return DropdownButton<String>(
-        value: control.valor,
-        items: obtenerLista(lista),
-        icon: Icon(Icons.arrow_downward),
-        iconSize: 24,
-        elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-        onChanged: (valorIngresado) {
-          control.valor = valorIngresado;
-          if (control.controlEdicion != null)
-            control.controlEdicion!.text = valorIngresado.toString();
-
-          control.accion!(control, valorIngresado);
-        },
-      );
-    else
-     return DropdownButton<int>(
+        control.accion!(control, valorIngresado);
+      },
+    );
+  else
+    return DropdownButton<int>(
       value: control.valor,
       items: obtenerListaInt(lista),
       icon: Icon(Icons.arrow_downward),
@@ -483,53 +486,53 @@ Widget crearDropdownFijo(
 
         control.accion!(control, valorIngresado);
       },
-    );   
+    );
 }
 
 Widget crearDropdown(
     BuildContext context, Control control, List<ElementoLista> lista) {
-  dynamic  valorInicial = control.valor;
+  dynamic valorInicial = control.valor;
   if (lista != null && lista.length > 0) {
-    print (control.valor.runtimeType.toString() );
-    if  (control.valor.runtimeType.toString()=="String"  )
-        return /*  Row(
+    print(control.valor.runtimeType.toString());
+    if (control.valor.runtimeType.toString() == "String")
+      return /*  Row(
 
                     children: <Widget>[ */
-            //control.icono!=null ?Iconos.crear(control.icono): Icon(Icons.select_all),
-    /*                   SizedBox(
+          //control.icono!=null ?Iconos.crear(control.icono): Icon(Icons.select_all),
+          /*                   SizedBox(
                           width: 16.0,
                           height: 30.0,
                           child: const Card(child: Text('')),
                         ), */
-    /*                     Container(
+          /*                     Container(
                             width: MediaQuery.of(context).size.width -76,
                             margin: const EdgeInsets.all(2.0),
                             padding: const EdgeInsets.all(1.0),  
                             //decoration:  crearDecoracionContenedor(control), 
                                   child: */
-            DropdownButtonFormField<String>(
-          //elevation: 5,
+          DropdownButtonFormField<String>(
+        //elevation: 5,
 
-          /*               underline: Container(
+        /*               underline: Container(
                                         decoration:  crearCajaDecoracion(control.borde),
                                       ), */
-          decoration: crearDecoracionInput(control),
-          value: valorInicial,
-          items: obtenerLista(lista),
-          onChanged: (valorIngresado) {
-            valorInicial = valorIngresado;
-            control.valor = valorIngresado;
-            if (control.controlEdicion != null)
-              control.controlEdicion!.text = valorIngresado.toString();
+        decoration: crearDecoracionInput(control),
+        value: valorInicial,
+        items: obtenerLista(lista),
+        onChanged: (valorIngresado) {
+          valorInicial = valorIngresado;
+          control.valor = valorIngresado;
+          if (control.controlEdicion != null)
+            control.controlEdicion!.text = valorIngresado.toString();
 
-            control.accion!(control, valorIngresado);
-          },
-          //)
-          // ),
-          //],
+          control.accion!(control, valorIngresado);
+        },
+        //)
+        // ),
+        //],
       );
-      else
-        return   DropdownButtonFormField<int>(
+    else
+      return DropdownButtonFormField<int>(
         //elevation: 5,
 
         /*               underline: Container(
@@ -547,7 +550,7 @@ Widget crearDropdown(
           control.accion!(control, valorIngresado);
         },
       );
-   } else
+  } else
     return Text("No hay elementos");
 }
 
@@ -579,7 +582,7 @@ Widget crearSwitch(BuildContext context, Control control) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */ ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
         SizedBox(
           width: 16.0,
           height: 30.0,
@@ -611,7 +614,7 @@ Widget crearRadioHorizontal(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */  ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
         SizedBox(
           width: 16.0,
           height: 30.0,
@@ -636,7 +639,7 @@ Widget crearRadioVertical(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */  ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
         Text(control.textoEtiqueta!),
         Container(
             //width: MediaQuery.of(context).size.width -76,
@@ -676,7 +679,7 @@ List<Widget> crearElementosRadioHorizontal(
   List<Widget> widgets = [];
   for (ElementoLista elemento in lista) {
     widgets.add(
-      Radio <ElementoLista>(
+      Radio<ElementoLista>(
         value: elemento.valor,
         groupValue: control.valor,
         //subtitle: Text(elemento.subitulo),
@@ -699,7 +702,7 @@ Widget crearVerficadorHorizontal(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */  ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
         SizedBox(
           width: 16.0,
           height: 30.0,
@@ -724,7 +727,7 @@ Widget crearVerficadorVertical(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */ ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
 /*                           SizedBox(
                               width: 16.0,
                               height: 30.0,
@@ -758,7 +761,7 @@ List<Widget> crearElementosVerificadorVertical(
         //onChanged:  (valorIngresado)  {  control.valor=valorIngresado;    control.accion(control, valorIngresado); },
         onChanged: (valorIngresado) {
           elemento.seleccionado = valorIngresado;
-          control.accion! (control, elemento);
+          control.accion!(control, elemento);
         },
         selected: elemento.seleccionado!,
       ),
@@ -789,17 +792,14 @@ List<Widget> crearElementosVerificadorHorizontal(
   return widgets;
 }
 
-Widget crearImagenMarco(
-    BuildContext context,
-    String ruta,
-   [ double height = 80.0,
-    double width = 100.0 ]) {
+Widget crearImagenMarco(BuildContext context, String ruta,
+    [double height = 80.0, double width = 100.0]) {
   Widget foto;
   Image imagen;
   File fotoCapturada;
 
   if (ruta == null || ruta == "") {
-    ruta= 'assets/img/no-image.png';
+    ruta = 'assets/img/no-image.png';
     imagen = Image(
       image: AssetImage(ruta),
       height: height,
@@ -874,7 +874,7 @@ Widget crearSelectorDeslizante(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           children: [
-        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */ ),
+        Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
         SizedBox(
           width: 16.0,
           height: 30.0,
@@ -923,4 +923,3 @@ Widget crearImagen(String nombbre) {
   String ruta = 'assets/img/graphics/' + nombbre;
   return Image(image: AssetImage(ruta));
 }
-

@@ -130,14 +130,16 @@ class _tema_pagina_state extends State<tema_pagina> {
     List<Control> controles = [];
 
     List<ElementoLista> _listaColores = [];
-    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azulclaro"));
+    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azul claro"));
     _listaColores.add(ElementoLista(valor: "rojo", titulo: "rojo"));
     _listaColores
-        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
+        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojou fuerte"));
     _listaColores.add(ElementoLista(valor: "azul", titulo: "azul"));
-    _listaColores.add(ElementoLista(valor: "azulindigo", titulo: "azulindigo"));
+    _listaColores
+        .add(ElementoLista(valor: "azulindigo", titulo: "azul indigo"));
     _listaColores.add(ElementoLista(valor: "verde", titulo: "verde"));
-    _listaColores.add(ElementoLista(valor: "verdeclaro", titulo: "verdeclaro"));
+    _listaColores
+        .add(ElementoLista(valor: "verdeclaro", titulo: "verde claro"));
     _listaColores.add(ElementoLista(valor: "lima", titulo: "lima"));
     _listaColores.add(ElementoLista(valor: "amarillo", titulo: "amarillo"));
     _listaColores.add(ElementoLista(valor: "naranja", titulo: "naranja"));
@@ -147,16 +149,16 @@ class _tema_pagina_state extends State<tema_pagina> {
     _listaColores.add(ElementoLista(valor: "gris", titulo: "gris"));
 
     List<ElementoLista> _listaColoresII = [];
-    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azulclaro"));
+    _listaColores.add(ElementoLista(valor: "azulclaro", titulo: "azul claro"));
     _listaColoresII.add(ElementoLista(valor: "rojo", titulo: "rojo"));
     _listaColoresII
-        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojouFuerte"));
+        .add(ElementoLista(valor: "rojouFuerte", titulo: "rojou fuerte"));
     _listaColoresII.add(ElementoLista(valor: "azul", titulo: "azul"));
     _listaColoresII
-        .add(ElementoLista(valor: "azulindigo", titulo: "azulindigo"));
+        .add(ElementoLista(valor: "azulindigo", titulo: "azul indigo"));
     _listaColoresII.add(ElementoLista(valor: "verde", titulo: "verde"));
     _listaColoresII
-        .add(ElementoLista(valor: "verdeclaro", titulo: "verdeclaro"));
+        .add(ElementoLista(valor: "verdeclaro", titulo: "verde claro"));
     _listaColoresII.add(ElementoLista(valor: "lima", titulo: "lima"));
     _listaColoresII.add(ElementoLista(valor: "amarillo", titulo: "amarillo"));
     _listaColoresII.add(ElementoLista(valor: "naranja", titulo: "naranja"));
@@ -169,7 +171,7 @@ class _tema_pagina_state extends State<tema_pagina> {
           _listaColores.add(ElementoLista(valor:"negrofuerte" , titulo:"negrofuerte" )); */
 
     print(ParametrosSistema.colorPrimario);
-    Control lisColoresTema = new Control(
+    Control lisColoresTema = Control(
       idControl: "colorPrimario",
     );
 
@@ -179,9 +181,7 @@ class _tema_pagina_state extends State<tema_pagina> {
     lisColoresTema.lista = _listaColores;
     controles.add(lisColoresTema);
 
-    Control colorSecundario = new Control(
-      idControl: "colorSecundario",
-    );
+    Control colorSecundario = Control(idControl: "colorSecundario");
     colorSecundario = colorSecundario.asignar(
         '',
         ContextoUI.obtenerTipo(widget),
@@ -260,6 +260,7 @@ class _tema_pagina_state extends State<tema_pagina> {
     switch (control.idControl) {
       case "colorPrimario":
         print(valor);
+
         prov!.cambiarColorPrimario(valor);
         print(ParametrosSistema.colorPrimario);
         break;

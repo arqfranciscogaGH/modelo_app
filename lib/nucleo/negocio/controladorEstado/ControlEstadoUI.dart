@@ -6,6 +6,12 @@ import 'package:flutter/material.dart';
 
 import '../../../aplicacion/contexto/ContextoAplicacion.dart';
 
+//
+//  provider  para  controlar  el estado general  de todas  las entidades
+//
+
+//  procesos de  entidades
+
 enum eProceso {
   ninguno,
   iniciar,
@@ -17,6 +23,7 @@ enum eProceso {
   obtener,
   filtrar,
 }
+// estados de  entidades
 
 enum eEstatus {
   ninguno,
@@ -38,6 +45,7 @@ class ControlEstadoUI extends ChangeNotifier {
   dynamic tabla;
   eProceso proceso = eProceso.ninguno;
   eEstatus estatus = eEstatus.ninguno;
+  // esta  variable se utiliza para  identificar  cuando esta un proceso se esta  realizando y  cuando termina es falso
   bool? enProceso;
   //
   //  metodos
@@ -59,9 +67,11 @@ class ControlEstadoUI extends ChangeNotifier {
   void actualizarUI(
       [eProceso proceso = eProceso.iniciar,
       eEstatus estatus = eEstatus.enProceso]) {
-    enProceso = false;
     this.proceso = proceso;
     this.estatus = estatus;
+    enProceso = false;
+
+    // if (enProceso == false)
     notifyListeners();
   }
 

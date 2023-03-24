@@ -21,14 +21,14 @@ import '../../../../aplicacion/aplicacion.dart';
 import '../../../contexto/contexto.dart';
 import '../../../negocio/negocio.dart';
 
-import 'VentaUI.dart';
+import 'ProductoUI.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class venta_captura_pagina extends StatefulWidget {
-  venta_captura_pagina(
+class Producto_captura_pagina extends StatefulWidget {
+  Producto_captura_pagina(
       {Key? key,
       this.paginaSiguiente,
       this.paginaAnterior,
@@ -40,10 +40,11 @@ class venta_captura_pagina extends StatefulWidget {
   bool? activarAcciones = false;
 
   @override
-  _venta_captura_pagina_state createState() => _venta_captura_pagina_state();
+  _Producto_captura_pagina_state createState() =>
+      _Producto_captura_pagina_state();
 }
 
-class _venta_captura_pagina_state extends State<venta_captura_pagina> {
+class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -51,10 +52,11 @@ class _venta_captura_pagina_state extends State<venta_captura_pagina> {
   ControlEstadoUI? controlEstadoUI;
 
   //  Interfaz  comun
-  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
+  ProductoUI<Producto> ui =
+      ProductoUI<Producto>(tabla: ContextoAplicacion.db.tablaProducto);
 
   // entidad
-  Venta entidadCaptura = Venta();
+  Producto entidadCaptura = Producto();
 
   // KEYS
 
@@ -83,7 +85,7 @@ class _venta_captura_pagina_state extends State<venta_captura_pagina> {
     super.initState();
     // widget.paginaAnterior = ContextoUI.obtenerTipo(widget);
     controlEstadoUI = ControlEstadoUI();
-    ui = VentaUI(tabla: ContextoAplicacion.db.tablaVenta!);
+    ui = ProductoUI(tabla: ContextoAplicacion.db.tablaProducto!);
 
     entidadCaptura = ui.tabla!.entidad;
 
@@ -174,50 +176,22 @@ class _venta_captura_pagina_state extends State<venta_captura_pagina> {
       dynamic entidadCaptura) {
     List<Control> controles = [];
 
-    List<ElementoLista> _lista = [];
-    _lista.add(ElementoLista(valor: "si", titulo: "si"));
-    _lista.add(ElementoLista(valor: "no", titulo: "no"));
-
-    print(ParametrosSistema.colorTema);
-    Control lisVariables = new Control(
-      idControl: "lisVariables",
-    );
     String pagina = ContextoUI.obtenerTitulo(widget);
-    lisVariables =
-        lisVariables.asignar('', pagina, "si", cambiarValor, validar);
-    lisVariables.controlEdicion = _controllerListaColor;
-    lisVariables.lista = _lista;
-    controles.add(lisVariables);
 
-    Control txtHoraCU = Control().crear(
-        '', pagina, "txtHoraCU", entidadCaptura.llave, cambiarValor, validar);
-    txtHoraCU.controlEdicion = _controller_txtHoraCU;
-    controles.add(txtHoraCU);
-
-    Control txtfechaCU = Control().crear(
-        '', pagina, "txtfechaCU", entidadCaptura.llave, cambiarValor, validar);
-    txtfechaCU.controlEdicion = _controller_txtfechaCU;
-    controles.add(txtfechaCU);
-
-    Control txtfechaCalendario = Control().crear('', pagina,
-        "txtfechaCalendario", entidadCaptura.llave, cambiarValor, validar);
-    txtfechaCalendario.controlEdicion = _controller_txtfechaCalendario;
-    controles.add(txtfechaCalendario);
-
-    Control txtfechaSelector = Control().crear('', pagina, "txtfechaSelector",
-        entidadCaptura.llave, cambiarValor, validar);
-    txtfechaSelector.controlEdicion = _controller_txtfechaSelector;
-    controles.add(txtfechaSelector);
-
+    String nombrePagina = ContextoUI.obtenerTipo(widget);
     // controles.add(Control().crear('', widget.pagina!, "txtimporte",
     //     entidadCaptura.id, cambiarValor, validar));
 
-    controles.add(Control().crear('', pagina, "txttelefono",
-        entidadCaptura.clave, cambiarValor, validar));
-    controles.add(Control().crear(
-        '', pagina, "txtcorreo", entidadCaptura.nombre, cambiarValor, validar));
-    controles.add(Control().crear('', pagina, "txtruta",
-        entidadCaptura.descripcion, cambiarValor, validar));
+    controles.add(Control().crear('', ContextoUI.obtenerTipo(widget),
+        "txtnombre", entidadCaptura.nombre, cambiarValor, validar));
+
+    controles.add(Control().crear('', ContextoUI.obtenerTipo(widget),
+        "txtprecio", entidadCaptura.precio.toString(), cambiarValor, validar));
+    // controles.add(Control().crear('', nombrePagina, "txtexistencia",
+    //     entidadCaptura.existencia, cambiarValor, validar));
+
+    // controles.add(Control().crear('', pagina, "apaactivo",
+    //     entidadCaptura.estatus, cambiarValor, validar));
 
     return cargarControlesCaptura(context, controles, '',
         ContextoUI.obtenerTipo(widget), cambiarValor, validar, []);
@@ -230,7 +204,7 @@ class _venta_captura_pagina_state extends State<venta_captura_pagina> {
   dynamic validar(Control control, dynamic valor) {}
   dynamic cambiarValor(Control control, dynamic valor) {
     // setState(() {
-    // entidadCaptura = ContextoAplicacion.db.tablaVenta!.entidad;
+    // entidadCaptura = ContextoAplicacion.db.tablaproducto!.entidad;
     print("cambiarValor");
     print(ui.tabla!.entidad.id);
     print(entidadCaptura.id);
@@ -239,20 +213,17 @@ class _venta_captura_pagina_state extends State<venta_captura_pagina> {
     print(valor);
 
     switch (control.idControl) {
-      case "lisVariables":
-        break;
-      case "txtcuenta":
-        break;
-      case "txtfechaNacimiento":
-        break;
-      case "txtimporte":
-        break;
-      case "txttelefono":
-        break;
-      case "txtcorreo":
+      case "txtnombre":
         entidadCaptura.nombre = valor;
         break;
-      case "txtruta":
+      case "txtprecio":
+        entidadCaptura.precio = double.parse(valor);
+        break;
+      case "txtexistencia":
+        entidadCaptura.existencia = valor;
+        break;
+      case "apaactivo":
+        entidadCaptura.estatus = valor == true ? 1 : 0;
         break;
     }
     ui.tabla!.entidad = entidadCaptura;

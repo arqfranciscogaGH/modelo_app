@@ -27,7 +27,7 @@ class Listas {
   static Widget mostrarLista(List<dynamic> lista, BuildContext context,
       ElementoLista acciones, Function metodoCrearElemento,
       [bool enProceso = true]) {
-    if (enProceso != null && enProceso == true)
+    if ((enProceso != null && enProceso == true) && lista.length == 0)
       return Center(child: CircularProgressIndicator());
     else if (enProceso != null && enProceso == false && lista.length == 0)
       return Center(child: Text("No  hay  información"));

@@ -4,32 +4,28 @@
 
 //  librerias  proyecto
 
-
 import '../nucleo/negocio/negocio.dart';
 import '../paquetesExternos/paquetesExternos.dart';
 
 //  librerias externas  flutter
 
-
-// Descripcion de funcionalidad 
+// Descripcion de funcionalidad
 //
 // administrar la sesion de usuarios
 
-const IDIOMA ="idioma";
+const IDIOMA = "idioma";
 
 class AdministradorIdioma {
+  static void asignar(String idioma) {
+    ParametrosSistema.idioma = idioma;
+  }
 
-    static void obtenerIdioma() {
-        String  idioma = Preferencias.obtener(IDIOMA, ParametrosSistema.idioma);
-        ParametrosSistema.idioma = idioma;
-    }
+  static void obtener() {
+    ParametrosSistema.idioma =
+        Preferencias.obtener(IDIOMA, ParametrosSistema.idioma);
+  }
 
-    static void  cambiarIdioma(String idioma) {
-        ParametrosSistema.idioma = idioma;
-    }
-    static void  guardarIdioma() {
-        Preferencias.guardar(IDIOMA, ParametrosSistema.idioma);
-
-    }
-    
+  static void guardar() {
+    Preferencias.guardar(IDIOMA, ParametrosSistema.idioma);
+  }
 }

@@ -19,24 +19,24 @@ import '../../../../aplicacion/aplicacion.dart';
 import '../../../contexto/contexto.dart';
 import '../../../negocio/negocio.dart';
 
-import 'VentaUI.dart';
+import 'ProductoUI.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class venta_lista_pagina extends StatefulWidget {
-  venta_lista_pagina(
+class Producto_lista_pagina extends StatefulWidget {
+  Producto_lista_pagina(
       {this.paginaSiguiente, this.paginaAnterior, this.activarAcciones});
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
   bool? activarAcciones = false;
 
   @override
-  _venta_lista_pagina_state createState() => _venta_lista_pagina_state();
+  _Producto_lista_pagin_state createState() => _Producto_lista_pagin_state();
 }
 
-class _venta_lista_pagina_state extends State<venta_lista_pagina> {
+class _Producto_lista_pagin_state extends State<Producto_lista_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -44,11 +44,12 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   //  controlador  de estado comun para  actulizar la UI
   ControlEstadoUI? controlEstadoUI;
   //  Interfaz  comun
-  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
+  ProductoUI<Producto> ui =
+      ProductoUI<Producto>(tabla: ContextoAplicacion.db.tablaProducto);
 
   // entidad
 
-  Venta entidadCaptura = Venta();
+  Producto entidadCaptura = Producto();
   List<dynamic> listaEntidad = [];
 
   // KEYS
@@ -75,18 +76,26 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   @override
   void initState() {
     super.initState();
+    //  se obtiene pagina anterior (  pagina actual  )
     widget.paginaAnterior = ContextoUI.obtenerTipo(widget);
+    // se crea  instncia de  control de estado comun  en clase provider  ControlEstadoUI
     controlEstadoUI = ControlEstadoUI();
-    ui = VentaUI(tabla: ContextoAplicacion.db.tablaVenta!);
+    // se crea  instancia ui  y  se pasa contexto de tabla a usar
+    ui = ProductoUI(tabla: ContextoAplicacion.db.tablaProducto!);
 
+    // iniciar entidad
     ui.tabla!.entidad = ui.tabla!.iniciar();
     entidadCaptura = ui.tabla!.entidad;
 
     ui.tabla!.controlEstadoUI = controlEstadoUI!;
-    //  paginación
 
-    ui.tabla!.paginador.registrosPorPagina = 5;
+    //  paginación
+    ui.tabla!.paginador.registrosPorPagina = 2;
     ui.tabla!.paginador.estatus = 1;
+
+    // proporcionar  llave
+    ContextoAplicacion.db.tablaProducto!.configuracion!.llaveApi =
+        ContextoAplicacion.db.tablaAutenticacion!.entidad.llave!;
 
     ui.tabla!.consultarPaginacionTabla(entidadCaptura);
     // ui.tabla!.filtrarLista(entidadCaptura, 'estatus', 1);
@@ -96,33 +105,6 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     print("initState");
     print(ui.tabla!.entidad.id);
     print(entidadCaptura.id);
-
-    // ContextoAplicacion.db.tablaVenta!.consultarTabla(
-    //     ContextoAplicacion.db.tablaVenta!.entidad, actualizarEstadoLista);
-
-/*     ContextoAplicacion.db.tablaRegistro!.configuracion!.parmetros = "";
-    ContextoAplicacion.db.tablaRegistro!.paginador.estatus = 0;
-
-    ContextoAplicacion.db.tablaRegistro!
-        .consultarPaginacionTabla(ContextoAplicacion.db.tablaRegistro!.entidad)
-        .then((respuesta) {
-      print(respuesta);
-    });
-
-    ContextoAplicacion.db.tablaRegistro!
-        .filtrarTabla(
-            ContextoAplicacion.db.tablaRegistro!.entidad, "estatus", 1)
-        .then((respuesta) {
-      print(respuesta);
-    });
-
-    ContextoAplicacion.db.tablaRegistro!
-        .filtrarLista(
-            ContextoAplicacion.db.tablaRegistro!.entidad, "estatus", 1)
-        .then((respuesta) {
-      print(respuesta);
-    });
- */
 
     // provider.addListener(() {
     //      print("  actualizo, numero ${provider.entidad.id} ");
@@ -173,7 +155,7 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
       accion3: ui.seleccionarElemento3,
       callBackAccion3: ui.respuestaSeleccionar3,
     );
-
+    //  definir  acciones y  botones de pagina Float
     ElementoLista elemento =
         ElementoLista(id: 4, icono: "arrow_back", accion: regresarPagina);
     opcionesPaginacion.add(elemento);
@@ -218,10 +200,8 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     print("build lista");
     print(ui.tabla!.entidad.id);
     print(entidadCaptura.id);
-    ui.iniciar(context, scaffoldKey, widget);
 
-    ElementoLista elementoLista5 =
-        InjeccionDependencia.obtener<ElementoLista>();
+    ui.iniciar(context, scaffoldKey, widget);
 
     return ChangeNotifierProvider.value(
       value: controlEstadoUI,
@@ -281,13 +261,14 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   //
 
   Widget mostrarContenido() {
-    debugPrint("mostrarContenido");
+    print("mostrarContenido");
     listaEntidad = ui.tabla!.lista;
     print(listaEntidad.length);
     return Consumer<ControlEstadoUI>(
         builder: (context, _controlEstadoUI, widgetPadre) {
       return Vista_lista(
-          lista: ui.tabla!.paginador.resultado as List<dynamic>,
+          // lista: ui.tabla!.paginador.resultado as List<dynamic>,
+          lista: ui.tabla!.lista,
           acciones: accionConsultar,
           metodoCrearElemento: ui.crearElementoEntidad,
           context: context,

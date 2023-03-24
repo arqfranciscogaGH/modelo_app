@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 //
 
 class ParametrosSistema {
-  static String paginaAccesso = 'pagina_acceso';
+  static String paginaAccesso = 'acceso_pagina';
   static String idioma = 'es';
 
   //  colores

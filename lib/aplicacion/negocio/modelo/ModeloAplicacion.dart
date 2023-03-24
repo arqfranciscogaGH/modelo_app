@@ -10,12 +10,26 @@ import './../../../nucleo/negocio/modelo/ModeloBase.dart';
 export './../../../nucleo/negocio/modelo/ModeloBase.dart';
 
 //  definir entidades de modelo
+import 'entidad/Autenticacion.dart';
+export 'entidad/Autenticacion.dart';
+
+import '../modelo/entidad/CuentaUsuario.dart';
+export '../modelo/entidad/CuentaUsuario.dart';
+
+import '../modelo/entidad/Registro.dart';
+export '../modelo/entidad/Registro.dart';
+
+import '../modelo/entidad/Registro.dart';
+export '../modelo/entidad/Registro.dart';
 
 import '../modelo/entidad/Cliente.dart';
 export '../modelo/entidad/Cliente.dart';
 
 import '../../../nucleo/negocio/modelo/endidad/ServicioAplicacion.dart';
 export '../../../nucleo/negocio/modelo/endidad/ServicioAplicacion.dart';
+
+import '../modelo/entidad/Producto.dart';
+export '../modelo/entidad/Producto.dart';
 
 import '../modelo/entidad/Venta.dart';
 export '../modelo/entidad/Venta.dart';

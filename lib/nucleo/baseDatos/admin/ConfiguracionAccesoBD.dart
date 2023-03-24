@@ -11,8 +11,6 @@ import 'AccesoTabla.dart';
 //   enumerados
 //
 
-
-
 enum ePersitencia {
   Ninguno,
   BaseDatos,
@@ -52,6 +50,7 @@ class ConfiguracionAccesoBD {
   List<EntidadBase>? tablas = [];
 
   // Api REST
+  String? protocolo;
   String? dominioApi;
   String? sitioApi;
   String? llaveApi;
@@ -68,18 +67,18 @@ class ConfiguracionAccesoBD {
       {this.persitenciaPorDefecto,
       this.persitencia,
       this.tipoDB,
-       this.sincronizarServidor,
+      this.sincronizarServidor,
       this.intentos,
       this.contadorRegistros,
       this.nombreBD,
       this.version,
       this.tablas,
+      this.protocolo,
       this.dominioApi,
       this.sitioApi,
       this.llaveApi,
       this.parmetros,
-      this.filtro
-      });
+      this.filtro});
   // AccesoTabla<T> agregarTabla<T extends EntidadBase>(T entidad) {
   //   if (tablas == null) tablas = [];
   //   tablas!.add(entidad);

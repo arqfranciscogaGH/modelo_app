@@ -30,10 +30,15 @@ class DBAplicacion extends ModelodBase {
   }
 
   // declarar entidades
+  AccesoTabla<Autenticacion>? tablaAutenticacion;
+  AccesoTabla<CuentaUsuario>? tablaCuentaUsuario;
   AccesoTabla<ServicioAplicacion>? tablaServicioAplicacion;
+  AccesoTabla<Producto>? tablaProducto;
   AccesoTabla<Venta>? tablaVenta;
   AccesoTabla<VentaProducto>? tablaVentaProducto;
   AccesoTabla<Cliente>? tablaCliente;
+  AccesoTabla<Registro>? tablaRegistro;
+
 //   AccesoTabla<Suscripcion> tablaSuscripcion;
 
 //  AccesoTabla<CuentaUsuario> tablaCuentaUsuario;
@@ -137,7 +142,21 @@ class DBAplicacion extends ModelodBase {
       llaveApi: 'prueba',
       sincronizarServidor: true,
     );
+    ConfiguracionAccesoBD configuracionApiPaginador = ConfiguracionAccesoBD(
+      persitencia: ePersitencia.ApiREST,
+      tipoDB: eTipoDB.Ninguna,
+      nombreBD: '',
+      version: 1,
+      persitenciaPorDefecto: false,
+      contadorRegistros: false,
+      protocolo: 'http',
+      // dominioApi: 'arqfranciscoga-002-site3.btempurl.com',
+      dominioApi: 'arqfranciscoga-002-site5.btempurl.com',
 
+      sitioApi: '/api/',
+      llaveApi: 'prueba',
+      sincronizarServidor: true,
+    );
     ConfiguracionAccesoBD configuracionApiParametros = ConfiguracionAccesoBD(
       persitencia: ePersitencia.ApiREST,
       tipoDB: eTipoDB.Ninguna,
@@ -145,8 +164,10 @@ class DBAplicacion extends ModelodBase {
       version: 1,
       persitenciaPorDefecto: false,
       contadorRegistros: false,
+      protocolo: 'http',
       // dominioApi: 'arqfranciscoga-002-site3.btempurl.com',
-      dominioApi: 'kungio.com',
+      dominioApi: 'arqfranciscoga-002-site5.btempurl.com',
+      // dominioApi: 'localhost:55377',
       sitioApi: '/api/',
       llaveApi: 'prueba',
       sincronizarServidor: true,
@@ -164,14 +185,29 @@ class DBAplicacion extends ModelodBase {
       sincronizarServidor: true,
     );
 
+    tablaAutenticacion = agregarTabla<Autenticacion>(
+        Autenticacion().iniciar(), configuracionApiParametros);
+
+    tablaCuentaUsuario = agregarTabla<CuentaUsuario>(
+        CuentaUsuario().iniciar(), configuracionApiParametros);
+
     tablaServicioAplicacion = agregarTabla<ServicioAplicacion>(
-        ServicioAplicacion().iniciar(), configuracionPersitenciaMemoria);
+        ServicioAplicacion().iniciar(), configuracionApiPaginador);
+
+    tablaProducto =
+        agregarTabla<Producto>(Producto().iniciar(), configuracionApiPaginador);
+
     tablaVenta =
         agregarTabla<Venta>(Venta().iniciar(), configuracionPersitenciaMemoria);
+
     tablaVentaProducto = agregarTabla<VentaProducto>(
         VentaProducto().iniciar(), configuracionPersitenciaMemoria);
+
     tablaCliente = agregarTabla<Cliente>(
         Cliente().iniciar(), configuracionPersitenciaApiIdentity);
+
+    tablaRegistro =
+        agregarTabla<Registro>(Registro().iniciar(), configuracionApiPaginador);
 
     //   tablaSuscripcion = agregarTabla<Suscripcion>(
     //       Suscripcion().iniciar(), configuracionApiParametros);

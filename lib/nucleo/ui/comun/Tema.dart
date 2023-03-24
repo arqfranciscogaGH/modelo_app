@@ -26,15 +26,18 @@ class Tema {
   }
 
   static ThemeData crear() {
-    Color _colorTema = Colores.obtener(ParametrosSistema.colorPrimario);
+    Color _colorPrimario = Colores.obtener(ParametrosSistema.colorPrimario);
+    Color _colorSecundario = Colores.obtener(ParametrosSistema.colorSecundario);
     if (ParametrosSistema.esModoObscuro)
       _temaPorDefecto = ThemeData.dark().copyWith(
-          primaryColor: _colorTema,
-          appBarTheme: AppBarTheme(color: _colorTema, elevation: 5));
+          primaryColor: _colorPrimario,
+          backgroundColor: _colorSecundario,
+          appBarTheme: AppBarTheme(color: _colorPrimario, elevation: 5));
     else
       _temaPorDefecto = ThemeData.light().copyWith(
-          primaryColor: _colorTema,
-          appBarTheme: AppBarTheme(color: _colorTema, elevation: 5));
+          primaryColor: _colorPrimario,
+          backgroundColor: _colorSecundario,
+          appBarTheme: AppBarTheme(color: _colorPrimario, elevation: 5));
     return _temaPorDefecto!;
   }
 

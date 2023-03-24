@@ -33,8 +33,8 @@ import '../../../../paquetesExternos/paquetesExternos.dart';
 //   iniciar<T extends EntidadBase>(T entidad, AccesoTabla<T> tabla) {}
 // }
 
-class VentaUI<T extends EntidadBase> {
-  VentaUI(
+class ProductoUI<T extends EntidadBase> {
+  ProductoUI(
       {required this.tabla,
       this.context,
       this.widget,
@@ -354,7 +354,7 @@ class VentaUI<T extends EntidadBase> {
     tabla!.modificar(entidad, elemento.callBackAccion3).then((respuesta) {
       print("modificar");
       entidad = respuesta;
-      print(ContextoAplicacion.db.tablaVenta!.entidad);
+      print(ContextoAplicacion.db.tablaProducto!.entidad);
       print(respuesta);
       Notificacion.mostrar(context, mensaje + " : " + entidad.nombre);
       Dialogo.mostrarAlerta(this.context!, elementoDialogo);

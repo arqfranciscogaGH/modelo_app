@@ -37,9 +37,13 @@ abstract class IAccesoBD {
   void cerrar() {}
   // metodos  ABC  base de datos
 
-  Future ejecutar(String sql) async {}
+  Future<dynamic> ejecutar(
+      String nombreTabla, Map<String, String> parametros) async {}
   //Future<List<dynamic>> consultar(String nombreTabla) async {
   Future<dynamic> consultarTabla(String nombreTabla) async {}
+  Future<dynamic> consultarPaginacionTabla(
+      String nombreTabla, Map<String, dynamic> paginacion) async {}
+
   Future<dynamic> filtrarTabla(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {}
   Future<dynamic> insertar(

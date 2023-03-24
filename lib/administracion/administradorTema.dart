@@ -26,75 +26,53 @@ const ES_OBSCURO = "EsModoObscuro";
 
 class AdministradorTema {
   //  Tema
-  static void obtenerTema() {
+
+  static void cambiarTema() {
+    cambiarColores();
+    Tema.crearTemaPersonalizado();
+  }
+
+  static void obtener() {
     // obtenerColorTema();
     obtenerColorPrimario();
     obtenerColorSecundario();
     obtenerEsModoObscuro();
-    cambiarColores();
+    cambiarTema();
   }
 
-  static void cambiarTema() {
-    Tema.crearTemaPersonalizado();
-  }
-
-  static void guardarTema() {
+  static void guardar() {
     // guardarColorTema(ParametrosSistema.colorTema);
     guardarColorPrimario(ParametrosSistema.colorPrimario);
     guardarColorSecundario(ParametrosSistema.colorSecundario);
     guardarEsModoObscuro(ParametrosSistema.esModoObscuro);
   }
 
-  //   Color tema
-  static void obtenerColorTema() {
-    String color =
-        Preferencias.obtener(COLOR_PRIMARIO, ParametrosSistema.colorPrimario);
-    ParametrosSistema.colorPrimario = color;
-    cambiarColores();
-  }
-
-  static void cambiarColorTema(String color) {
-    ParametrosSistema.colorPrimario = color;
-    cambiarColores();
-  }
-
-  static void guardarColorTema(String color) {
-    Preferencias.guardar(COLOR_PRIMARIO, color);
-  }
-
-  static void crearTemaPersonalizado() {
-    cambiarColores();
-    Tema.crearTemaPersonalizado();
-  }
   //   Color Primario
+
+  static void asignarColorPrimario(String color) {
+    ParametrosSistema.colorPrimario = color;
+  }
 
   static void obtenerColorPrimario() {
     String color =
         Preferencias.obtener(COLOR_PRIMARIO, ParametrosSistema.colorPrimario);
     ParametrosSistema.colorPrimario = color;
-    cambiarColores();
-  }
-
-  static void cambiarColorPrimario(String color) {
-    ParametrosSistema.colorPrimario = color;
-    cambiarColores();
   }
 
   static void guardarColorPrimario(String color) {
     Preferencias.guardar(COLOR_PRIMARIO, color);
   }
+
   //   Color Secundario
+
+  static void asignarColorSecundario(String color) {
+    ParametrosSistema.colorSecundario = color;
+  }
 
   static void obtenerColorSecundario() {
     String color = Preferencias.obtener(
         COLOR_SECUNDARIO, ParametrosSistema.colorSecundario);
     ParametrosSistema.colorSecundario = color;
-    cambiarColores();
-  }
-
-  static void cambiarColorSecundario(String color) {
-    ParametrosSistema.colorSecundario = color;
-    cambiarColores();
   }
 
   static void guardarColorSecundario(String color) {
@@ -102,13 +80,14 @@ class AdministradorTema {
   }
 
   //  modo obscuro
-  static void obtenerEsModoObscuro() {
-    bool esModoObscuro =
-        Preferencias.obtener(ES_OBSCURO, ParametrosSistema.esModoObscuro);
+
+  static void asignarEsModoObscuro(bool esModoObscuro) {
     ParametrosSistema.esModoObscuro = esModoObscuro;
   }
 
-  static void cambiarEsModoObscuro(bool esModoObscuro) {
+  static void obtenerEsModoObscuro() {
+    bool esModoObscuro =
+        Preferencias.obtener(ES_OBSCURO, ParametrosSistema.esModoObscuro);
     ParametrosSistema.esModoObscuro = esModoObscuro;
   }
 

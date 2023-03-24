@@ -118,12 +118,22 @@ class AccesoSqlLite implements IAccesoBD {
   // }
 
   @override
-  Future ejecutar(String sql) async {
-    await _database!.execute(sql);
+  Future<dynamic> ejecutar(
+      String nombreTabla, Map<String, String> parametros) async {
+    await _database!.execute("");
   }
 
   @override
   Future<List<dynamic>> consultarTabla(String nombreTabla) async {
+    // await database; // para se instanciar la database
+    final respuesta = await _database!.query(nombreTabla);
+    print(respuesta);
+    return respuesta;
+  }
+
+  @override
+  Future<List<dynamic>> consultarPaginacionTabla(
+      String nombreTabla, Map<String, dynamic> paginacion) async {
     // await database; // para se instanciar la database
     final respuesta = await _database!.query(nombreTabla);
     print(respuesta);

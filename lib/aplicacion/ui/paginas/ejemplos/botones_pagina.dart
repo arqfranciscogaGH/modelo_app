@@ -21,23 +21,18 @@ import '../../../../aplicacion/aplicacion.dart';
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
+import '../ventas/AutoCompletar.dart';
 
 class botones_pagina extends StatefulWidget {
   botones_pagina(
       {Key? key,
-      this.titulo,
-      this.pagina,
       this.paginaSiguiente,
       this.paginaAnterior,
-      this.accionPagina,
       this.activarAcciones})
       : super(key: key);
 
-  String? titulo;
-  String? pagina = "";
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
-  String? accionPagina = ""; // avanzar, regresar
   bool? activarAcciones = false;
   static String ruta = "botones_pagina";
 
@@ -51,7 +46,6 @@ class _botones_paginas_state extends State<botones_pagina> {
   @override
   void initState() {
     super.initState();
-    widget.pagina = botones_pagina.ruta;
   }
 
   void _incrementCounter() async {
@@ -62,9 +56,9 @@ class _botones_paginas_state extends State<botones_pagina> {
     print(ParametrosSistema.idioma);
 
     if (ParametrosSistema.idioma != "es") {
-      await prov.cambiarIdioma("es");
+      prov.cambiarIdioma("es");
     } else {
-      await prov.cambiarIdioma("en");
+      prov.cambiarIdioma("en");
     }
 
     print(ParametrosSistema.idioma);
@@ -75,15 +69,13 @@ class _botones_paginas_state extends State<botones_pagina> {
 
   @override
   Widget build(BuildContext context) {
-    widget.titulo = Traductor.obtenerEtiquetaSeccion(widget.pagina!, 'titulo');
-    print(widget.titulo);
-
     print(ParametrosSistema.idioma);
     print(ParametrosSistema.colorTema);
 
     ElementoLista elemento = ElementoLista(
         icono: 'menu',
         accion: ejecutar,
+        tituloAccion: "xxxx",
         titulo: 'prueba',
         subtitulo: "x",
         descripcion: "es una prueba");
@@ -91,26 +83,38 @@ class _botones_paginas_state extends State<botones_pagina> {
     ElementoLista elemento2 = ElementoLista(
         icono: 'menu',
         accion: ejecutar,
+        tituloAccion: "xxxx",
         titulo: 'prueba',
         subtitulo: "x",
         descripcion: "es una prueba");
+    TextEditingController _controllerAutoCompletar = TextEditingController();
+    Control control = Control(controlEdicion: _controllerAutoCompletar);
+    control.controlEdicion = _controllerAutoCompletar;
+
+    List<ElementoLista> opciones = [];
+
+    opciones.add(ElementoLista(titulo: 'aardvark'));
+    opciones.add(ElementoLista(titulo: 'bobcat'));
+    opciones.add(ElementoLista(titulo: 'chameleon'));
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.titulo!)),
+      appBar: AppBar(title: Text("Botones")),
       drawer: Menulateral.crearMenu(
-          context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
+          context, OpcionesMenus.obtenerMenuPrincipal(), "Botones"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            Autocompletar(
+                opciones: opciones, control: control, metodo: cambiarValor),
+            // const Text(
+            //   'You have pushed the button this many times:',
+            // ),
 
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            // Text(
+            //   '$_counter',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
 
             Boton.crearBotonLinkIcono(context, elemento),
             Boton.crearBotonLinkTexto(context, elemento),
@@ -159,6 +163,10 @@ class _botones_paginas_state extends State<botones_pagina> {
         ElementoLista(icono: "save", accion: ejecutar),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  dynamic cambiarValor(dynamic valor) {
+    print(valor);
   }
 
   ejecutar(BuildContext context, ElementoLista elemento, [dynamic argumetos]) {

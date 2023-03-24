@@ -1,14 +1,17 @@
 menu_principal:
-
-      opcion1 : { id : 1 ,ruta : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Main Menu, subtitulo : ,  icono: menu, iconoLateral : arrow_right , activo : 1 } 
-      opcion2 : { id : 2 , ruta : prueba_pagina , animacionPagina: rotationRoute , titulo :  Test , subtitulo : ,   icono: menu,  iconoLateral : arrow_right , activo: 1 }         
-      opcion3 : { id : 3 ,ruta : tema_pagina , animacionPagina: rotationRoute ,  titulo : Theme , subtitulo : ,  icono: tema , iconoLateral : arrow_right , activo : 1 } 
-      opcion4 : { id : 4 ,ruta : preferencias_pagina , animacionPagina: rotationRoute ,   titulo : Preferences , subtitulo : ,  icono: settings , iconoLateral : arrow_right , activo : 1 } 
-      opcion5 : { id : 5 , ruta : botones_pagina , animacionPagina: rotationRoute ,   titulo : buttons , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion6 : { id : 6 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,  titulo : query list , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion7 : { id : 7 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,   titulo : Capture data, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion8 : { id : 8 , ruta : venta_lista_pagina ,  animacionPagina: rotationRoute ,  titulo : List Self , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion9 : { id : 9 , ruta : venta_captura_pagina ,  animacionPagina: rotationRoute ,   titulo : Capture Self, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion10 : { id : 10 ,  ruta : inicio_pagina , animacionPagina: rotationRoute , titulo : Home, subtitulo : , icono: menu, iconoLateral : arrow_right , activo : 1 } 
+      opcion20 : {  id : 20 , ruta : acceso_pagina , animacionPagina: rotationRoute , titulo : Access , subtitulo : , icono: menu, iconoLateral : arrow_right , activo: 1 }         
+      opcion30 : { id : 30 ,  ruta : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Main Menu, subtitulo : , icono: menu, iconoLateral : arrow_right , activo : 1 } 
+      opcion50 : { id : 50 , ruta : tema_pagina ,  animacionPagina: rotationRoute ,  titulo : Theme , subtitulo : , icono: tema , iconoLateral : arrow_right , activo : 1 } 
+      opcion60 : { id : 60 , ruta : preferencias_pagina , animacionPagina: rotationRoute ,      titulo : Preferences , subtitulo : ,  icono: settings ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion100 : { id : 100 , ruta : venta_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : List Self , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion110 : { id : 110 , ruta : venta_captura_pagina  , animacionPagina: rotationRoute ,      titulo : Capture Self, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion40 : {  id : 40 , ruta : prueba_pagina , animacionPagina: rotationRoute , titulo : Test , subtitulo : , icono: menu, iconoLateral : arrow_right , activo: 1 }         
+      opcion70 : { id : 70 , ruta : botones_pagina  , animacionPagina: rotationRoute ,      titulo : buttons , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion80 : { id : 80 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,      titulo : query list , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion90 : { id : 90 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,      titulo : apture data, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion200 : { id : 200 , ruta : Producto_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : List Productos , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion210 : { id : 210 , ruta : Producto_captura_pagina ,  animacionPagina: rotationRoute ,      titulo : Capture Producto, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
 
 comun_pagina:
       borde :  Lineal        
@@ -17,6 +20,7 @@ comun_pagina:
       idiomaEN : English   
       suscripcion : { titulo : Subscription } 
       cuenta : { titulo : Account }   
+      contrasena : { titulo : Password }   
       nombre : { titulo : Name }
       grupo : { titulo : Group }
       perfil : { titulo : Profile } 
@@ -30,23 +34,23 @@ comun_pagina:
       accionGuardar : { titulo : Save , icono: save  , mensaje : Information has been saved   ,opciones : to accept } 
       operacionExitosa : { titulo : Operation  , icono: info  , mensaje : The operation was successful, opciones : to accept }
       cargando : { titulo : Loading , icono:  , mensaje : Loading information ,opciones : to accept }
-      noInformacion : { titulo : Consultar ,  icono:  , mensaje : There is no information  ,opciones : to accept }
+      noInformacion : { titulo : Consult,  icono:  , mensaje : There is no information  ,opciones : to accept }
 
-pagina_inicio:
+inicio_pagina:
       titulo: Home
       borde :  Lineal        
       colorBorde : rojo    
       textoContador : número de letras    
       botGuardar : Iniciar   
 
-pagina_acceso:
+acceso_pagina:
       titulo: Access
       borde :  Lineal        
       colorBorde : rojo    
       textoContador : número de letras    
       botGuardar : Ingresar   
-      txtCuenta : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Cuenta , textoAyuda: Captura cuenta o correo , marcaAguaTexto:  Captura cuenta o correo  ,icono: emailArroba, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
-      txtContrasena : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Contraseña , textoAyuda: Captura Contraseña , marcaAguaTexto:  Captura Contraseña  ,icono: contrasena, iconoInterno:   , textoCapitalizacion : words , protegerTextoEscrito : true  } 
+      txtCuenta : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Account , textoAyuda: Capture Account or email, marcaAguaTexto:  Captura cuenta o correo  ,icono: emailArroba, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtContrasena : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Password , textoAyuda: Capture Password , marcaAguaTexto:  Captura Contraseña  ,icono: contrasena, iconoInterno:   , textoCapitalizacion : words , protegerTextoEscrito : true  } 
 
 menu_principal_pagina:
       titulo: Main Menu
@@ -68,9 +72,9 @@ tema_pagina:
       colorBorde : rojo    
       textoContador : N       
       botGuardar : guardar   
-      colorPrimario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color Primary , textoAyuda:  , marcaAguaTexto: Seleccione color ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }     
-      colorSecundario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color secondary , textoAyuda:  , marcaAguaTexto: Seleccione color ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }      
-      apaBrillo : { tipo : Apagador , tipoEntrada : text,  textoEtiqueta: brightness  , textoAyuda:  , marcaAguaTexto:  brightness ,icono: brillo, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }   
+      colorPrimario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color Primary , textoAyuda:  , marcaAguaTexto: Select Color Primary ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }     
+      colorSecundario : { tipo : ListaDespegable , tipoEntrada : text, textoEtiqueta: Color secondary , textoAyuda:  , marcaAguaTexto: Select Color secondary ,icono: tema, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }      
+      apaBrillo : { tipo : Apagador , tipoEntrada : text,  textoEtiqueta: Brightness  , textoAyuda:  , marcaAguaTexto:  Select Brightness ,icono: brightness, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }   
 
 preferencias_pagina:
       titulo: Preferences
@@ -103,6 +107,25 @@ venta_captura_pagina:
       txttelefono: { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Telephone , textoAyuda: , marcaAguaTexto:  Telephone Capture   ,icono: telefono, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
       txtcorreo : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Email , textoAyuda: Capture Email , marcaAguaTexto:  Captura Correo  ,icono: email, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
       txtruta : { tipo : Foto , tipoEntrada : text,  textoEtiqueta: Imagen , textoAyuda:  , marcaAguaTexto:  Seleccione Imagen  ,icono: foto, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  }          
+
+Producto_lista_pagina:
+      titulo: Lista Producto
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar   
+
+Producto_captura_pagina:
+      titulo: Captura Producto
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar 
+      txtnombre : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Name , textoAyuda: Capture Name, marcaAguaTexto:  Captura Nombre  ,icono: email, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtprecio : { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Price, textoAyuda:  Capture Price, marcaAguaTexto:  Captura Precio  ,icono: money, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtexistencia: { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Existence , textoAyuda:  Capture Existence  , marcaAguaTexto:  Captura Existencia  ,icono: telefono, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      apaactivo : { tipo : Apagador , tipoEntrada : text,  textoEtiqueta: Active  , textoAyuda: Selecione Active , marcaAguaTexto: Selecione Activo ,icono: brillo, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }    
+
 
 prueba_pagina:
       titulo: Test

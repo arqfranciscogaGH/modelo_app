@@ -12,70 +12,57 @@ import '../../../paquetesExternos/paquetesExternos.dart';
 //  librerias externas  flutter
 
 class ParametrosSistemaCE extends ChangeNotifier {
-  // ThemeData temaActual;
-  // controladorEstadoTema({
-  //   required bool esModoObscuro
-  // }): temaActual= esModoObscuro? ThemeData.dark() : ThemeData.light();
+  // temma
 
-  // cambiarModoObscuro (){ temaActual = ThemeData.dark(); notifyListeners(); }
-  // cambiarModoClaro (){ temaActual = ThemeData.light(); notifyListeners();  }
-
-  controladorEstadoParametrosSistema() {
-    //  obtener();
-  }
   void obtenerTema() {
-    AdministradorTema.obtenerTema();
-  }
-
-  guardarTema() {
-    AdministradorTema.guardarTema();
+    AdministradorTema.obtener();
     notifyListeners();
   }
 
-  cambiarColorTema(String color) {
-    AdministradorTema.cambiarColorTema(color);
+  void cambiarTema() {
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
-  cambiarColorPrimario(String color) {
-    AdministradorTema.cambiarColorPrimario(color);
+  void guardarTema() {
+    AdministradorTema.guardar();
+    notifyListeners();
+  }
+
+  void cambiarColorPrimario(String color) {
+    AdministradorTema.asignarColorPrimario(color);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
-  cambiarColorSecundario(String color) {
-    AdministradorTema.cambiarColorSecundario(color);
+  void cambiarColorSecundario(String color) {
+    AdministradorTema.asignarColorSecundario(color);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
-  cambiarEsModoObscuro(bool esModoObscuro) {
-    AdministradorTema.cambiarEsModoObscuro(esModoObscuro);
+  void cambiarEsModoObscuro(bool esModoObscuro) {
+    AdministradorTema.asignarEsModoObscuro(esModoObscuro);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
-  crearTemaPersonalizado() {
-    AdministradorTema.crearTemaPersonalizado();
-    notifyListeners();
+  // Idioma
+
+  String obtenerIdioma() {
+    AdministradorIdioma.obtener();
+    return ParametrosSistema.idioma;
   }
 
-  /* 
-  String obtenerIdioma (){ 
-     AdministradorIdioma.obtenerIdioma();
-     return ParametrosSistema.idioma;
-  } 
-  */
-  cambiarIdioma(String idioma) {
-    AdministradorIdioma.cambiarIdioma(idioma);
+  void cambiarIdioma(String idioma) {
+    AdministradorIdioma.asignar(idioma);
     Traductor.cargar();
     OpcionesMenus.limpiar();
     notifyListeners();
   }
 
-  guardarIdioma() {
-    AdministradorIdioma.guardarIdioma();
+  void guardarIdioma() {
+    AdministradorIdioma.guardar();
     notifyListeners();
   }
 }

@@ -1,13 +1,17 @@
 menu_principal:
-      opcion1 : { id : 1 ,  ruta : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Menú principal, subtitulo : , icono: menu, iconoLateral : arrow_right , activo : 1 } 
-      opcion2 : {  id : 2 , ruta : prueba_pagina , animacionPagina: rotationRoute , titulo : Pruebas , subtitulo : , icono: menu, iconoLateral : arrow_right , activo: 1 }         
-      opcion3 : { id : 3 , ruta : tema_pagina ,  animacionPagina: rotationRoute ,  titulo : Tema , subtitulo : , icono: tema , iconoLateral : arrow_right , activo : 1 } 
-      opcion4 : { id : 4 , ruta : preferencias_pagina , animacionPagina: rotationRoute ,      titulo : Preferencias , subtitulo : ,  icono: settings ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion5 : { id : 5 , ruta : botones_pagina  , animacionPagina: rotationRoute ,      titulo : Botones , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion6 : { id : 6 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,      titulo : Consulta , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion7 : { id : 7 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,      titulo : Captura Datos, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion8 : { id : 8 , ruta : venta_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : Venta_lista , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion9 : { id : 9 , ruta : venta_captura_pagina  , animacionPagina: rotationRoute ,      titulo : Venta_captura, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion10 : { id : 10 ,  ruta : inicio_pagina , animacionPagina: rotationRoute , titulo : Inicio, subtitulo : , icono: menu, iconoLateral : arrow_right , activo : 1 } 
+      opcion20 : {  id : 20 , ruta : acceso_pagina , animacionPagina: rotationRoute , titulo : Acceso , subtitulo : , icono: menu, iconoLateral : arrow_right , activo: 1 }         
+      opcion30 : { id : 30 ,  ruta : menu_principal_pagina , animacionPagina: rotationRoute , titulo : Menú principal, subtitulo : , icono: menu, iconoLateral : arrow_right , activo : 1 } 
+      opcion50 : { id : 50 , ruta : tema_pagina ,  animacionPagina: rotationRoute ,  titulo : Tema , subtitulo : , icono: tema , iconoLateral : arrow_right , activo : 1 } 
+      opcion60 : { id : 60 , ruta : preferencias_pagina , animacionPagina: rotationRoute ,      titulo : Preferencias , subtitulo : ,  icono: settings ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion100 : { id : 100 , ruta : venta_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : Venta_lista , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion110 : { id : 110 , ruta : venta_captura_pagina  , animacionPagina: rotationRoute ,      titulo : Venta_captura, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion40 : {  id : 40 , ruta : prueba_pagina , animacionPagina: rotationRoute , titulo : Pruebas , subtitulo : , icono: menu, iconoLateral : arrow_right , activo: 1 }         
+      opcion70 : { id : 70 , ruta : botones_pagina  , animacionPagina: rotationRoute ,      titulo : Botones , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion80 : { id : 80 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,      titulo : Consulta , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion90 : { id : 90 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,      titulo : Captura Datos, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion200 : { id : 200 , ruta : Producto_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : Lista Productos , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion210 : { id : 210 , ruta : Producto_captura_pagina ,  animacionPagina: rotationRoute ,      titulo : Captura Producto, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
 
 comun_pagina:
       borde :  Lineal        
@@ -16,6 +20,7 @@ comun_pagina:
       idiomaEN : Ingles   
       suscripcion : { titulo : Suscripción }
       cuenta : { titulo : Cuenta }   
+      contrasena : { titulo : Contraseña }   
       nombre : { titulo : Nombre }
       grupo : { titulo : Grupo }
       perfil : { titulo : Perfil } 
@@ -37,14 +42,14 @@ comun_pagina:
       cargando : { titulo : Cargando , icono:  , mensaje : obteniendo información , opciones : Aceptar }
       noInformacion : { titulo : Consultar ,  icono:  , mensaje : No hay información  , opciones : Aceptar  }
 
-pagina_inicio:
+inicio_pagina:
       titulo: Inicio
       borde :  Lineal        
       colorBorde : rojo    
       textoContador : número de letras    
       botGuardar : Iniciar   
 
-pagina_acceso:
+acceso_pagina:
       titulo: Acceso
       borde :  Lineal        
       colorBorde : rojo    
@@ -105,6 +110,24 @@ venta_captura_pagina:
       txttelefono: { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Teléfono , textoAyuda: , marcaAguaTexto:  Captura Teléfono  ,icono: telefono, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
       txtcorreo : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Correo , textoAyuda: Captura Correo , marcaAguaTexto:  Captura Correo  ,icono: email, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
       txtruta : { tipo : Foto , tipoEntrada : text,  textoEtiqueta: Imagen , textoAyuda:  , marcaAguaTexto:  Seleccione Imagen  ,icono: foto, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  }          
+
+Producto_lista_pagina:
+      titulo: Lista Producto
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar   
+
+Producto_captura_pagina:
+      titulo: Captura Producto
+      borde :  Lineal        
+      colorBorde : rojo    
+      textoContador : número de letras    
+      botGuardar : guardar 
+      txtnombre : { tipo : CajaTextoForma , tipoEntrada : text,  textoEtiqueta: Nombre , textoAyuda: Captura Nombre, marcaAguaTexto:  Captura Nombre  ,icono: email, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtprecio : { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Precio, textoAyuda:  Captura Precio, marcaAguaTexto:  Captura Precio  ,icono: money, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      txtexistencia: { tipo : CajaTextoForma , tipoEntrada : number,  textoEtiqueta: Existencia , textoAyuda:  Captura Existencia  , marcaAguaTexto:  Captura Existencia  ,icono: telefono, iconoInterno:   , textoCapitalizacion : none , protegerTextoEscrito : false  } 
+      apaactivo : { tipo : Apagador , tipoEntrada : text,  textoEtiqueta: Activo  , textoAyuda: Selecione Activo , marcaAguaTexto: Selecione Activo ,icono: brillo, iconoInterno:  , textoCapitalizacion : none , protegerTextoEscrito : false  }    
 
 
 Modelo_pagina_lista:

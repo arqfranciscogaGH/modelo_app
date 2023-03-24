@@ -59,38 +59,28 @@ class _menu_principal_pagina_state extends State<menu_principal_pagina> {
 
   @override
   Widget build(BuildContext context) {
+    print("build principal");
     Responsivo.identifciarDispositivo(context);
 
     print(ParametrosSistema.idioma);
-    print(ParametrosSistema.colorTema);
-
+    print(ParametrosSistema.colorPrimario);
+    print(ParametrosSistema.colorSecundario);
     late ElementoLista elementoLista;
-
-    elementoLista = ElementoLista();
-    elementoLista.titulo = "fga2";
-
     elementoLista = InjeccionDependencia.obtener<ElementoLista>();
-    elementoLista.titulo = "XXX";
-
-    elementoLista = InjeccionDependencia.obtener<ElementoLista>();
-
-    // widget.titulo==null ?? "";
-    // idioma = IdiomaAplicacion.obt(context);
-    // idioma = IdiomaAplicacion.obtener(context, idioma);
-
-    // widget.titulo = idioma.obtenerElemento('pagina_menu_principal', "titulo");
-
-    // widget.titulo = idioma.obtenerElemento(widget.pagina, "titulo");
+    ElementoLista elementoLista2 =
+        InjeccionDependencia.obtener<ElementoLista>();
+    elementoLista2.titulo = "222";
 
     return Scaffold(
       key: scaffoldKey,
       appBar: NewGradientAppBar(
-          title: Text(ContextoUI.obtenerTitulo(widget)),
-          gradient: LinearGradient(colors: [
-            //Theme.of(context).primaryColor,
-            Colores.obtener(ParametrosSistema.colorPrimario),
-            Colores.obtener(ParametrosSistema.colorSecundario)
-          ])),
+        title: Text(ContextoUI.obtenerTitulo(widget)),
+        gradient: LinearGradient(colors: [
+          //Theme.of(context).primaryColor,
+          Colores.obtener(ParametrosSistema.colorPrimario),
+          Colores.obtener(ParametrosSistema.colorSecundario)
+        ]),
+      ),
       drawer: Menulateral.crearMenu(
           context,
           OpcionesMenus.obtenerMenuPrincipal(),
@@ -165,7 +155,7 @@ class _menu_principal_pagina_state extends State<menu_principal_pagina> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 35.0),
-            Text('Las cosas van mejor con KUNGIO ',
+            Text('Titulo ',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30.0,

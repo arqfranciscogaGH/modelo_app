@@ -69,46 +69,52 @@ class Accion {
   static animar(BuildContext context, ElementoLista elemento,
       [dynamic argumentos]) {
     if ((elemento != null || elemento.pagina != null)) {
-      switch (elemento.animacionPagina!) {
-        case eAnimacionPagina.slideRightRoute:
-          Navigator.push(context, SlideRightRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.scaleRoute:
-          Navigator.push(context, ScaleRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.rotationRoute:
-          Navigator.push(context, RotationRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.sizeRoute:
-          Navigator.push(context, SizeRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.fadeRoute:
-          Navigator.push(context, FadeRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.scaleRotateRoute:
-          Navigator.push(context, ScaleRotateRoute(page: elemento.pagina!));
-          break;
-        case eAnimacionPagina.enterExitRoute:
-          Navigator.push(
-              context,
-              EnterExitRoute(
-                  enterPage: elemento.pagina!, exitPage: elemento.pagina2!));
-          break;
-        default:
-          Navigator.push(context, ScaleRotateRoute(page: elemento.pagina!));
-          break;
+      if (elemento.animacionPagina == null)
+        Navigator.push(context, FadeRoute(page: elemento.pagina!));
+      else {
+        switch (elemento.animacionPagina!) {
+          case eAnimacionPagina.slideRightRoute:
+            Navigator.push(context, SlideRightRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.scaleRoute:
+            Navigator.push(context, ScaleRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.rotationRoute:
+            Navigator.push(context, RotationRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.sizeRoute:
+            Navigator.push(context, SizeRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.fadeRoute:
+            Navigator.push(context, FadeRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.scaleRotateRoute:
+            Navigator.push(context, ScaleRotateRoute(page: elemento.pagina!));
+            break;
+          case eAnimacionPagina.enterExitRoute:
+            Navigator.push(
+                context,
+                EnterExitRoute(
+                    enterPage: elemento.pagina!, exitPage: elemento.pagina2!));
+            break;
+          default:
+            Navigator.push(context, ScaleRotateRoute(page: elemento.pagina!));
+            break;
+        }
       }
     }
   }
 
-  static mostrarSiguientePagina(BuildContext context, dynamic widget) {
+  static mostrarPagina(BuildContext context, dynamic widget, String accion) {
     if (widget == null)
       Accion.regresar(context);
     else if (widget.paginaAnterior == null && widget.paginaSiguiente == null)
       Accion.regresar(context);
-    else if (widget.paginaSiguiente != null)
+    else if (widget.paginaSiguiente != null &&
+        accion.toLowerCase() == "siguiente")
       Accion.hacer(context, OpcionesMenus.obtener(widget.paginaSiguiente));
-    else if (widget.paginaAnterior != null)
+    else if (widget.paginaAnterior != null &&
+        accion.toLowerCase() == "anterior")
       Accion.hacer(context, OpcionesMenus.obtener(widget.paginaAnterior));
   }
 

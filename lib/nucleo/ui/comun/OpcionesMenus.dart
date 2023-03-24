@@ -10,25 +10,23 @@ import '../../../aplicacion/aplicacion.dart';
 
 //  librerias externas  flutter
 
-// Descripcion de funcionalidad 
-//  obtener rutas para opciones de menus 
+// Descripcion de funcionalidad
+//  obtener rutas para opciones de menus
 //
 
 class OpcionesMenus {
-  static List<ElementoLista> elementosPrincipal=[];
-  static List<ElementoLista> paginas=[];
-  static limpiar ()
-  {
-      elementosPrincipal=[];
+  static List<ElementoLista> elementosPrincipal = [];
+  static List<ElementoLista> paginas = [];
+  static limpiar() {
+    elementosPrincipal = [];
   }
 
-  static asignarPaginas ()
-  {
-      if ( OpcionesMenus.paginas.length==0)
-          OpcionesMenus.paginas=definirPaginas ();
+  static asignarPaginas() {
+    if (OpcionesMenus.paginas.length == 0)
+      OpcionesMenus.paginas = definirPaginas();
   }
-  static ElementoLista  obtenerPagina (String ruta)
-  {
+
+  static ElementoLista obtenerPagina(String ruta) {
     asignarPaginas();
     return OpcionesMenus.paginas.firstWhere((s) => s.ruta == ruta);
   }
@@ -37,30 +35,32 @@ class OpcionesMenus {
     asignarPaginas();
     return OpcionesMenus.paginas.firstWhere((s) => s.ruta == ruta);
   }
+
   static List<ElementoLista> actualizarMenu(String nombrMenu) {
-     List<ElementoLista> elementos=[];
-     dynamic menu =Traductor.obtenerSeccion(nombrMenu);
-     for (MapEntry e in menu.entries) {
-        print("Key ${e.key}, Value ${e.value}");
-        print( menu[e.key]['ruta']);
-        print( menu[e.key]['titulo']);
-   
-        String ruta =menu[e.key]['ruta']; 
-        ElementoLista elemento = OpcionesMenus.obtenerPagina(ruta);
-        elemento.ruta=ruta;
-        elemento.animacionPagina=convertirAninacionPagina(menu[e.key]['animacionPagina']);
- 
-        elemento.titulo=menu[e.key]['titulo'];
-        elemento.subtitulo=menu[e.key]['subtitulo']; 
-  
-        elemento.icono=menu[e.key]['icono'];
-        elemento.iconoLateral=menu[e.key]['iconoLateral']; 
-        elemento.activo=menu[e.key]['activo']; 
-        elementos.add(elemento);
-    } 
+    List<ElementoLista> elementos = [];
+    dynamic menu = Traductor.obtenerSeccion(nombrMenu);
+    for (MapEntry e in menu.entries) {
+      // print("Key ${e.key}, Value ${e.value}");
+      // print( menu[e.key]['ruta']);
+      // print( menu[e.key]['titulo']);
+
+      String ruta = menu[e.key]['ruta'];
+      ElementoLista elemento = OpcionesMenus.obtenerPagina(ruta);
+      elemento.ruta = ruta;
+      elemento.animacionPagina =
+          convertirAninacionPagina(menu[e.key]['animacionPagina']);
+
+      elemento.titulo = menu[e.key]['titulo'];
+      elemento.subtitulo = menu[e.key]['subtitulo'];
+
+      elemento.icono = menu[e.key]['icono'];
+      elemento.iconoLateral = menu[e.key]['iconoLateral'];
+      elemento.activo = menu[e.key]['activo'];
+      elementos.add(elemento);
+    }
     //    for (var v in menu.keys) {
     //     print(v);
-    //   } 
+    //   }
     //    for (var v in menu.values) {
     //     print(v);
     //   }
@@ -69,21 +69,22 @@ class OpcionesMenus {
     return elementos;
   }
 
-static List<ElementoLista> obtenerMenuAlterno(String nombrMenu) {
-    List<ElementoLista> elementos=[];
-    elementos= actualizarMenu(nombrMenu);
+  static List<ElementoLista> obtenerMenuAlterno(String nombrMenu) {
+    List<ElementoLista> elementos = [];
+    elementos = actualizarMenu(nombrMenu);
     return elementos;
-}
-static List<ElementoLista> obtenerMenuPrincipal() {
-    if ( OpcionesMenus.elementosPrincipal==null ||  OpcionesMenus.elementosPrincipal.length==0 )
-         OpcionesMenus.elementosPrincipal= actualizarMenu('menu_principal');
+  }
+
+  static List<ElementoLista> obtenerMenuPrincipal() {
+    if (OpcionesMenus.elementosPrincipal == null ||
+        OpcionesMenus.elementosPrincipal.length == 0)
+      OpcionesMenus.elementosPrincipal = actualizarMenu('menu_principal');
     return OpcionesMenus.elementosPrincipal;
-}
+  }
 
-static List<ElementoLista> obtenerMenuPrincipalA() {
-     List<ElementoLista> elementos=[]; 
-     elementos=actualizarMenu('menu_principal');
-
+  static List<ElementoLista> obtenerMenuPrincipalA() {
+    List<ElementoLista> elementos = [];
+    elementos = actualizarMenu('menu_principal');
 
     // if ( elementos.length==0)
     // {
@@ -155,10 +156,7 @@ static List<ElementoLista> obtenerMenuPrincipalA() {
     //   elemento.activo = 1;
     //   elementos.add(elemento);
 
-
-
     // }
-
 
 /*     // elemento = ElementoLista();
     // elemento.titulo = "Franquicias";
