@@ -88,8 +88,9 @@ class AccesoBD extends IAccesoBD {
   }
 
   @override
-  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map) async {
-    dynamic res = await _abd!.insertar(nombreTabla, map);
+  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {
+    dynamic res = await _abd!.insertar(nombreTabla, map, campo, valor);
     return res;
   }
 

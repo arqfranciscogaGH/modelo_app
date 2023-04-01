@@ -21,10 +21,11 @@ class ContextoAplicacion {
 
   ContextoAplicacion() {}
 
-  static iniciar() {
+  static iniciar() async {
     // _accesoDB = AccesoBD();
     // _accesoDB!.definirPersistencia(_configuracionPersitencia);
     _db = DBAplicacion();
+    await _db!.abrir();
     // _accesoDB!.abrir();
     // _BD.sqlConsultar( 'select Persona.nombre, sum(Mov.importe) from Persona left join Mov ON Persona.id=Mov.idPersona group by Persona.nombre').then( ( listaRespuesta)
     // {

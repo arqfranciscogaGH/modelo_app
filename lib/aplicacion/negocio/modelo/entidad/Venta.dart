@@ -46,6 +46,7 @@ class Venta extends EntidadBase {
           nombre: nombre,
           nombreTabla: 'Ventas',
           campoLLave: 'id',
+          incrementar: true,
         );
 
   //    métodos

@@ -83,19 +83,27 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     entidadCaptura = ui.tabla!.entidad;
 
     ui.tabla!.controlEstadoUI = controlEstadoUI!;
-    //  paginación
 
-    ui.tabla!.paginador.registrosPorPagina = 5;
-    ui.tabla!.paginador.estatus = 1;
+    //  paginación
+    // numero de  pagina  inicial
+    ui.tabla!.paginador.paginaActual = 1;
+    // registro por  pagina
+    ui.tabla!.paginador.registrosPorPagina = 10;
+    // indicador estatus  1 paginacion  en api 0 paginacion en lista obnenida
+    // 1   la api hace la paginacion (solo regresa los registros se usaran en cada pagina, pero cada avance o regreso de pagina  e deben obtenr los registros )
+    // se debe usar simpres el metodo consultarPaginacionTabla
+    // 0   accesoTabla hace localmente la paginación  usando la lista , pero es necesaio obtener todos los registros en la primer llamada , ventaja : más rápido la pagicion  y menos  llamadas a la api  , desventaja  más datos en meomoria  y mas viajan por internet (viaja toda los registros)
+    // se debe usar la primera vez consultarPaginacionTabla  y  en avanzar y regresar el metodo paginarTabla
+    ui.tabla!.paginador.estatus = 0;
+
+// proporcionar  llave
+    ui.tabla!.configuracion!.llaveApi =
+        ContextoAplicacion.db.tablaAutenticacion!.entidad.llave!;
 
     ui.tabla!.consultarPaginacionTabla(entidadCaptura);
     // ui.tabla!.filtrarLista(entidadCaptura, 'estatus', 1);
 
-    print(ContextoAplicacion.db.tablaAutenticacion!.entidad.toMap());
-
     print("initState");
-    print(ui.tabla!.entidad.id);
-    print(entidadCaptura.id);
 
     // ContextoAplicacion.db.tablaVenta!.consultarTabla(
     //     ContextoAplicacion.db.tablaVenta!.entidad, actualizarEstadoLista);
@@ -191,25 +199,6 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     ui.dispose();
   }
 
-  regresarPagina(BuildContext context, ElementoLista elemento,
-      [dynamic argumento]) {
-    if ((ui.tabla!.paginador.paginaActual as int) > 1) {
-      ui.tabla!.paginador.paginaActual =
-          (ui.tabla!.paginador.paginaActual as int) - 1;
-      ui.tabla!.consultarPaginacionTabla(entidadCaptura);
-    }
-  }
-
-  avanzarPagina(BuildContext context, ElementoLista elemento,
-      [dynamic argumento]) {
-    if ((ui.tabla!.paginador.paginaActual as int) <
-        (ui.tabla!.paginador.totalPaginas as int)) {
-      ui.tabla!.paginador.paginaActual =
-          (ui.tabla!.paginador.paginaActual as int) + 1;
-      ui.tabla!.consultarPaginacionTabla(entidadCaptura);
-    }
-  }
-
   //
   //   construir  interfaz widget
   //
@@ -262,17 +251,12 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         //floatingActionButton: Boton.crearBotonFlotante(context, accionAgregar!),
         floatingActionButton:
-            Boton.crearRenglonBotonesFlotantes(context, opcionesPaginacion),
+            Boton.renglonBotonesFlotantes(context, opcionesPaginacion),
       ),
     );
   }
   //    metodos
   //
-
-  void actualizarEstadoLista(List<dynamic> listaRespuesta) {
-    print(listaRespuesta);
-    listaEntidad = listaRespuesta;
-  }
 
   //  interface  comun
   //
@@ -282,12 +266,13 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
 
   Widget mostrarContenido() {
     debugPrint("mostrarContenido");
-    listaEntidad = ui.tabla!.lista;
+    listaEntidad = ui.tabla!.paginador.listaPagina as List<dynamic>;
     print(listaEntidad.length);
     return Consumer<ControlEstadoUI>(
         builder: (context, _controlEstadoUI, widgetPadre) {
       return Vista_lista(
-          lista: ui.tabla!.paginador.resultado as List<dynamic>,
+          lista: ui.tabla!.paginador.listaPagina as List<dynamic>,
+          // lista: ui.tabla!.lista,
           acciones: accionConsultar,
           metodoCrearElemento: ui.crearElementoEntidad,
           context: context,
@@ -313,6 +298,32 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
         context: context,
         pagina: ContextoUI.obtenerTipo(widget),
         enProceso: controlEstadoUI!.enProceso);
+  }
+
+  regresarPagina(BuildContext context, ElementoLista elemento,
+      [dynamic argumento]) {
+    if ((ui.tabla!.paginador.paginaActual as int) > 1) {
+      ui.tabla!.paginador.paginaActual =
+          (ui.tabla!.paginador.paginaActual as int) - 1;
+      // paginar  lista
+      ui.tabla!.paginarTabla(entidadCaptura);
+    }
+  }
+
+  avanzarPagina(BuildContext context, ElementoLista elemento,
+      [dynamic argumento]) {
+    if ((ui.tabla!.paginador.paginaActual as int) <
+        (ui.tabla!.paginador.totalPaginas as int)) {
+      ui.tabla!.paginador.paginaActual =
+          (ui.tabla!.paginador.paginaActual as int) + 1;
+      // paginar  lista
+      ui.tabla!.paginarTabla(entidadCaptura);
+    }
+  }
+
+  void actualizarEstadoLista(List<dynamic> listaRespuesta) {
+    print(listaRespuesta);
+    listaEntidad = listaRespuesta;
   }
 }
 //

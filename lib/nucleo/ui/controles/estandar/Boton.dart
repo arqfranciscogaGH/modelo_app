@@ -12,17 +12,99 @@ import '../../../nucleo.dart';
 // import '../../Iconos/iconos.dart';
 // import '../../../../nucleo/negocio/modelo/ModeloBase.dart';
 
-// no eliminar hasta quitarlo en paginas
-
 class Boton {
-  static Widget crearTexto(BuildContext context, ElementoLista elemento) {
+  static dynamic seleccionarTipoBoton(eBotonTipo tipo, ElementoLista elemento) {
+    if (tipo == eBotonTipo.Rectagulo) return null;
+    if (tipo == eBotonTipo.RectaguloBordes)
+      return RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+          side: BorderSide(
+            color: Colores.obtener(elemento.colorBorde!),
+          ));
+    else if (tipo == eBotonTipo.RectaguloRedondeado)
+      return RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3.0),
+          side: BorderSide(
+            color: Colores.obtener(elemento.colorFondo),
+          ));
+    else if (tipo == eBotonTipo.RectaguloOvalo)
+      return StadiumBorder();
+    // else if (tipo == eBotonTipo.Pentagono)
+    //   return BeveledRectangleBorder(borderRadius: BorderRadius.circular(12));
+    else if (tipo == eBotonTipo.Circulo)
+      return CircleBorder();
+    else if (tipo == eBotonTipo.Linea) return null;
+  }
+
+  static Widget plano(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    elemento = cambioColores(elemento);
+    Widget boton = TextButton(
+        // minWidth: ParametrosSistema.minAncho,
+        // height: ParametrosSistema.alto,
+        autofocus: true,
+        style: TextButton.styleFrom(
+          shape: seleccionarTipoBoton(tipo, elemento),
+          backgroundColor: Colores.obtener(elemento.colorFondo),
+          foregroundColor: Colores.obtener(elemento.colorTexto),
+          shadowColor: Colors.greenAccent,
+          disabledBackgroundColor: Colors.red,
+        ),
+        child: Text(elemento.tituloAccion!,
+            style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+        onPressed: () {
+          Accion.hacer(context, elemento);
+        });
+    return boton;
+  }
+
+  static Widget planoIcono(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    elemento = cambioColores(elemento);
+    Widget? icono;
+    if (elemento.icono != null)
+      icono = Icono.crear(
+          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!);
+    Widget boton = TextButton.icon(
+        // minWidth: ParametrosSistema.minAncho,
+        // height: ParametrosSistema.alto,
+        autofocus: true,
+        style: TextButton.styleFrom(
+          shape: seleccionarTipoBoton(tipo, elemento),
+          backgroundColor: Colores.obtener(elemento.colorFondo),
+          foregroundColor: Colores.obtener(elemento.colorTexto),
+        ),
+        icon: icono!,
+        label: Text(elemento.tituloAccion!,
+            style: TextStyle(
+                fontSize: elemento.tamanoFuente,
+                color: Colores.obtener(elemento.colorTexto))),
+        onPressed: () {
+          Accion.hacer(context, elemento);
+        });
+    return boton;
+  }
+
+  static Widget texto(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
     elemento = cambioColores(elemento);
     return MaterialButton(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
-      color: Colores.obtener(elemento.colorFondo),
+      autofocus: true,
+      elevation: 15,
+      padding: EdgeInsets.all(10),
+      shape: seleccionarTipoBoton(tipo, elemento),
       child: Text(elemento.tituloAccion!,
           style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+      color: Colores.obtener(elemento.colorFondo),
+      textColor: Colores.obtener(elemento.colorTexto),
+      focusColor: Colors.amber,
+      hoverColor: Colors.blue,
+      splashColor: Colors.indigo,
+      highlightColor: Colors.green,
+      disabledColor: Colors.limeAccent,
+      disabledTextColor: Colors.red,
       onPressed: () {
         print(" on tap ");
         Accion.hacer(context, elemento);
@@ -30,18 +112,28 @@ class Boton {
     );
   }
 
-  static Widget crearElevadoTexto(
-      BuildContext context, ElementoLista elemento) {
+  static Widget elevado(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
     elemento = cambioColores(elemento);
     return ElevatedButton(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
+      autofocus: true,
+
       style: ElevatedButton.styleFrom(
-        primary: Colores.obtener(elemento.colorFondo), // Background color
-        onPrimary: Colors.blue, // Text Color (Foreground color)
+        shape: seleccionarTipoBoton(tipo, elemento),
+        elevation: 35,
+        padding: EdgeInsets.all(10),
+        backgroundColor: Colores.obtener(elemento.colorFondo),
+        foregroundColor: Colores.obtener(elemento.colorTexto),
+        // primary: Colores.obtener(elemento.colorFondo),
+        // onPrimary: Colores.obtener(elemento.colorTexto),
+        shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
       ),
       child: Text(elemento.tituloAccion!,
-          style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+          style: TextStyle(
+              fontSize: elemento.tamanoFuente,
+              color: Colores.obtener(elemento.colorTexto))),
       onPressed: () {
         print(" on tap ");
         Accion.hacer(context, elemento);
@@ -49,8 +141,93 @@ class Boton {
     );
   }
 
-  static Widget crearBotonLinkIcono(
-      BuildContext context, ElementoLista elemento) {
+  static Widget elevadoIcono(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    elemento = cambioColores(elemento);
+    return ElevatedButton.icon(
+      // minWidth: ParametrosSistema.minAncho,
+      // height: ParametrosSistema.alto,
+      autofocus: true,
+      style: ElevatedButton.styleFrom(
+        shape: seleccionarTipoBoton(tipo, elemento),
+        elevation: 35,
+        padding: EdgeInsets.all(10),
+        backgroundColor: Colores.obtener(elemento.colorFondo),
+        foregroundColor: Colores.obtener(elemento.colorTexto),
+        // primary: Colores.obtener(elemento.colorFondo),
+        // onPrimary: Colores.obtener(elemento.colorTexto),
+        shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
+      ),
+      icon: Icono.crear(
+          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
+      label: Text(elemento.tituloAccion!,
+          style: TextStyle(
+              fontSize: elemento.tamanoFuente,
+              color: Colores.obtener(elemento.colorTexto))),
+
+      onPressed: () {
+        print(" on tap ");
+        Accion.hacer(context, elemento);
+      },
+    );
+  }
+
+  static Widget lineasAfuera(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    elemento = cambioColores(elemento);
+    return OutlinedButton(
+      // minWidth: ParametrosSistema.minAncho,
+      // height: ParametrosSistema.alto,
+      autofocus: true,
+      style: OutlinedButton.styleFrom(
+        shape: seleccionarTipoBoton(tipo, elemento),
+        padding: EdgeInsets.all(10),
+        backgroundColor: Colores.obtener(elemento.colorFondo),
+        foregroundColor: Colores.obtener(elemento.colorTexto),
+        shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
+      ),
+
+      child: Text(elemento.tituloAccion!,
+          style: TextStyle(
+              fontSize: elemento.tamanoFuente,
+              color: Colores.obtener(elemento.colorTexto))),
+
+      onPressed: () {
+        print(" on tap ");
+        Accion.hacer(context, elemento);
+      },
+    );
+  }
+
+  static Widget lineasAfueraIcono(
+      BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    elemento = cambioColores(elemento);
+    return OutlinedButton.icon(
+      // minWidth: ParametrosSistema.minAncho,
+      // height: ParametrosSistema.alto,
+      autofocus: true,
+      style: OutlinedButton.styleFrom(
+        shape: seleccionarTipoBoton(tipo, elemento),
+        padding: EdgeInsets.all(10),
+        backgroundColor: Colores.obtener(elemento.colorFondo),
+        foregroundColor: Colores.obtener(elemento.colorTexto),
+        shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
+      ),
+      icon: Icono.crear(
+          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
+      label: Text(elemento.tituloAccion!,
+          style: TextStyle(
+              fontSize: elemento.tamanoFuente,
+              color: Colores.obtener(elemento.colorTexto))),
+
+      onPressed: () {
+        print(" on tap ");
+        Accion.hacer(context, elemento);
+      },
+    );
+  }
+
+  static Widget linkIcono(BuildContext context, ElementoLista elemento) {
     elemento = cambioColores(elemento);
     return InkWell(
       highlightColor: Colors.grey.withOpacity(0.4),
@@ -64,8 +241,7 @@ class Boton {
     );
   }
 
-  static Widget crearBotonLinkTexto(
-      BuildContext context, ElementoLista elemento) {
+  static Widget linkTexto(BuildContext context, ElementoLista elemento) {
     elemento = cambioColores(elemento);
     return InkWell(
       highlightColor: Colors.grey.withOpacity(0.4),
@@ -82,9 +258,16 @@ class Boton {
     );
   }
 
-  static Widget crearBotonIcono(BuildContext context, ElementoLista elemento) {
+  static Widget icono(BuildContext context, ElementoLista elemento) {
     elemento = cambioColores(elemento);
     Widget boton = IconButton(
+        style: IconButton.styleFrom(
+          shape: seleccionarTipoBoton(eBotonTipo.Circulo, elemento),
+          padding: EdgeInsets.all(10),
+          // backgroundColor: Colores.obtener(elemento.colorTexto),
+          foregroundColor: Colores.obtener(elemento.colorFondo),
+          shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
+        ),
         icon: Icono.crear(
             elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
         color: Colors.green,
@@ -101,85 +284,25 @@ class Boton {
     return boton;
   }
 
-  static Widget crearBotonPlano(BuildContext context, ElementoLista elemento) {
-    elemento = cambioColores(elemento);
-    Widget? icono;
-    if (elemento.icono != null)
-      icono = Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!);
-    Widget boton = TextButton.icon(
-        icon: icono!,
-        label: Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
-            style: TextStyle(
-                fontSize: elemento.tamanoFuente!,
-                color: Colores.obtener(elemento.colorTexto))),
-        // style: TextButton.styleFrom(
-        //             primary: Colores.obtener(elemento.colorTexto), backgroundColor:Colores.obtener(elemento.colorFondo)),
-        onPressed: () {
-          Accion.hacer(context, elemento);
-        });
-    return boton;
-  }
-
-  static Widget crearBotonBordes(BuildContext context, ElementoLista elemento) {
-    elemento = cambioColores(elemento);
-    Widget? icono;
-    if (elemento.icono != null)
-      icono = Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!);
-    Widget boton = ElevatedButton.icon(
-        icon: icono!,
-        label: Text(elemento.titulo!,
-            style: TextStyle(
-                fontSize: elemento.tamanoFuente!,
-                color: Colores.obtener(elemento.colorTexto))),
-        style: TextButton.styleFrom(
-            primary: Colores.obtener(elemento.colorTexto),
-            backgroundColor: Colores.obtener(elemento.colorFondo)),
-        onPressed: () {
-          Accion.hacer(context, elemento);
-        });
-    return boton;
-  }
-
-  static Widget crearBotonOutLine(
-      BuildContext context, ElementoLista elemento) {
-    elemento = cambioColores(elemento);
-    Widget boton = OutlinedButton.icon(
-        icon: Icono.crear(
-            elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
-        label: Text(elemento.tituloAccion!,
-            style: TextStyle(
-                fontSize: elemento.tamanoFuente!,
-                color: Colores.obtener(elemento.colorTexto))),
-        // shape: StadiumBorder(),
-        onPressed: () {
-          Accion.hacer(context, elemento);
-        });
-    return boton;
-  }
-
-  static Widget crearBotonIconoContenedor(
-      BuildContext context, ElementoLista elemento) {
-    Widget boton = crearBotonIcono(context, elemento);
+  static Widget contenedorTexto(BuildContext context, ElementoLista elemento) {
+    Widget boton = texto(context, elemento, ParametrosSistema.tipoBoton);
     return _crearContendorBoton(boton, elemento);
   }
 
-  static Widget crearBotonPlanoContenedor(
+  static Widget contenedorElevado(
       BuildContext context, ElementoLista elemento) {
-    Widget boton = crearBotonPlano(context, elemento);
+    Widget boton = elevado(context, elemento, ParametrosSistema.tipoBoton);
     return _crearContendorBoton(boton, elemento);
   }
 
-  static Widget crearBotonBordesContenedor(
+  static Widget contenedorLineasAfuera(
       BuildContext context, ElementoLista elemento) {
-    Widget boton = crearBotonBordes(context, elemento);
+    Widget boton = lineasAfuera(context, elemento, ParametrosSistema.tipoBoton);
     return _crearContendorBoton(boton, elemento);
   }
 
-  static Widget crearBotonOutLineContenedor(
-      BuildContext context, ElementoLista elemento) {
-    Widget boton = crearBotonIcono(context, elemento);
+  static Widget contenedorIcono(BuildContext context, ElementoLista elemento) {
+    Widget boton = icono(context, elemento);
     return _crearContendorBoton(boton, elemento);
   }
 
@@ -205,23 +328,23 @@ class Boton {
     );
   }
 
-  static Widget crearColumnaBotonesFlotantes(
+  static Widget columnaBotonesFlotantes(
       BuildContext context, List<ElementoLista> elementos) {
-    List<Widget> botones = crearBotonesFlotantes(context, elementos, 'C');
+    List<Widget> botones = listaBotonesFlotantes(context, elementos, 'C');
     Column contenedor =
         Column(children: botones, mainAxisAlignment: MainAxisAlignment.center);
     return contenedor;
   }
 
-  static Widget crearRenglonBotonesFlotantes(
+  static Widget renglonBotonesFlotantes(
       BuildContext context, List<ElementoLista> elementos) {
-    List<Widget> botones = crearBotonesFlotantes(context, elementos, 'R');
+    List<Widget> botones = listaBotonesFlotantes(context, elementos, 'R');
     Row contenedor =
         Row(children: botones, mainAxisAlignment: MainAxisAlignment.center);
     return contenedor;
   }
 
-  static FloatingActionButton crearBotonFlotante(
+  static FloatingActionButton botonFlotante(
       BuildContext context, ElementoLista elemento) {
     Color color = Theme.of(context).backgroundColor;
     elemento = cambioColores(elemento);
@@ -238,11 +361,11 @@ class Boton {
     return boton;
   }
 
-  static List<Widget> crearBotonesFlotantes(
+  static List<Widget> listaBotonesFlotantes(
       BuildContext context, List<ElementoLista> elementos, String tipo) {
     List<Widget> botones = [];
     for (ElementoLista elemento in elementos) {
-      Widget boton = crearBotonFlotante(context, elemento);
+      Widget boton = botonFlotante(context, elemento);
       botones.add(boton);
       botones.add(tipo == 'R' ? SizedBox(width: 1) : SizedBox(height: 1));
     }

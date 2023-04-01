@@ -114,8 +114,8 @@ class AccesoApi implements IAccesoBD {
   }
 
   @override
-  Future<Map<String, dynamic>> insertar(
-      String nombreTabla, Map<String, dynamic> map) async {
+  Future<Map<String, dynamic>> insertar(String nombreTabla,
+      Map<String, dynamic> map, String campo, dynamic valor) async {
     Map<String, dynamic>? cuerpo;
     // String url = generarUrl(nombreTabla, null);
     Uri uri = generarUri(nombreTabla, null);

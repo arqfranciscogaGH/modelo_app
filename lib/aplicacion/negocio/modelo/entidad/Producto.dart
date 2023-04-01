@@ -13,7 +13,7 @@ class Producto extends EntidadBase {
   //    variables
   //    propiedades
 
-  double? precio;
+  int? precio;
   int? existencia;
   String? descripcion;
   String? clase;
@@ -41,6 +41,7 @@ class Producto extends EntidadBase {
           nombre: nombre,
           nombreTabla: 'Productos',
           campoLLave: 'id',
+          incrementar: false,
         );
 
   //    métodos
@@ -50,13 +51,13 @@ class Producto extends EntidadBase {
         llave: map["llave"],
         clave: map["clave"],
         nombre: map["nombre"],
-        precio: double.parse(map["precio"].toString()),
+        precio: int.parse(map["precio"].toString()),
         existencia: map["existencia"],
         descripcion: map["descripcion"],
         clase: map["clase"],
         subclase: map["subclase"],
         fechaEstatus: map["fechaEstatus"],
-        // estatus: int.parse(map["estatus"].toString()),
+        estatus: int.parse(map["estatus"].toString()),
       );
   @override
   Producto fromMap(Map<String, dynamic> map) {
@@ -65,13 +66,13 @@ class Producto extends EntidadBase {
     clave = map["clave"];
     nombre = map["nombre"];
 
-    precio = double.parse(map["precio"].toString());
+    precio = int.parse(map["precio"].toString());
     existencia = map["existencia"];
     descripcion = map["descripcion"];
     clase = map["clase"];
     subclase = map["subclase"];
     fechaEstatus = map["fechaEstatus"];
-    // estatus = int.parse(map["estatus"].toString());
+    estatus = int.parse(map["estatus"].toString());
     return this;
   }
 
@@ -94,12 +95,13 @@ class Producto extends EntidadBase {
     String sql = "CREATE TABLE if not exists  " +
         nombreTabla! +
         " ("
-            "id INTEGER PRIMARY KEY ,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "llave   TEXT , "
             "clave   TEXT , "
             "nombre   TEXT , "
             "precio   INTEGER , "
             "existencia   INTEGER, "
+            "descripcion   TEXT, "
             "clase   TEXT , "
             "subclase   TEXT , "
             "fechaEstatus   TEXT , "
@@ -110,7 +112,7 @@ class Producto extends EntidadBase {
   @override
   Producto iniciar() {
     Producto entidad = Producto();
-    entidad.id = 0;
+    entidad.id = null;
     entidad.llave = "";
     entidad.clave = "";
     entidad.nombre = "";

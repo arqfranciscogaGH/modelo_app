@@ -100,9 +100,13 @@ class AccesoTabla<T extends EntidadBase> {
     resultado.datos = lista.map((c) => c.toMap()).toList();
   }
 
+  @override
+  void dispose() {}
+
   dynamic iniciar() {
     return claseEntidad.iniciar();
   }
+
   //  metodos conversion  lista de MAp  a   lista  de entidades
 
   List<T> mapTolista(List<dynamic> listaMapa) {
@@ -174,6 +178,11 @@ class AccesoTabla<T extends EntidadBase> {
     return lista;
   }
 
+  // indicador estatus  1 paginacion  en api 0 paginacion en lista obnenida
+  // 1   la api hace la paginacion (solo regresa los registros se usaran en cada pagina, pero cada avance o regreso de pagina  e deben obtenr los registros )
+  // se debe usar simpres el metodo consultarPaginacionTabla
+  // 0   accesoTabla hace localmente la paginación  usando la lista , pero es necesaio obtener todos los registros en la primer llamada , ventaja : más rápido la pagicion  y menos  llamadas a la api  , desventaja  más datos en meomoria  y mas viajan por internet (viaja toda los registros)
+  // se debe usar la primera vez consultarPaginacionTabla  y  en avanzar y regresar el metodo paginarTabla
   Future<dynamic> consultarPaginacionTabla(T e,
       [Function? metodoRespuesta = null]) async {
     dynamic respuesta;
@@ -188,31 +197,22 @@ class AccesoTabla<T extends EntidadBase> {
     // });
     lista = paginar(e, respuesta);
 
-    // if (respuesta != null) {
-    //   print(respuesta.runtimeType.toString());
-    //   if (respuesta.runtimeType.toString().contains("Map")) {
-    //     paginador.fromMap(respuesta);
-    //     resultado.datos = respuesta["resultado"];
-    //     resultado.datos = paginador.resultado as List<dynamic>;
-    //     lista = resultado.datos;
-    //   } else {
-    //     resultado.datos = respuesta;
-    //     paginador.totalRegistros = respuesta.length;
-    //     if (paginador.registrosPorPagina == 0) {
-    //       paginador.registrosPorPagina = paginador.totalRegistros;
-    //       paginador.paginaActual = 1;
-    //     }
-    //     paginador.totalPaginas =
-    //         (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
-    //     int salto = ((paginador.paginaActual as int) - 1) *
-    //         (paginador.registrosPorPagina as int);
-    //     lista =
-    //         respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
-    //     lista = lista != null && lista.isNotEmpty
-    //         ? lista.map((c) => e.iniciar().fromMap(c)).toList()
-    //         : [];
-    //     paginador.resultado = lista;
-    //   }
+    if (metodoRespuesta != null)
+      metodoRespuesta(lista);
+    else if (controlEstadoUI != null)
+      controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
+
+    return lista;
+  }
+
+  Future<dynamic> paginarTabla(T e, [Function? metodoRespuesta = null]) async {
+    dynamic respuesta;
+    dynamic lista;
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
+
+    respuesta = resultado.datos;
+    lista = paginar(e, respuesta);
 
     if (metodoRespuesta != null)
       metodoRespuesta(lista);
@@ -232,32 +232,7 @@ class AccesoTabla<T extends EntidadBase> {
     respuesta =
         await _abd!.filtrarTabla(e.nombreTabla!, e.toMap(), campo, valor);
     lista = paginar(e, respuesta);
-    // if (respuesta != null) {
-    //   print(respuesta.runtimeType.toString());
-    //   if (respuesta.runtimeType.toString().contains("Map")) {
-    //     paginador.fromMap(respuesta);
-    //     resultado.datos = respuesta["resultado"];
-    //     resultado.datos = paginador.resultado as List<dynamic>;
-    //     lista = resultado.datos;
-    //   } else {
-    //     resultado.datos = respuesta;
-    //     paginador.totalRegistros = respuesta.length;
-    //     if (paginador.registrosPorPagina == 0) {
-    //       paginador.registrosPorPagina = paginador.totalRegistros;
-    //       paginador.paginaActual = 1;
-    //     }
-    //     paginador.totalPaginas =
-    //         (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
 
-    //     int salto = ((paginador.paginaActual as int) - 1) *
-    //         (paginador.registrosPorPagina as int);
-    //     lista =
-    //         respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
-    //     lista = lista != null && lista.isNotEmpty
-    //         ? respuesta.map((c) => e.iniciar().fromMap(c)).toList()
-    //         : [];
-    //     paginador.resultado = lista;
-    //   }
     if (metodoRespuesta != null)
       metodoRespuesta(lista);
     else if (controlEstadoUI != null)
@@ -271,13 +246,20 @@ class AccesoTabla<T extends EntidadBase> {
 
     if (respuesta != null) {
       print(respuesta.runtimeType.toString());
+      //  regresa  registro en tiene  paginador desde la api
       if (respuesta.runtimeType.toString().contains("Map")) {
+        // asigna datos  de paginador
         paginador.fromMap(respuesta);
-        resultado.datos = respuesta["resultado"];
-        resultado.datos = paginador.resultado as List<dynamic>;
-        lista = resultado.datos;
-      } else {
-        resultado.datos = respuesta;
+        if (paginador.listaPagina != null) {
+          // asigna  datos de registros en MAP
+          // resultado.datos = respuesta["listaPagina"];
+          resultado.datos = paginador.listaPagina as List<dynamic>;
+          // asigna datos  a lista  de pagina  en MAP
+          lista = paginador.listaPagina;
+        }
+      }
+      // solo regresa la lista  para  paginar
+      else {
         paginador.totalRegistros = respuesta.length;
         if (paginador.registrosPorPagina == 0) {
           paginador.registrosPorPagina = paginador.totalRegistros;
@@ -287,13 +269,18 @@ class AccesoTabla<T extends EntidadBase> {
             (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
         int salto = ((paginador.paginaActual as int) - 1) *
             (paginador.registrosPorPagina as int);
+        // asigna  datos de registros en MAP
+        resultado.datos = respuesta;
+        // asigna datos  a lista  de pagina  en MAP
         lista =
             respuesta.skip(salto).take(paginador.registrosPorPagina).toList();
-        lista = lista != null && lista.isNotEmpty
-            ? lista.map((c) => e.iniciar().fromMap(c)).toList()
-            : [];
-        paginador.resultado = lista;
       }
+      // convierte  en lista MAP a lista  de entidades
+      lista = lista != null && lista.isNotEmpty
+          ? lista.map((c) => e.iniciar().fromMap(c)).toList()
+          : [];
+      // asigna  resultado  de  paginador lista de entidades
+      paginador.listaPagina = lista;
     }
     return lista;
   }
@@ -327,9 +314,12 @@ class AccesoTabla<T extends EntidadBase> {
   }
 
   Future<Map<String, dynamic>> incrementarConsecutivo(T e) async {
-    await consultarTabla(e);
+    if (e.incrementar != null && e.incrementar == true)
+      // && configuracion!.persitencia != ePersitencia.Memoria
+      await consultarTabla(e);
 
     Map<String, dynamic> mapRegistro = e.toMap();
+
     // if (configuracion!.contadorRegistros == true) {
     //   registros = tabla.datos == null || tabla.datos.length == 0 ? 0 : lista.last.id??0;
     //   e.id = registros! + 1;
@@ -349,10 +339,11 @@ class AccesoTabla<T extends EntidadBase> {
 
   Future<dynamic> insertar(T e, [Function? metodoRespuesta = null]) async {
     Map<String, dynamic> map = e.toMap();
-    if (configuracion!.contadorRegistros == true) {
+    if (e.incrementar != null && e.incrementar == true) {
       map = await incrementarConsecutivo(e);
     }
-    dynamic respuesta = await _abd!.insertar(e.nombreTabla!, map);
+    dynamic respuesta = await _abd!
+        .insertar(e.nombreTabla!, map, e.campoLLave!, e.toMap()[e.campoLLave!]);
     if (respuesta != null) {
       this.entidad = e.fromMap(respuesta) as T;
       registro.datos = e.toMap();

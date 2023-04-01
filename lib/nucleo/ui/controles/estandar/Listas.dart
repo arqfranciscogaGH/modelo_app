@@ -224,7 +224,7 @@ class ElementoAccion extends StatelessWidget {
     if (elemento.icono != null &&
         (elemento.accion != null || elemento.ruta != null)) {
       elementoAccion = elemento;
-      acciones.add(Boton.crearBotonIcono(context, elemento));
+      acciones.add(Boton.icono(context, elemento));
       //acciones.add(IconButton ( icon:Iconos.crear(elemento.icono,elemento.color, elemento.size ) , onPressed: () { Accion.hacer(context,elemento); }));
     }
     if (elemento.icono2 != null &&
@@ -241,7 +241,7 @@ class ElementoAccion extends StatelessWidget {
           accion: elemento.accion2,
           callBackAccion: elemento.callBackAccion2);
       //acciones.add(IconButton ( icon:Iconos.crear(elementoAccion2.icono,elemento.color, elemento.size ) , onPressed: () { Accion.hacer(context,elementoAccion2); }));
-      acciones.add(Boton.crearBotonIcono(context, elementoAccion2));
+      acciones.add(Boton.icono(context, elementoAccion2));
     }
     if (elemento.icono3 != null &&
         (elemento.accion3 != null || elemento.ruta3 != null)) {
@@ -257,7 +257,7 @@ class ElementoAccion extends StatelessWidget {
           accion: elemento.accion3,
           callBackAccion: elemento.callBackAccion3);
       //acciones.add(IconButton ( icon:Iconos.crear(elementoAccion3.icono,elemento.color, elemento.size ) , onPressed: () { Accion.hacer(context,elementoAccion3); }));
-      acciones.add(Boton.crearBotonIcono(context, elementoAccion3));
+      acciones.add(Boton.icono(context, elementoAccion3));
     }
     return acciones;
   }

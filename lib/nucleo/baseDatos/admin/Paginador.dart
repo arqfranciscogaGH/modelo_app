@@ -12,7 +12,7 @@ class Paginador<T extends EntidadBase> {
   int? registrosPorPagina = 0;
   int? totalRegistros = 0;
   int? totalPaginas = 0;
-  List<dynamic>? resultado = [];
+  List<dynamic>? listaPagina = [];
   int? estatus;
   //  Cosntructor
   Paginador(
@@ -20,14 +20,14 @@ class Paginador<T extends EntidadBase> {
       this.registrosPorPagina,
       this.totalRegistros,
       this.totalPaginas,
-      this.resultado,
+      this.listaPagina,
       this.estatus}) {
     paginaActual = paginaActual ?? 1;
     registrosPorPagina = registrosPorPagina ?? 10;
     totalRegistros = totalRegistros ?? 0;
     totalPaginas = totalPaginas ?? 0;
     estatus == estatus ?? 0;
-    resultado = [];
+    listaPagina = [];
   }
 
   Paginador<T> fromMap(Map<String, dynamic> map) {
@@ -35,7 +35,7 @@ class Paginador<T extends EntidadBase> {
     registrosPorPagina = map["registrosPorPagina"];
     totalRegistros = map["totalRegistros"];
     totalPaginas = map["totalPaginas"];
-    resultado = map["resultado"];
+    listaPagina = map["resultado"];
     estatus = map["estatus"];
     return this;
   }
@@ -45,7 +45,7 @@ class Paginador<T extends EntidadBase> {
         "registrosPorPagina": registrosPorPagina,
         "totalRegistros": totalRegistros,
         "totalPaginas": totalPaginas,
-        "resultado": resultado,
+        "resultado": listaPagina,
         "estatus": estatus,
       };
 }

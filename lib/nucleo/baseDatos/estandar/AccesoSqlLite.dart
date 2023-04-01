@@ -162,7 +162,8 @@ class AccesoSqlLite implements IAccesoBD {
   }
 
   @override
-  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map) async {
+  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {
     // await database; // para se instanciar la database
     //  int registros=0;
     //  print ( '++  id' );
@@ -179,9 +180,9 @@ class AccesoSqlLite implements IAccesoBD {
     // tabla.agregar(map);
     // tabla.eliminar(map);
     // }
-
+    campo = campo == null ? 'id' : campo;
     dynamic res = await _database!.insert(nombreTabla, map);
-    if (res != null && res > 0) map['id'] = res;
+    if (res != null && res > 0) map[campo] = res;
 
     return map;
   }

@@ -88,7 +88,8 @@ class AccesoMemoria implements IAccesoBD {
   }
 
   @override
-  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map) async {
+  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {
     _datos!.add(map);
     return map;
   }
@@ -97,9 +98,13 @@ class AccesoMemoria implements IAccesoBD {
   Future<dynamic> actualizar(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {
     Map<String, dynamic> resultado;
-    _datos!.removeWhere((o) => o[campo] == valor);
-    _datos!..add(map);
-    resultado = _datos!.firstWhere((o) => o[campo] == valor);
+    resultado = map;
+    _datos![map[campo]] = map;
+
+    // _datos!.removeWhere((o) => o[campo] == valor);
+    // _datos!..add(map);
+    // resultado = _datos!.firstWhere((o) => o[campo] == valor);
+
     return resultado;
   }
 

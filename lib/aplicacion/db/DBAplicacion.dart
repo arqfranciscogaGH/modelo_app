@@ -106,7 +106,7 @@ class DBAplicacion extends ModelodBase {
         ConfiguracionAccesoBD(
       persitencia: ePersitencia.BaseDatos,
       tipoDB: eTipoDB.SQLLITE,
-      nombreBD: 'prueba',
+      nombreBD: 'prueba5',
       version: 1,
       persitenciaPorDefecto: true,
       contadorRegistros: false,
@@ -194,8 +194,8 @@ class DBAplicacion extends ModelodBase {
     tablaServicioAplicacion = agregarTabla<ServicioAplicacion>(
         ServicioAplicacion().iniciar(), configuracionApiPaginador);
 
-    tablaProducto =
-        agregarTabla<Producto>(Producto().iniciar(), configuracionApiPaginador);
+    tablaProducto = agregarTabla<Producto>(
+        Producto().iniciar(), _configuracionPersitenciaSqlLite);
 
     tablaVenta =
         agregarTabla<Venta>(Venta().iniciar(), configuracionPersitenciaMemoria);

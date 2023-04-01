@@ -10,7 +10,8 @@ export '../aplicacion/contexto/ContextoAplicacion.dart';
 
 class InicializacionEntidades {
   static void iniciar() async {
-    ContextoAplicacion.iniciar();
+    await ContextoAplicacion.iniciar();
+
     await cargarEntidades();
   }
 

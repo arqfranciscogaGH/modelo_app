@@ -133,7 +133,7 @@ Widget crearAccionesDialogoOpciones(
 }
 
 Widget crearAccionDialogo(BuildContext context, ElementoLista elemento) {
-  return Align(child: Boton.crearTexto(context, elemento)
+  return Align(child: Boton.texto(context, elemento, eBotonTipo.RectaguloOvalo)
       //   Navigator.of(context).pop();
       //   Accion.hacer(context, elemento);
       // },
@@ -205,7 +205,8 @@ Widget crearElementosAlerta(BuildContext context, String titulo, String mensaje,
 }
 
 Widget crearAccionAlerta(BuildContext context, ElementoLista elemento) {
-  return Align(child: Boton.crearTexto(context, elemento));
+  return Align(
+      child: Boton.texto(context, elemento, eBotonTipo.RectaguloOvalo));
 }
 
 Widget crearTituloDialogo(String titulo) {

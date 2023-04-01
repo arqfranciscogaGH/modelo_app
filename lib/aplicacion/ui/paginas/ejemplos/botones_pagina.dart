@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:provider/provider.dart';
 // import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
 
@@ -16,11 +17,14 @@ import '../../../../configuracion/configuracion.dart';
 import '../../../../administracion/administracion.dart';
 
 import '../../../../nucleo/nucleo.dart';
-import '../../../../aplicacion/aplicacion.dart';
+import '../../../aplicacion.dart';
+
+import '../../../../nucleo/negocio/controladorEstado/ParametrosSistemaCE.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
+
 import '../ventas/AutoCompletar.dart';
 
 class botones_pagina extends StatefulWidget {
@@ -42,7 +46,13 @@ class botones_pagina extends StatefulWidget {
 
 class _botones_paginas_state extends State<botones_pagina> {
   int _counter = 0;
-  //  inicializar  widget
+  //  declaración de variables
+  // KEYS
+
+  //  KEY Scaffold
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  ParametrosSistemaCE? prov;
   @override
   void initState() {
     super.initState();
@@ -50,15 +60,14 @@ class _botones_paginas_state extends State<botones_pagina> {
 
   void _incrementCounter() async {
     // setState(() {
-    final prov = Provider.of<ParametrosSistemaCE>(context, listen: false);
 
     //  final prov= controladorEstadoTema.obtenerEstado(context);
     print(ParametrosSistema.idioma);
 
     if (ParametrosSistema.idioma != "es") {
-      prov.cambiarIdioma("es");
+      prov!.cambiarIdioma("es");
     } else {
-      prov.cambiarIdioma("en");
+      prov!.cambiarIdioma("en");
     }
 
     print(ParametrosSistema.idioma);
@@ -69,24 +78,34 @@ class _botones_paginas_state extends State<botones_pagina> {
 
   @override
   Widget build(BuildContext context) {
+    prov = Provider.of<ParametrosSistemaCE>(context, listen: true);
+
     print(ParametrosSistema.idioma);
     print(ParametrosSistema.colorTema);
+
+    ElementoLista elementoP = ElementoLista(
+        icono: 'house',
+        accion: ejecutar,
+        tituloAccion: "Tit A 1",
+        titulo: 'Tit  1',
+        subtitulo: "Sub A 1",
+        descripcion: "desc A 1");
 
     ElementoLista elemento = ElementoLista(
         icono: 'menu',
         accion: ejecutar,
-        tituloAccion: "xxxx",
-        titulo: 'prueba',
-        subtitulo: "x",
-        descripcion: "es una prueba");
+        tituloAccion: "Accion 1",
+        titulo: 'Titulo 1',
+        subtitulo: "Subtitulo 1",
+        descripcion: "descripcion 2");
 
     ElementoLista elemento2 = ElementoLista(
-        icono: 'menu',
+        icono: 'nivel',
         accion: ejecutar,
-        tituloAccion: "xxxx",
-        titulo: 'prueba',
-        subtitulo: "x",
-        descripcion: "es una prueba");
+        tituloAccion: "Accion 2",
+        titulo: 'Titulo 2',
+        subtitulo: "Subtitulo 2",
+        descripcion: " descripcion 2");
     TextEditingController _controllerAutoCompletar = TextEditingController();
     Control control = Control(controlEdicion: _controllerAutoCompletar);
     control.controlEdicion = _controllerAutoCompletar;
@@ -97,10 +116,23 @@ class _botones_paginas_state extends State<botones_pagina> {
     opciones.add(ElementoLista(titulo: 'bobcat'));
     opciones.add(ElementoLista(titulo: 'chameleon'));
 
+    ParametrosSistema.tipoBoton = eBotonTipo.Pentagono;
+
     return Scaffold(
-      appBar: AppBar(title: Text("Botones")),
+      key: scaffoldKey,
+      appBar: NewGradientAppBar(
+        title: Text(ContextoUI.obtenerTitulo(widget)),
+        gradient: LinearGradient(colors: [
+          //Theme.of(context).primaryColor,
+          Colores.obtener(ParametrosSistema.colorPrimario),
+          Colores.obtener(ParametrosSistema.colorSecundario)
+        ]),
+      ),
       drawer: Menulateral.crearMenu(
-          context, OpcionesMenus.obtenerMenuPrincipal(), "Botones"),
+          context,
+          OpcionesMenus.obtenerMenuPrincipal(),
+          ContextoUI.obtenerTitulo(widget),
+          ParametrosSistema.paginaAccesso),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -116,13 +148,23 @@ class _botones_paginas_state extends State<botones_pagina> {
             //   style: Theme.of(context).textTheme.headline4,
             // ),
 
-            Boton.crearBotonLinkIcono(context, elemento),
-            Boton.crearBotonLinkTexto(context, elemento),
-            Boton.crearBotonIcono(context, elemento),
-            Boton.crearBotonPlano(context, elemento),
-            Boton.crearBotonBordes(context, elemento),
-            Boton.crearBotonOutLine(context, elemento),
-            Boton.crearTexto(context, elemento),
+            Boton.plano(context, elemento2, ParametrosSistema.tipoBoton),
+            Boton.planoIcono(context, elemento2, ParametrosSistema.tipoBoton),
+
+            Boton.texto(context, elementoP, ParametrosSistema.tipoBoton),
+
+            Boton.elevado(context, elemento, ParametrosSistema.tipoBoton),
+            Boton.elevadoIcono(context, elemento, ParametrosSistema.tipoBoton),
+
+            Boton.lineasAfuera(context, elemento2, ParametrosSistema.tipoBoton),
+            Boton.lineasAfueraIcono(
+                context, elemento2, ParametrosSistema.tipoBoton),
+
+            Boton.icono(context, elemento),
+
+            Boton.linkTexto(context, elementoP),
+
+            Boton.linkIcono(context, elemento2),
 
             //  Icono.crear(elemento.icono!),
             // FloatingActionButton(
@@ -158,7 +200,7 @@ class _botones_paginas_state extends State<botones_pagina> {
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(
+      floatingActionButton: Boton.botonFlotante(
         context,
         ElementoLista(icono: "save", accion: ejecutar),
       ), // This trailing comma makes auto-formatting nicer for build methods.

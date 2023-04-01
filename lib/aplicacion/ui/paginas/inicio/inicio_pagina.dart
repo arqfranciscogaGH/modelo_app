@@ -194,23 +194,25 @@ class _inicio_pagina_state extends State<inicio_pagina> {
               // ),
               SizedBox(height: 20.0),
 
-              Boton.crearTexto(
+              Boton.texto(
                   context,
                   ElementoLista(
                     icono: 'menu',
                     accion: null,
                     tituloAccion: "Acceder",
                     pagina: acceso_pagina(),
-                  )),
+                  ),
+                  eBotonTipo.RectaguloOvalo),
 
-              Boton.crearElevadoTexto(
+              Boton.texto(
                   context,
                   ElementoLista(
                     icono: 'menu',
                     accion: null,
                     tituloAccion: "Menu",
                     pagina: menu_principal_pagina(),
-                  )),
+                  ),
+                  eBotonTipo.RectaguloOvalo),
 
               // RaisedButton(
               //   shape: StadiumBorder(),

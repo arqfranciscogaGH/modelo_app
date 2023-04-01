@@ -1,6 +1,6 @@
 //  librerias internas de flutter
 import 'package:flutter/material.dart';
-
+import '../../../ui/comun/Enumerados.dart';
 //  librerias importadas flutter
 
 //  librerias  proyecto
@@ -32,6 +32,7 @@ class ParametrosSistema {
   static String colorTexto = 'gris';
   static String colorIcono = 'moradoclaro';
   static String colorBorde = 'moradoclaro';
+  static String colorSombra = 'negro';
 
   static String colorCapturaFondo = 'gris';
   static String colorCapturaEtiqueta = 'gris';
@@ -40,6 +41,7 @@ class ParametrosSistema {
   static String colorCapturaIcono = 'gris';
   static String colorCapturaMensaje = 'gris';
 
+  static eBotonTipo tipoBoton = eBotonTipo.RectaguloOvalo;
   static String colorBotonTexto = 'negro';
   static String colorBotonFondo = 'amarillo';
   static String colorBotonBorde = 'negro';
@@ -57,7 +59,7 @@ class ParametrosSistema {
   static String colorError = 'rojo';
   static bool esModoObscuro = false;
 
-  static double tamanoFuente = 30;
+  static double tamanoFuente = 15;
   static double tamanoIcono = 18;
   static double ancho = 50;
   static double minAncho = 50;

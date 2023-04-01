@@ -132,7 +132,7 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
       body: mostrarCaptura(context, keyFormulario, cambiarValor, validar,
           definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(
+      floatingActionButton: Boton.botonFlotante(
         context,
         ElementoLista(
             icono: "save",
@@ -217,7 +217,7 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
         entidadCaptura.nombre = valor;
         break;
       case "txtprecio":
-        entidadCaptura.precio = double.parse(valor);
+        entidadCaptura.precio = int.parse(valor);
         break;
       case "txtexistencia":
         entidadCaptura.existencia = valor;

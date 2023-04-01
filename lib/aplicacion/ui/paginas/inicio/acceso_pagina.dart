@@ -237,7 +237,7 @@ class _acceso_pagina_state extends State<acceso_pagina> {
       argumento: entidadCaptura,
     );
 
-    return Boton.crearTexto(context, elemento);
+    return Boton.texto(context, elemento, eBotonTipo.RectaguloOvalo);
 
     // return RaisedButton(
     //     child: Container(
@@ -323,10 +323,10 @@ class _acceso_pagina_state extends State<acceso_pagina> {
   }
 
   dynamic cambiarValor(Control control, dynamic valor) {
-    //isEmail(valor);
     switch (control.idControl) {
       case "txtCuenta":
         entidadCaptura.cuenta = valor;
+        isEmail(valor);
         break;
       case "txtContrasena":
         entidadCaptura.contrasena = valor;

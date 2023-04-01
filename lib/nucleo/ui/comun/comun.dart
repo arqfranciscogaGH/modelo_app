@@ -4,6 +4,8 @@
 
 //  librerias  proyecto
 
+export 'Enumerados.dart';
+
 export 'OpcionesMenus.dart';
 export 'Tema.dart';
 
@@ -13,8 +15,3 @@ export 'Animacion.dart';
 
 export 'PaginaAnimacion.dart';
 export 'Responsivo.dart';
-
-
-
-
-

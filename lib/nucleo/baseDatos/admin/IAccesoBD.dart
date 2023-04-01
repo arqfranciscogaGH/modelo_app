@@ -46,8 +46,8 @@ abstract class IAccesoBD {
 
   Future<dynamic> filtrarTabla(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {}
-  Future<dynamic> insertar(
-      String nombreTabla, Map<String, dynamic> map) async {}
+  Future<dynamic> insertar(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {}
   Future<dynamic> actualizar(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {}
   Future<dynamic> eliminar(String nombreTabla, Map<String, dynamic> map,

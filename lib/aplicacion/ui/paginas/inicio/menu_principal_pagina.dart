@@ -60,16 +60,18 @@ class _menu_principal_pagina_state extends State<menu_principal_pagina> {
   @override
   Widget build(BuildContext context) {
     print("build principal");
-    Responsivo.identifciarDispositivo(context);
 
-    print(ParametrosSistema.idioma);
-    print(ParametrosSistema.colorPrimario);
-    print(ParametrosSistema.colorSecundario);
-    late ElementoLista elementoLista;
-    elementoLista = InjeccionDependencia.obtener<ElementoLista>();
-    ElementoLista elementoLista2 =
-        InjeccionDependencia.obtener<ElementoLista>();
-    elementoLista2.titulo = "222";
+    // Responsivo.identifciarDispositivo(context);
+
+    // print(ParametrosSistema.idioma);
+    // print(ParametrosSistema.colorPrimario);
+    // print(ParametrosSistema.colorSecundario);
+    // late ElementoLista elementoLista;
+    // elementoLista = InjeccionDependencia.obtener<ElementoLista>();
+    // ElementoLista elementoLista2 =
+    //     InjeccionDependencia.obtener<ElementoLista>();
+    // elementoLista2.titulo = "222";
+    // print(ContextoAplicacion.db.tablaAutenticacion!.entidad.toMap());
 
     return Scaffold(
       key: scaffoldKey,
