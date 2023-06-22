@@ -10,18 +10,13 @@ import 'dart:io';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
-import '../../../contexto/contexto.dart';
-import '../../../negocio/negocio.dart';
 
 //  librerias externas  flutter
-
-import '../../../../paquetesExternos/paquetesExternos.dart';
 
 // class ejemploclase<T extends EntidadBase> {
 //   T clase;
@@ -42,7 +37,7 @@ class VentaUI<T extends EntidadBase> {
       this.keyFormulario});
 
   // dynamic iniciarEntidad<T extends EntidadBase>(AccesoTabla<T> tabla) {
-  //   tabla.entidad = tabla.iniciar();
+  //   tabla.entidad = tabla.iniciarEntidad();
   //   return tabla.entidad;
   // }
 
@@ -67,9 +62,9 @@ class VentaUI<T extends EntidadBase> {
     this.widget = widget;
 
     // ejemploclase<Venta> ec = ejemploclase<Venta>(clase: Venta());
-    // ec.iniciar<Venta>(ContextoAplicacion.db.tablaVenta!);
+    // ec.iniciar<Venta>(ContextoApp.db.venta!);
     // ejemplometodo em = ejemplometodo();
-    // em.iniciar<Venta>(Venta(), ContextoAplicacion.db.tablaVenta!);
+    // em.iniciar<Venta>(Venta(), ContextoApp.db.venta!);
   }
   //
   //  interfaz de UI  comun
@@ -87,9 +82,20 @@ class VentaUI<T extends EntidadBase> {
     //  asigna la  información  requerida para genere widget elemento de la lista
     //
 
+    // obtener nombre cliente
+    entidad = obtenerNombre(entidad);
+
     elemento.id = entidad.id;
-    elemento.titulo = entidad.id.toString() + ', : ' + entidad.nombre;
-    elemento.subtitulo = entidad.nombre;
+    elemento.titulo = entidad.id.toString();
+
+    if (entidad.nombre != null)
+      elemento.titulo = elemento.titulo! + ":" + entidad.nombre!;
+
+    // elemento.titulo = entidad.id.toString() + ' : ';
+    elemento.subtitulo = "Venta:" +
+        entidad.importeVenta.toString() +
+        " , Saldo:" +
+        entidad.saldo.toString();
 
     elemento.icono = accion.icono;
     elemento.accion = accion.accion;
@@ -131,12 +137,40 @@ class VentaUI<T extends EntidadBase> {
           context, elemento, accion.accion!, accion.accion2!);
     }
 
-    // if (ele.operacion == eOperacion.consultar) {
+    // if (accion.operacion == eOperacion.consultar) {
     //   elementos = Listas.crearElementoConAcciones(context, elemento);
-    // } else if (ele.operacion == eOperacion.filtrar) {
+    // } else if (accion.operacion == eOperacion.filtrar) {
     //   elementos = Listas.crearElementoConAcciones(context, elemento);
     // }
+
     return elementos!;
+  }
+
+  // obtener cliente
+  Venta obtenerNombre(Venta entidad) {
+    Cliente c = Cliente().iniciar();
+    c.id = entidad.idCliente;
+
+    // ContextoApp.db.cliente!.obtener(c).then((respuesta) {
+    //   print(respuesta);
+    //   c = respuesta;
+    // });
+
+    // dynamic respuesta = ContextoApp.db.cliente!.resultado.datos
+    //     .where((s) => s['id'] == entidad.idCliente)
+    //     .first;
+    // print(respuesta);
+
+    // c = ContextoApp.db.cliente!.lista
+    //     .where((s) => s.id == entidad.idCliente)
+    //     .first;
+    c = ContextoApp.db.cliente!.seleccionar(c);
+    if (c != null && c.id != null && c.id != 0) {
+      entidad.idCliente = c.id;
+      entidad.nombre = c.nombre;
+    }
+
+    return entidad;
   }
 
   //
@@ -157,7 +191,7 @@ class VentaUI<T extends EntidadBase> {
           //     },
           // ),
 
-          Boton.crearBotonFlotante(context, accion),
+          Boton.botonFlotante(context, accion),
         ],
       );
     return columna!;
@@ -173,7 +207,7 @@ class VentaUI<T extends EntidadBase> {
   void agregarElemento(BuildContext context, ElementoLista elemento,
       [dynamic argumentos]) {
     // ContextoUI.iniciarCaptura = true;
-    tabla!.entidad = tabla!.iniciar();
+    tabla!.entidad = tabla!.iniciarEntidad();
 
     // se  usa las siguientes si requiere callback o ir otra pagina
     if (elemento.callBackAccion != null)
@@ -198,14 +232,14 @@ class VentaUI<T extends EntidadBase> {
 
     //   crear la  accion  para  notificar
 
-    ElementoLista accion = ElementoLista(
-        tituloAccion: titulo,
-        mensaje: mensaje + " : " + entidad.nombre,
-        ruta: elemento.ruta /* ruta: 'Venta_captura'  */);
+    // ElementoLista accion = ElementoLista(
+    //     tituloAccion: titulo,
+    //     mensaje: mensaje ,
+    //     ruta: elemento.ruta );
     //Notificacion.mostrarAccion(context, accion);
 
     // muestra  la notificación
-    Notificacion.mostrar(context, mensaje + " : " + entidad.nombre);
+    Notificacion.mostrar(context, mensaje);
 
     // ejecuta  la  siguinte pagina
     Accion.mostrarPagina(this.context!, widget, "siguiente");
@@ -217,9 +251,19 @@ class VentaUI<T extends EntidadBase> {
   //
   void seleccionarElemento(BuildContext context, ElementoLista elemento,
       [dynamic argumentos]) {
-    dynamic entidad = tabla!.iniciar();
+    dynamic entidad = tabla!.iniciarEntidad();
     entidad.id = elemento.id;
     tabla!.obtener(entidad, elemento.callBackAccion);
+  }
+
+  void seleccionarElemento3(BuildContext context, ElementoLista elemento,
+      [dynamic argumentos]) {
+    dynamic entidad = tabla!.iniciarEntidad();
+    entidad.id = elemento.id;
+    tabla!.obtener(entidad, elemento.callBackAccion);
+    // mostrar  siguiente  pagina
+    // en repuesta se pierde la ruta
+    Accion.hacer(context, OpcionesMenus.obtener(elemento.ruta!));
   }
 
 //
@@ -240,29 +284,51 @@ class VentaUI<T extends EntidadBase> {
 
     //   Asigna información  la  accion  para  mostrar de mensaje de alerta
 
+    mensaje = mensaje + " " + entidad.id.toString() + " : " + entidad.nombre!;
     elemento.titulo = titulo;
     elemento.icono = icono;
-    elemento.mensaje = mensaje + " : " + entidad.nombre;
+    elemento.mensaje = mensaje;
     elemento.tituloAccion = opciones;
 
     //  muestar  mensaje de  alerta
-    Notificacion.mostrar(this.context!, elemento.mensaje!);
+    Notificacion.mostrar(this.context!, mensaje);
     // Dialogo.mostrarAlerta(this.context, elemento);
 
     // ejecuta  la  siguinte pagina
 
     Accion.mostrarPagina(this.context!, widget, "siguiente");
-    // Accion.hacer(context, OpcionesMenus.obtener(elemento.ruta));
+    //  Accion.hacer(this.context!, OpcionesMenus.obtener(elemento.ruta!));
   }
 
-  void seleccionarElemento3(BuildContext context, ElementoLista elemento) {
-    dynamic entidad = tabla!.iniciar();
-    entidad.id = elemento.id;
-    tabla!.obtener(entidad, elemento.callBackAccion);
-  }
+  void respuestaSeleccionar3(dynamic entidad) {
+    ElementoLista elemento = ElementoLista();
+    //  obtiene  etiquetas considerando el idioma
+    String titulo =
+        Traductor.obtenerAtrbuto('comun_pagina', 'accionSeleccionar', 'titulo');
+    String icono =
+        Traductor.obtenerAtrbuto('comun_pagina', 'accionSeleccionar', 'icono');
+    String mensaje = Traductor.obtenerAtrbuto(
+        'comun_pagina', 'accionSeleccionar', 'mensaje');
+    String opciones = Traductor.obtenerAtrbuto(
+        'comun_pagina', 'accionSeleccionar', 'opciones');
 
-  void respuestaSeleccionar3(
-      BuildContext context, ElementoLista elemento, dynamic entidad) {}
+    //   Asigna información  la  accion  para  mostrar de mensaje de alerta
+
+    mensaje = mensaje + " " + entidad.id.toString() + " : " + entidad.nombre!;
+    elemento.titulo = titulo;
+    elemento.icono = icono;
+    elemento.mensaje = mensaje;
+    elemento.tituloAccion = opciones;
+
+    //  muestar  mensaje de  alerta
+    Notificacion.mostrar(this.context!, mensaje);
+    // Dialogo.mostrarAlerta(this.context, elemento);
+
+    // ejecuta  la  siguinte pagina
+
+    //Accion.mostrarPagina(this.context!, widget, "siguiente");
+    // Accion.hacer(this.context!, OpcionesMenus.obtener(elemento.ruta!));
+  }
 
   //
   //   acccion   guardar  informacion
@@ -304,7 +370,7 @@ class VentaUI<T extends EntidadBase> {
       titulo: titulo,
       tituloAccion: opciones,
       icono: icono,
-      mensaje: mensaje + " : " + entidad.nombre!,
+      mensaje: mensaje,
       argumento: entidad, /* accion: elemento.callBackAccion */
     );
 
@@ -313,8 +379,10 @@ class VentaUI<T extends EntidadBase> {
       entidad = respuesta;
       print(tabla!.entidad);
       print(respuesta);
+      mensaje = mensaje + " " + entidad.id.toString() + " : " + entidad.nombre!;
+      elementoDialogo.mensaje = mensaje;
       // muestra  la notificación
-      Notificacion.mostrar(context, mensaje + " : " + entidad.nombre);
+      Notificacion.mostrar(context, mensaje);
       Dialogo.mostrarAlerta(context, elementoDialogo);
     });
   }
@@ -343,20 +411,21 @@ class VentaUI<T extends EntidadBase> {
     String opciones =
         Traductor.obtenerAtrbuto('comun_pagina', 'accionModificar', 'opciones');
 
+    mensaje = mensaje + " " + entidad.id.toString() + " : " + entidad.nombre!;
+
     ElementoLista elementoDialogo = ElementoLista(
       titulo: titulo,
       tituloAccion: opciones,
       icono: icono,
-      mensaje: mensaje + " : " + entidad.nombre!,
+      mensaje: mensaje,
       argumento: entidad, /*  accion: elemento.callBackAccion */
     );
 
     tabla!.modificar(entidad, elemento.callBackAccion3).then((respuesta) {
       print("modificar");
       entidad = respuesta;
-      print(ContextoAplicacion.db.tablaVenta!.entidad);
       print(respuesta);
-      Notificacion.mostrar(context, mensaje + " : " + entidad.nombre);
+      Notificacion.mostrar(context, mensaje);
       Dialogo.mostrarAlerta(this.context!, elementoDialogo);
     });
   }
@@ -430,15 +499,17 @@ class VentaUI<T extends EntidadBase> {
         argumento: elemento, /* accion: elemento.callBackAccion */
       );
 
-      tabla!.entidad = tabla!.iniciar();
+      tabla!.entidad = tabla!.iniciarEntidad();
       tabla!.entidad.id = elemento.argumento.id;
       tabla!.obtener(tabla!.entidad).then((entidad) {
-        elementoDialogo.mensaje = mensaje + " : " + entidad.nombre!;
+        mensaje =
+            mensaje + " " + entidad.id.toString() + " : " + entidad.nombre!;
+        elementoDialogo.mensaje = mensaje;
         tabla!
             .eliminar(entidad, elemento.argumento.callBackAccion2)
             .then((respuesta) {
           print(respuesta);
-          Notificacion.mostrar(context, mensaje + " : " + entidad.nombre!);
+          Notificacion.mostrar(context, mensaje);
           Dialogo.mostrarAlerta(context, elementoDialogo);
         });
       });

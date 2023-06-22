@@ -85,6 +85,7 @@ class Cliente extends EntidadBase {
           descripcion: descripcion,
           nombreTabla: 'Clientes',
           campoLLave: 'id',
+          incrementar: false,
         );
   //    métodos
 
@@ -199,7 +200,7 @@ class Cliente extends EntidadBase {
     String sql = "CREATE TABLE if not exists " +
         nombreTabla! +
         " ("
-            "id INTEGER PRIMARY KEY autoincrement ,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "llave TEXT , "
             "clave TEXT , "
             "nombre  TEXT , "
@@ -237,7 +238,7 @@ class Cliente extends EntidadBase {
     e.nombreTabla = 'Clientes';
     e.campoLLave = 'id';
 
-    e.id = 0;
+    e.id = null;
     e.clave = "";
     e.llave = " ";
     e.nombre = "";
@@ -276,11 +277,11 @@ class Cliente extends EntidadBase {
 
   // conversión de  entidad a  cadena Json
 
-  String toJson() => json.encode(this.toMap());
+  // String toJson() => json.encode(this.toMap());
 
-  // conversión de  cadena Json  a entidad
+  // // conversión de  cadena Json  a entidad
 
-  Cliente fromJson(String cadenaJson) => this.fromMap(json.decode(cadenaJson));
+  // Cliente fromJson(String cadenaJson) => this.fromMap(json.decode(cadenaJson));
 
   // conversión de Json String  a map
   Map<String, dynamic> fromJsonToMap(String cadenaJson) =>
@@ -296,7 +297,7 @@ class Cliente extends EntidadBase {
         ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
-  } 
+  }
 
   // metodos conversion lista map a  lista  de entidades
   @override

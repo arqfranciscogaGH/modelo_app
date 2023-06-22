@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 
-
 //  librerias  proyecto
 
 import 'EntidadBase.dart';
@@ -39,15 +38,28 @@ class ElementoSerie extends EntidadBase {
       this.y,
       this.activo})
       : super(
-            id: id,
-            nombre: nombre,
-            clave: clave,
-            llave: llave,
-            descripcion: descripcion,
-            // nombreTabla: nombreTabla!,
-            // campoLLave: campoLLave!,
-            );
-  factory ElementoSerie.fromMap(Map<String, dynamic> map) =>  ElementoSerie(
+          id: id,
+          nombre: nombre,
+          clave: clave,
+          llave: llave,
+          descripcion: descripcion,
+          // nombreTabla: nombreTabla!,
+          // campoLLave: campoLLave!,
+        );
+
+  ElementoSerie iniciar() {
+    ElementoSerie e = ElementoSerie();
+    e.nombreTabla = 'ElementoSerie';
+    e.campoLLave = 'id';
+    e.incrementar = false;
+    e.clave = "";
+    e.llave = " ";
+    e.nombre = "";
+    e.descripcion = "";
+    return e;
+  }
+
+  factory ElementoSerie.fromMap(Map<String, dynamic> map) => ElementoSerie(
         titulo: map["titulo"],
         serie: map["serie"],
         metrica: map["metrica"],
@@ -59,7 +71,7 @@ class ElementoSerie extends EntidadBase {
         y: map["y"],
         activo: int.parse(map["activo"].toString()),
       );
-  ElementoSerie fromMap(Map<String, dynamic> map) =>  ElementoSerie(
+  ElementoSerie fromMap(Map<String, dynamic> map) => ElementoSerie(
         titulo: map["titulo"],
         serie: map["serie"],
         metrica: map["metrica"],
@@ -90,35 +102,34 @@ class ElementoSerie extends EntidadBase {
   Map<String, dynamic> fromJsonToMap(String cadenaJson) =>
       json.decode(cadenaJson);
 
-  List<ElementoSerie> mapTolist(List<dynamic> listaMapa) {
+  List<ElementoSerie> mapTolista(List<dynamic> listaMapa) {
     List<ElementoSerie> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }
 
-  List<ElementoSerie> jsonToList(String cadenaJson) {
+  List<ElementoSerie> jsonToLista(String cadenaJson) {
     List<dynamic> listaMap = json.decode(cadenaJson);
-    List<ElementoSerie> lista = mapTolist(listaMap);
+    List<ElementoSerie> lista = mapTolista(listaMap);
     return lista;
   }
 
   String sqlTabla() {
-    String sql ="CREATE TABLE if not exists ";
-    sql+=super.nombreTabla!;
-    sql+= " ("
-          "id INTEGER PRIMARY KEY autoincrement ,"
-          "titulo  TEXT , "
-          "serie  TEXT , "
-          "metrica  REAL , "
-          "valor INTEGER , "
-          "color TEXT , "
-          // "colorN TEXT , "
-          "x REAL , "
-          "y REAL , "
-          "activo INTEGER )";
+    String sql = "CREATE TABLE if not exists ";
+    sql += super.nombreTabla!;
+    sql += " ("
+        "id INTEGER PRIMARY KEY autoincrement ,"
+        "titulo  TEXT , "
+        "serie  TEXT , "
+        "metrica  REAL , "
+        "valor INTEGER , "
+        "color TEXT , "
+        // "colorN TEXT , "
+        "x REAL , "
+        "y REAL , "
+        "activo INTEGER )";
 
- 
     return sql;
   }
 }

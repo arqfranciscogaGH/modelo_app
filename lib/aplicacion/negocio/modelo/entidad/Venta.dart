@@ -15,11 +15,16 @@ class Venta extends EntidadBase {
   int? idMesa;
   int? idVendedor;
   int? idCliente;
-  int? cantidadVenta;
-  double? importeVenta;
+  String? nombreCliente;
   String? fechaVenta;
   String? tipoVenta;
+  String? formaPago;
   String? referencia;
+  int? cantidadVenta;
+  double? importeVenta;
+  double? importePagado;
+  double? importeCambio;
+  double? saldo;
   String? fechaEstatus;
   int? estatus;
   Venta({
@@ -32,11 +37,16 @@ class Venta extends EntidadBase {
     this.idMesa,
     this.idVendedor,
     this.idCliente,
-    this.cantidadVenta,
-    this.importeVenta,
+    this.nombreCliente,
     this.fechaVenta,
     this.tipoVenta,
+    this.formaPago,
     this.referencia,
+    this.cantidadVenta,
+    this.importeVenta,
+    this.importePagado,
+    this.importeCambio,
+    this.saldo,
     this.fechaEstatus,
     this.estatus,
   }) : super(
@@ -46,7 +56,7 @@ class Venta extends EntidadBase {
           nombre: nombre,
           nombreTabla: 'Ventas',
           campoLLave: 'id',
-          incrementar: true,
+          incrementar: false,
         );
 
   //    métodos
@@ -59,14 +69,20 @@ class Venta extends EntidadBase {
         idMesa: map["idMesa"],
         idVendedor: map["idVendedor"],
         idCliente: map["idCliente"],
-        cantidadVenta: map["cantidadVenta"],
-        importeVenta: map["importeVenta"],
+        // nombreCliente: map["nombreCliente"],
         fechaVenta: map["fechaVenta"],
         tipoVenta: map["tipoVenta"],
+        formaPago: map["formaPago"],
         referencia: map["referencia"],
+        cantidadVenta: map["cantidadVenta"],
+        importeVenta: map["importeVenta"],
+        importePagado: map["importePagado"],
+        importeCambio: map["importeCambio"],
+        saldo: map["saldo"],
         fechaEstatus: map["fechaEstatus"],
-        // estatus: int.parse(map["estatus"].toString()),
+        estatus: int.parse(map["estatus"].toString()),
       );
+
   @override
   Venta fromMap(Map<String, dynamic> map) {
     id = map["id"];
@@ -77,14 +93,19 @@ class Venta extends EntidadBase {
     idMesa = map["idMesa"];
     idVendedor = map["idVendedor"];
     idCliente = map["idCliente"];
-    cantidadVenta = map["cantidadVenta"];
-    importeVenta = map["importeVenta"];
+    // nombreCliente = map["nombreCliente"];
     fechaVenta = map["fechaVenta"];
     tipoVenta = map["tipoVenta"];
+    formaPago = map["formaPago"];
     referencia = map["referencia"];
 
+    cantidadVenta = map["cantidadVenta"];
+    importeVenta = map["importeVenta"];
+    importePagado = map["importePagado"];
+    importeCambio = map["importeCambio"];
+    saldo = map["saldo"];
     fechaEstatus = map["fechaEstatus"];
-    // estatus = int.parse(map["estatus"].toString());
+    estatus = int.parse(map["estatus"].toString());
     return this;
   }
 
@@ -97,11 +118,16 @@ class Venta extends EntidadBase {
         "idMesa": idMesa,
         "idVendedor": idVendedor,
         "idCliente": idCliente,
-        "cantidadVenta": cantidadVenta,
-        "importeVenta": importeVenta,
+        // "nombreCliente": nombreCliente,
         "fechaVenta": fechaVenta,
         "tipoVenta": tipoVenta,
+        "formaPago": formaPago,
         "referencia": referencia,
+        "cantidadVenta": cantidadVenta,
+        "importeVenta": importeVenta,
+        "importePagado": importePagado,
+        "importeCambio": importeCambio,
+        "saldo": saldo,
         "fechaEstatus": fechaEstatus,
         "estatus": estatus,
       };
@@ -110,18 +136,22 @@ class Venta extends EntidadBase {
     String sql = "CREATE TABLE if not exists  " +
         nombreTabla! +
         " ("
-            "id INTEGER PRIMARY KEY ,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "llave   TEXT , "
             "clave   TEXT , "
             "nombre   TEXT , "
             "idMesa   INTEGER , "
             "idVendedor   INTEGER, "
             "idCliente   INTEGER , "
-            "cantidadVenta   INTEGER, "
-            "importeVenta   REAL , "
             "fechaVenta   TEXT, "
             "tipoVenta   TEXT , "
+            "formaPago   TEXT , "
             "referencia   TEXT, "
+            "cantidadVenta   INTEGER, "
+            "importeVenta   REAL , "
+            "importePagado   REAL, "
+            "importeCambio   REAL , "
+            "saldo   REAL, "
             "fechaEstatus   TEXT , "
             "estatus   INTEGER )";
     return sql;
@@ -129,24 +159,28 @@ class Venta extends EntidadBase {
 
   @override
   Venta iniciar() {
-    Venta entidad = Venta();
-    entidad.id = 0;
-    entidad.llave = "";
-    entidad.clave = "";
-    entidad.nombre = "";
-    entidad.idMesa = 0;
-    entidad.idVendedor = 0;
-    entidad.idCliente = 0;
-    entidad.cantidadVenta = 0;
-    entidad.importeVenta = 0;
+    Venta e = Venta();
+    e.id = null;
+    e.llave = "";
+    e.clave = "";
+    e.nombre = "";
+    e.idMesa = 0;
+    e.idVendedor = 0;
+    e.idCliente = 0;
+    e.nombreCliente = "";
+    e.fechaVenta = "";
+    e.tipoVenta = "";
+    e.formaPago = "";
+    e.referencia = "";
+    e.cantidadVenta = 0;
+    e.importeVenta = 0;
+    e.importePagado = 0;
+    e.importeCambio = 0;
+    e.saldo = 0;
 
-    entidad.fechaVenta = "";
-    entidad.tipoVenta = "";
-    entidad.referencia = "";
-
-    entidad.fechaEstatus = DateTime.now().toString();
-    entidad.estatus = 1;
-    return entidad;
+    e.fechaEstatus = DateTime.now().toString();
+    e.estatus = 1;
+    return e;
   }
 
   String toJson() => json.encode(this.toMap());

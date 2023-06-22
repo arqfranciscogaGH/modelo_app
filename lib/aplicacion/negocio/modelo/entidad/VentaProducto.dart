@@ -12,10 +12,13 @@ class VentaProducto extends EntidadBase {
   //    variables
   //    propiedades
 
+  int? idVenta;
   int? idProducto;
+  String? nombreProducto;
   int? cantidad;
   double? importe;
   double? precio;
+  double? costo;
   String? referencia;
   String? fechaEstatus;
   int? estatus;
@@ -26,10 +29,13 @@ class VentaProducto extends EntidadBase {
     llave,
     nombreTabla,
     campoLLave,
+    this.idVenta,
     this.idProducto,
+    this.nombreProducto,
     this.cantidad,
     this.importe,
     this.precio,
+    this.costo,
     this.referencia,
     this.fechaEstatus,
     this.estatus,
@@ -40,6 +46,7 @@ class VentaProducto extends EntidadBase {
           nombre: nombre,
           nombreTabla: 'VentaProductos',
           campoLLave: 'id',
+          incrementar: false,
         );
   //    métodos
 
@@ -48,10 +55,13 @@ class VentaProducto extends EntidadBase {
         llave: map["llave"],
         clave: map["clave"],
         nombre: map["nombre"],
+        idVenta: map["idVenta"],
         idProducto: map["idProducto"],
+        nombreProducto: map["nombreProducto"],
         cantidad: map["cantidad"],
         importe: map["importe"],
         precio: map["precio"],
+        costo: map["costo"],
         referencia: map["referencia"],
         fechaEstatus: map["fechaEstatus"],
         estatus: int.parse(map["estatus"].toString()),
@@ -62,11 +72,13 @@ class VentaProducto extends EntidadBase {
     llave = map["llave"];
     clave = map["clave"];
     nombre = map["nombre"];
-
+    idVenta = map["idVenta"];
     idProducto = map["idProducto"];
+    nombreProducto = map["nombreProducto"];
     cantidad = map["cantidad"];
     importe = map["importe"];
     precio = map["precio"];
+    costo = map["costo"];
     referencia = map["referencia"];
 
     fechaEstatus = map["fechaEstatus"];
@@ -79,10 +91,13 @@ class VentaProducto extends EntidadBase {
         "llave": llave,
         "clave": clave,
         "nombre": nombre,
+        "idVenta": idVenta,
         "idProducto": idProducto,
+        // "nombreProducto": nombreProducto,
         "cantidad": cantidad,
         "importe": importe,
         "precio": precio,
+        "costo": costo,
         "referencia": referencia,
         "fechaEstatus": fechaEstatus,
         "estatus": estatus,
@@ -92,14 +107,16 @@ class VentaProducto extends EntidadBase {
     String sql = "CREATE TABLE if not exists  " +
         nombreTabla! +
         " ("
-            "id INTEGER PRIMARY KEY ,"
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             "llave   TEXT , "
             "clave   TEXT , "
             "nombre   TEXT , "
+            "idVenta   INTEGER , "
             "idProducto   INTEGER , "
             "cantidad   INTEGER, "
             "importe   REAL , "
             "precio   REAL , "
+            "costo   REAL , "
             "referencia   TEXT, "
             "fechaEstatus   TEXT , "
             "estatus   INTEGER )";
@@ -107,21 +124,24 @@ class VentaProducto extends EntidadBase {
   }
 
   VentaProducto iniciar() {
-    VentaProducto entidad = VentaProducto();
-    entidad.id = 0;
-    entidad.llave = "";
-    entidad.clave = "";
-    entidad.nombre = "";
-    entidad.idProducto = 0;
-    entidad.cantidad = 0;
-    entidad.importe = 0;
+    VentaProducto e = VentaProducto();
+    e.id = null;
+    e.llave = "";
+    e.clave = "";
+    e.nombre = "";
+    e.idVenta = 0;
+    e.idProducto = 0;
+    e.nombreProducto = "";
+    e.cantidad = 0;
+    e.importe = 0;
 
-    entidad.precio = 0;
-    entidad.referencia = "";
+    e.precio = 0;
+    e.costo = 0;
+    e.referencia = "";
 
-    entidad.fechaEstatus = DateTime.now().toString();
-    entidad.estatus = 1;
-    return entidad;
+    e.fechaEstatus = DateTime.now().toString();
+    e.estatus = 1;
+    return e;
   }
 
   String toJson() => json.encode(this.toMap());
@@ -133,7 +153,7 @@ class VentaProducto extends EntidadBase {
 
   List<VentaProducto> mapTolista(List<dynamic> listaMapa) {
     List<VentaProducto> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }

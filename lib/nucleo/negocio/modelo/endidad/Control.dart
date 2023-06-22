@@ -1,50 +1,21 @@
 //  librerias internas de flutter
 import 'package:flutter/material.dart';
+import 'package:modelo_app/aplicacion/aplicacion.dart';
 
 import 'dart:convert';
 
-
 //  librerias  proyecto
-
+import '../../../ui/comun/Enumerados.dart';
 import 'EntidadBase.dart';
 import '../endidad/ElementoLista.dart';
 import '../../../utilerias/Traductor.dart';
 
-enum eTipoControl {
-  etiqueta,
-  cajaTexto,
-  cajaTextoForma,
-  fechaSelector,
-  horaSelector,
-  fechaSelectorCupertino,
-  horaSelectorCupertino,
-  calendario,
-  listaDespegable,
-  listaDespegableFija,
-  autocomplertar,
-  apagador,
-
-  radioVertical,
-  radioHorizontal,
-  verificadorVertical,
-  verificadorHorizontal,
-  selectorDeslizante,
-  foto,
-  videoSimple,
-  videoMejorado,
-}
-
-enum eTipoBorde {
-  ninguno,
-  circular,
-  rectangular,
-  lineal,
-}
-
 class Control extends EntidadBase {
   String? idControl;
+  String? pagina;
   TextEditingController? controlEdicion;
   //String tipo;
+  FocusNode? focusNode;
   eTipoControl? tipo;
   dynamic valor;
   dynamic valorSeleccionado;
@@ -69,9 +40,10 @@ class Control extends EntidadBase {
   Function? accionValidacion;
   Function? accionGuardar;
   Function? accion;
-  List<ElementoLista>? lista=[];
+  List<ElementoLista>? lista = [];
+  dynamic tabla;
   dynamic argumento;
-  int? activo;
+  int? activo = 1;
 
   Control(
       {id,
@@ -81,6 +53,7 @@ class Control extends EntidadBase {
       nombreTabla,
       campoLLave,
       this.idControl,
+      this.pagina,
       this.tipo,
       this.valor,
       this.textoEtiqueta,
@@ -99,29 +72,31 @@ class Control extends EntidadBase {
       this.accionGuardar,
       this.argumento,
       this.lista,
+      this.tabla,
       this.color,
       this.colorTexto,
       this.colorFondo,
       this.colorBorde,
       this.colorIcono,
+      this.focusNode,
       this.activo})
       : super(
-            id: id,
-            nombre: nombre,
-            clave: clave,
-            llave: llave,
-            // nombreTabla : nombreTabla,
-            // campoLLave:campoLLave 
-            );
+          id: id,
+          nombre: nombre,
+          clave: clave,
+          llave: llave,
+          // nombreTabla : nombreTabla,
+          // campoLLave:campoLLave
+        );
 
-  factory Control.fromMap(Map<String, dynamic> map) =>  Control(
+  factory Control.fromMap(Map<String, dynamic> map) => Control(
         idControl: map["idControl"],
         tipo: map["tipo"],
         valor: map["valor"],
         textoEtiqueta: map["textoEtiqueta"],
         activo: int.parse(map["activo"].toString()),
       );
-  Control fromMap(Map<String, dynamic> map) =>  Control(
+  Control fromMap(Map<String, dynamic> map) => Control(
         idControl: map["idControl"],
         tipo: map["tipo"],
         valor: map["valor"],
@@ -142,17 +117,16 @@ class Control extends EntidadBase {
   Map<String, dynamic> fromJsonToMap(String cadenaJson) =>
       json.decode(cadenaJson);
 
-  List<Control> mapTolist(List<dynamic> listaMapa) {
+  List<Control> mapTolista(List<dynamic> listaMapa) {
     List<Control> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }
-  
 
-  List<Control> jsonToList(String cadenaJson) {
+  List<Control> jsonToLista(String cadenaJson) {
     List<dynamic> listaMap = json.decode(cadenaJson);
-    List<Control> lista = mapTolist(listaMap);
+    List<Control> lista = mapTolista(listaMap);
     return lista;
   }
 
@@ -160,48 +134,60 @@ class Control extends EntidadBase {
   //   return lista.map((c) => c.toMap()).toList();
   // }
 
-
   String sqlTabla() {
-     String sql ="CREATE TABLE if not exists ";
-    sql+=super.nombreTabla!;
-    sql+=" ("
-          "id INTEGER PRIMARY KEY autoincrement ,"
-          "clave TEXT , "
-          "nombre  TEXT , "
-          "direccion  TEXT , "
-          "telefono  TEXT , "
-          "correo TEXT , "
-          "rutaFoto TEXT , "
-          "rutaFotoFinal TEXT , "
-          "referencia TEXT , "
-          "banco TEXT , "
-          "cuenta TEXT , "
-          "importe INTEGER , "
-          "saldo INTEGER , "
-          "fechaEntrega TEXT , "
-          "sicron INTEGER , "
-          "accionSincron TEXT , "
-          "fechaSincron TEXT , "
-          "activo INTEGER )";
+    String sql = "CREATE TABLE if not exists ";
+    sql += super.nombreTabla!;
+    sql += " ("
+        "id INTEGER PRIMARY KEY autoincrement ,"
+        "clave TEXT , "
+        "nombre  TEXT , "
+        "direccion  TEXT , "
+        "telefono  TEXT , "
+        "correo TEXT , "
+        "rutaFoto TEXT , "
+        "rutaFotoFinal TEXT , "
+        "referencia TEXT , "
+        "banco TEXT , "
+        "cuenta TEXT , "
+        "importe INTEGER , "
+        "saldo INTEGER , "
+        "fechaEntrega TEXT , "
+        "sicron INTEGER , "
+        "accionSincron TEXT , "
+        "fechaSincron TEXT , "
+        "activo INTEGER )";
     return sql;
   }
 
-  Control inicilizar() {
-    Control entidad = Control();
-
-    return entidad;
+  Control iniciar() {
+    Control e = Control();
+    e.nombreTabla = 'Control';
+    e.campoLLave = 'id';
+    e.incrementar = false;
+    e.clave = "";
+    e.llave = " ";
+    e.nombre = "";
+    e.descripcion = "";
+    return e;
   }
 
   Control crear(dynamic idioma, String pagina, String idControl, dynamic valor,
-      Function metooCambiarValor, Function metodoValidar) {
+      int activo, Function metooCambiarValor, Function metodoValidar) {
     this.idControl = idControl;
+    this.pagina = pagina;
     this.valor = valor;
-    return asignar(idioma, pagina, valor, metooCambiarValor, metodoValidar);
+    this.activo = activo;
+    return asignar(
+        idioma, pagina, valor, activo, metooCambiarValor, metodoValidar);
   }
 
-  Control asignar(dynamic idioma, String pagina, dynamic valor, Function metooCambiarValor, Function metodoValidar) {
+  Control asignar(dynamic idioma, String pagina, dynamic valor, int? activo,
+      Function metooCambiarValor, Function metodoValidar) {
     dynamic valorControl;
+    this.idControl = idControl;
+    this.pagina = pagina;
     this.valor = valor;
+    this.activo = activo;
     Control control = this;
     try {
       control.accion = metooCambiarValor;
@@ -209,38 +195,59 @@ class Control extends EntidadBase {
 
       valorControl = Traductor.obtenerElemento(pagina, control.idControl!);
       if (valorControl != null) {
-        control = definirTipo( Traductor.obtenerAtrbutoElemento(valorControl, "tipo"), control);
-        control = definirTipoEntrada( Traductor.obtenerAtrbutoElemento(valorControl, "tipoEntrada"),control);
-        control = definirTextoCapitalizacion(Traductor.obtenerAtrbutoElemento(valorControl, "textoCapitalizacion"), control);
-        control = definirProtegerTextoEscrito( Traductor.obtenerAtrbutoElemento(valorControl, "protegerTextoEscrito"), control);
+        control = definirTipo(
+            Traductor.obtenerAtrbutoElemento(valorControl, "tipo"), control);
+        control = definirTipoEntrada(
+            Traductor.obtenerAtrbutoElemento(valorControl, "tipoEntrada"),
+            control);
+        control = definirTextoCapitalizacion(
+            Traductor.obtenerAtrbutoElemento(
+                valorControl, "textoCapitalizacion"),
+            control);
+        control = definirProtegerTextoEscrito(
+            Traductor.obtenerAtrbutoElemento(
+                valorControl, "protegerTextoEscrito"),
+            control);
 
-        control.textoEtiqueta = Traductor.obtenerAtrbutoElemento(valorControl, "textoEtiqueta");
-        control.textoAyuda = Traductor.obtenerAtrbutoElemento(valorControl, "textoAyuda");
-        control.marcaAguaTexto = Traductor.obtenerAtrbutoElemento(valorControl, "marcaAguaTexto");
+        control.textoEtiqueta =
+            Traductor.obtenerAtrbutoElemento(valorControl, "textoEtiqueta");
+        control.textoAyuda =
+            Traductor.obtenerAtrbutoElemento(valorControl, "textoAyuda");
+        control.marcaAguaTexto =
+            Traductor.obtenerAtrbutoElemento(valorControl, "marcaAguaTexto");
         control.icono = Traductor.obtenerAtrbutoElemento(valorControl, "icono");
-        control.iconoInterno = Traductor.obtenerAtrbutoElemento(valorControl, "iconoInterno");
-  
-        control = definirBorde(Traductor.obtenerAtrbutoSeccion(pagina, "borde"), control);
-        control = definirColorBorde( Traductor.obtenerAtrbutoSeccion(pagina, "colorBorde"), control);
-        control.textoContador= Traductor.obtenerAtrbutoSeccion(pagina, "textoContador");
+        control.iconoInterno =
+            Traductor.obtenerAtrbutoElemento(valorControl, "iconoInterno");
+
+        control = definirBorde(
+            Traductor.obtenerAtrbutoSeccion(pagina, "borde"), control);
+        if (control.colorBorde == null || control.colorBorde == "") {
+          control = definirColorBorde(
+              Traductor.obtenerAtrbutoSeccion(pagina, "colorBorde"), control);
+          control.colorBorde == null || control.colorBorde == ""
+              ? ParametrosSistema.colorBorde
+              : control.colorBorde;
+        }
+
+        control.textoContador =
+            Traductor.obtenerAtrbutoSeccion(pagina, "textoContador");
         // control.textoContador=control.textoContador??'';
         // definirTextoContador(control.textoContador!,control);
         // control = definirTextoContador(Traductor.obtenerAtrbutoSeccion(pagina, "textoContador"), control);
 
-       }
-       else
-          control.textoEtiqueta = control.idControl!;
-       return control;
+      } else
+        control.textoEtiqueta = control.idControl!;
+      return control;
     } catch (error) {
-          control.textoEtiqueta  = control.textoEtiqueta??control.idControl!;
+      control.textoEtiqueta = control.textoEtiqueta ?? control.idControl!;
       return control;
     }
   }
 
   Control definirTipo(String tipo, Control control) {
-    if (tipo == "CajaTextoForma")
+    if (tipo.contains("CajaTextoForma"))
       control.tipo = eTipoControl.cajaTextoForma;
-    else if (tipo == "Etiqueta")
+    else if (tipo.contains("Etiqueta"))
       control.tipo = eTipoControl.etiqueta;
     else if (tipo == "CajaTexto")
       control.tipo = eTipoControl.cajaTexto;
@@ -248,18 +255,16 @@ class Control extends EntidadBase {
       control.tipo = eTipoControl.horaSelectorCupertino;
     else if (tipo.contains("FechaSelectorCupertino"))
       control.tipo = eTipoControl.fechaSelectorCupertino;
-     else if (tipo.contains("FechaSelector"))
+    else if (tipo.contains("FechaSelector"))
       control.tipo = eTipoControl.fechaSelector;
     else if (tipo.contains("Calendario"))
       control.tipo = eTipoControl.calendario;
     else if (tipo.contains("HoraSelector"))
-      control.tipo = eTipoControl.horaSelector ;  
+      control.tipo = eTipoControl.horaSelector;
     else if (tipo.contains("ListaDespegableFija"))
       control.tipo = eTipoControl.listaDespegableFija;
     else if (tipo.contains("ListaDespegable"))
       control.tipo = eTipoControl.listaDespegable;
-    else if (tipo.contains("Autocomplertar"))
-      control.tipo = eTipoControl.autocomplertar;
     else if (tipo.contains("Apagador"))
       control.tipo = eTipoControl.apagador;
     else if (tipo.contains("Foto"))
@@ -278,19 +283,25 @@ class Control extends EntidadBase {
       control.tipo = eTipoControl.videoSimple;
     else if (tipo.contains("VideoMejorado"))
       control.tipo = eTipoControl.videoMejorado;
+    else if (tipo.contains("AutoCompletarLista"))
+      control.tipo = eTipoControl.autoCompletarLista;
+    else if (tipo.contains("AutoCompletarTabla"))
+      control.tipo = eTipoControl.autoCompletarTabla;
 
     return control;
   }
 
   Control definirBorde(String borde, Control control) {
-    if (borde.contains("Ninguno"))
+    if (borde == null || borde == "")
+      control.borde = ParametrosSistema.tipoBorde;
+    else if (borde.contains("Ninguno"))
       control.borde = eTipoBorde.ninguno;
     else if (borde.contains("Rectangular"))
       control.borde = eTipoBorde.rectangular;
     else if (borde.contains("Circular"))
       control.borde = eTipoBorde.circular;
     else if (borde.contains("Lineal")) control.borde = eTipoBorde.lineal;
-
+    control.borde = eTipoBorde.lineal;
     return control;
   }
 
@@ -335,15 +346,12 @@ class Control extends EntidadBase {
   }
 
   Control definirColorBorde(String atributo, Control control) {
-     if (atributo != null && atributo != "")
-        control.colorBorde = atributo;
+    if (atributo != null && atributo != "") control.colorBorde = atributo;
     return control;
   }
 
   Control definirTextoContador(String? atributo, Control control) {
-    if (atributo != null && atributo != "")
-       control.textoContador = atributo;
+    if (atributo != null && atributo != "") control.textoContador = atributo;
     return control;
   }
-
 }

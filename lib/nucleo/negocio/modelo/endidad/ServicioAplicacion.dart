@@ -180,12 +180,12 @@ class ServicioAplicacion extends EntidadBase {
 
   List<ServicioAplicacion> mapTolista(List<dynamic> listaMapa) {
     List<ServicioAplicacion> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }
 
-  List<ServicioAplicacion> jsonToList(String cadenaJson) {
+  List<ServicioAplicacion> jsonToLista(String cadenaJson) {
     List<dynamic> listaMap = json.decode(cadenaJson);
     List<ServicioAplicacion> lista = mapTolista(listaMap);
     return lista;

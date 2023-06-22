@@ -36,7 +36,8 @@ class Captura {
       key: formKey,
       child: ListView(
         // shrinkWrap: true,
-        // padding: EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(10.0),
+
         children: metodoDefinicionControles(
             context, formKey, metodocambiarValor, validar, entidadCaptura),
       ),
@@ -51,16 +52,17 @@ class Captura {
       Function metodoDefinicionControles,
       dynamic entidadCaptura) {
     return Form(
-      key: formKey,
-      child: Column(
-        // shrinkWrap: true,
-        // padding: EdgeInsets.all(1.0),
-        children: metodoDefinicionControles(
-            context, formKey, metodocambiarValor, validar, entidadCaptura),
-      ),
-    );
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            // shrinkWrap: true,
+            children: metodoDefinicionControles(
+                context, formKey, metodocambiarValor, validar, entidadCaptura),
+          ),
+        ));
   }
 }
+//  asignar  propiedades  de   controles
 
 List<Widget> cargarControlesCaptura(
     BuildContext context,
@@ -71,15 +73,16 @@ List<Widget> cargarControlesCaptura(
     Function metodoValidar,
     List<Widget> widgets) {
   controles.forEach((Control control) {
-    control = control.asignar(
-        idioma, pagina, control.valor, metooCambiarValor, metodoValidar);
+    control = control.asignar(idioma, pagina, control.valor, control.activo,
+        metooCambiarValor, metodoValidar);
   });
   return crearControlesCaptura(context, controles, widgets);
 }
 
+//   crear  widgets   usaado  lista  de clase  control con sus  propiedades
+
 List<Widget> crearControlesCaptura(
     BuildContext context, List<Control> controles, List<Widget> widgets) {
-  List<ElementoLista> lista;
   if (widgets == null) widgets = [];
   controles.forEach((Control control) {
     if (control.tipo == eTipoControl.cajaTexto)
@@ -137,45 +140,59 @@ List<Widget> crearControlesCaptura(
      */
     else if (control.tipo == eTipoControl.foto)
       widgets.add(crearFoto(context, control));
+    else if (control.tipo == eTipoControl.autoCompletarLista)
+      widgets.add(AutoCompletarLista(
+          lista: control.lista, control: control, metodo: control.accion));
+    else if (control.tipo == eTipoControl.autoCompletarTabla)
+      widgets.add(AutoCompletarTabla(
+          tabla: control.tabla, control: control, metodo: control.accion));
   });
   return widgets;
 }
 
 Widget crearEtiqueta(BuildContext context, Control control) {
+  Widget espacio = SizedBox(
+    width: 40.0,
+    height: 30.0,
+    //child: const Card(child: Text('')),
+  );
+
   return Container(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Row(children: [
-      SizedBox(
-        width: 38.0,
-        height: 30.0,
-        //child: const Card(child: Text('')),
-      ),
+      //  espacio en columna
+      espacio,
+
+      //  titulo de etiqueta
       Text(
         control.textoEtiqueta!,
         textAlign: TextAlign.left,
-
         //Theme.of(context).
         //style:Theme.of(context).textTheme.display1,
         // DefaultTextStyle.of(context).style,
         //TextStyle(fontWeight: FontWeight.normal, fontFamily:  'Monospace', fontSize: DefaultTextStyle.of(context).style.fontSize ),
       ),
     ]),
+    //  valor  de campo
     Center(
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
-          Icono.crear(control.icono! /* , Theme.of(context).disabledColor  */),
+          //  Icono
+          Icono.crear(
+              control.iconoInterno /* , Theme.of(context).disabledColor  */),
+          // espacio en renglon
           SizedBox(
-            width: 16.0,
-            height: 30.0,
+            width: 20.0,
+            height: 40.0,
             //child: const Card(child: Text('')),
           ),
           new Expanded(
               child: Container(
                   //width: MediaQuery.of(context).size.width -76,
-                  margin: const EdgeInsets.all(2.0),
-                  padding: const EdgeInsets.all(0.0),
+                  margin: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(10.0),
                   decoration: crearDecoracionContenedor(context, control),
                   child: Text(
                     control.valor == null ? "" : control.valor,
@@ -185,6 +202,123 @@ Widget crearEtiqueta(BuildContext context, Control control) {
                   )))
         ]))
   ]));
+}
+
+Widget crearCajaTexto(BuildContext context, Control control) {
+  // este  control requiere  TextEditingController _controller1 = new TextEditingController();
+  // este  control NO ejecuta cuando el metodo validar cuanso se ejecuta al guardar formKey.currentState.validate()
+  if (control.controlEdicion == null && control.valor != null) {
+    TextEditingController? _controller_dinamico;
+    _controller_dinamico = TextEditingController();
+    control.controlEdicion = _controller_dinamico;
+  }
+  control.controlEdicion!.text = control.valor;
+  TextField Cajatexto = TextField(
+    enabled: control.activo == 1 ? true : false,
+    // autofocus: true,
+    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
+    enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
+            control.tipo == eTipoControl.fechaSelector ||
+            control.tipo == eTipoControl.fechaSelectorCupertino ||
+            control.tipo == eTipoControl.horaSelectorCupertino ||
+            control.tipo == eTipoControl.horaSelector
+        ? false
+        : true,
+    textCapitalization: (control.textoCapitalizacion != null)
+        ? control.textoCapitalizacion!
+        : TextCapitalization.none,
+    keyboardType: (control.tipoEntrada != null)
+        ? control.tipoEntrada
+        : TextInputType.text,
+    obscureText: control.protegerTextoEscrito != null
+        ? control.protegerTextoEscrito!
+        : false,
+    controller: control.controlEdicion,
+    focusNode: control.focusNode,
+    decoration: crearDecoracionInput(control),
+    onTap: () {
+      if (control.tipo == eTipoControl.calendario ||
+          control.tipo == eTipoControl.fechaSelector ||
+          control.tipo == eTipoControl.horaSelector ||
+          control.tipo == eTipoControl.fechaSelectorCupertino ||
+          control.tipo == eTipoControl.horaSelectorCupertino) {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        if (control.tipo == eTipoControl.calendario)
+          seleccionarFechaCalendario(context, control);
+        else if (control.tipo == eTipoControl.fechaSelector)
+          seleccionarFechaBotones(context, control);
+        else if (control.tipo == eTipoControl.horaSelector)
+          seleccionarHoraBotones(context, control);
+        else if (control.tipo == eTipoControl.fechaSelectorCupertino)
+          seleccionarFechaHoraCupertino(context, control);
+        else if (control.tipo == eTipoControl.horaSelectorCupertino)
+          seleccionarFechaHoraCupertino(context, control);
+      }
+    },
+    // se ejecuta cuando se termina la captura
+    onSubmitted: (valorIngresado) {
+      control.valor = valorIngresado;
+      control.accion!(control, valorIngresado);
+    },
+  );
+
+  return Cajatexto;
+}
+
+Widget crearCajaTextoForma(BuildContext context, Control control) {
+  // este NO control requiere   TextEditingController _controller1 = new TextEditingController();
+  // if (control.controlEdicion!=null)
+  //   control.controlEdicion.text = control.valor;
+  // if (control.valor != null) print(control.valor ?? control.valor);
+  // if (control.controlEdicion != null)
+  //   print(
+  //     control.controlEdicion.text,
+  //   );
+  Widget Cajatexto = TextFormField(
+    enabled: control.activo == 1 ? true : false,
+    // autofocus: true,
+    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
+    initialValue: control.valor != null ? control.valor : null,
+    // controller: control.controlEdicion != null && control.valor == null
+    //     ? control.controlEdicion
+    //     : null,
+    enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
+            control.tipo == eTipoControl.fechaSelector ||
+            control.tipo == eTipoControl.fechaSelectorCupertino ||
+            control.tipo == eTipoControl.horaSelectorCupertino ||
+            control.tipo == eTipoControl.horaSelector
+        ? false
+        : true,
+
+    textCapitalization: (control.textoCapitalizacion! != null)
+        ? control.textoCapitalizacion!
+        : TextCapitalization.none,
+    keyboardType: (control.tipoEntrada != null)
+        ? control.tipoEntrada
+        : TextInputType.text,
+    obscureText: control.protegerTextoEscrito! != null
+        ? control.protegerTextoEscrito!
+        : false,
+    minLines: 1,
+    maxLines: control.protegerTextoEscrito != null ? 1 : 10,
+    decoration: crearDecoracionInput(control),
+    // se ejecuta cuando se termina la captura
+    onFieldSubmitted: (valorIngresado) {
+      control.valor = valorIngresado;
+      control.accion!(control, valorIngresado);
+    },
+    // se ejecuta cuando el metodo   formKey.currentState.save();  !formKey.currentState.validate()
+    onSaved: (valorIngresado) {
+      control.valor = valorIngresado;
+      control.accion!(control, valorIngresado);
+    },
+    // se ejecuta cuando el metodo   formKey.currentState.validate()
+    validator: (valorIngresado) {
+      return control.accionValidacion!(control, valorIngresado);
+    },
+  );
+
+  return Cajatexto;
 }
 
 // este metodo funciona el eento tap con crearCajaTextoForma
@@ -245,23 +379,17 @@ seleccionarFechaCalendario(BuildContext context, Control control) async {
 }
 
 seleccionarFechaBotones(BuildContext context, Control control) async {
-  // DatePicker.showTimePicker(context, showTitleActions: true,
-  //           onChanged: (date) {
-  //         print('change $date in time zone ' +
-  //             date.timeZoneOffset.inHours.toString());
-  //       }, onConfirm: (date) {
-  //         print('confirm $date');
-  //       }, currentTime: DateTime.now());
-
   Duration duration = new Duration(days: 365 * 100);
 
-  DateTime fechaSeleccionada;
-
+  DateTime fechaSeleccionada = DateTime.now();
+  if (control.valor != null && control.valor != "")
+    fechaSeleccionada =
+        DateFormat(ParametrosSistema.formatoFecha).parse(control.valor);
   DatePicker.showDatePicker(
     context,
     showTitleActions: true,
     locale: LocaleType.es,
-    currentTime: DateTime.now(),
+    currentTime: fechaSeleccionada,
     minTime: DateTime.now().subtract(duration),
     maxTime: DateTime.now().add(duration),
     //maxTime: DateTime(2022, 12, 31),
@@ -273,8 +401,35 @@ seleccionarFechaBotones(BuildContext context, Control control) async {
     onConfirm: (fecha) {
       print('confirm $fecha');
       fechaSeleccionada = fecha;
-      asignarFecha(control, fechaSeleccionada);
-      control.accion!(control, asignarFecha(control, fechaSeleccionada));
+      control.valor = asignarFecha(control, fechaSeleccionada);
+      control.accion!(control, control.valor);
+    },
+  );
+}
+
+seleccionarHoraBotones(BuildContext context, Control control) async {
+  DateTime fechaSeleccionada = DateTime.now();
+  if (control.valor != null && control.valor != "")
+    fechaSeleccionada =
+        DateFormat(ParametrosSistema.formatoHora).parse(control.valor);
+
+  DatePicker.showTimePicker(
+    context,
+    showTitleActions: true,
+    locale: LocaleType.es,
+    currentTime: fechaSeleccionada,
+    onChanged: (valor) {
+      print('change $valor');
+      fechaSeleccionada = valor;
+    },
+    onConfirm: (valor) {
+      print('confirm $valor');
+      fechaSeleccionada = valor;
+      print(valor);
+      print(fechaSeleccionada.hour.toString());
+      print(fechaSeleccionada.minute.toString());
+      control.valor = asignarFecha(control, fechaSeleccionada);
+      control.accion!(control, control.valor);
     },
   );
 }
@@ -339,110 +494,6 @@ String asignarFecha(Control control, DateTime? fechaSeleccionada) {
     // DateTime fecha = DateTime.parse(cadenafecha);
   }
   return cadenafecha;
-}
-
-Widget crearCajaTexto(BuildContext context, Control control) {
-  // este  control requiere  TextEditingController _controller1 = new TextEditingController();
-  // este  control NO ejecuta cuando el metodo validar cuanso se ejecuta al guardar formKey.currentState.validate()
-  if (control.controlEdicion != null && control.valor != null)
-    control.controlEdicion!.text = control.valor;
-  final Cajatexto = TextField(
-    // autofocus: true,
-    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
-    enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
-            control.tipo == eTipoControl.fechaSelector
-        ? false
-        : true,
-    controller: control.controlEdicion,
-    obscureText: control.protegerTextoEscrito! != null
-        ? control.protegerTextoEscrito!
-        : false,
-    textCapitalization: (control.textoCapitalizacion! != null)
-        ? control.textoCapitalizacion!
-        : TextCapitalization.none,
-    //keyboardType: (control.tipoEntrada !=null)?control.tipoEntrada : TextInputType.text,
-    decoration: crearDecoracionInput(control),
-    onTap: () {
-      if (control.tipo == eTipoControl.calendario ||
-          control.tipo == eTipoControl.fechaSelector ||
-          control.tipo == eTipoControl.horaSelector ||
-          control.tipo == eTipoControl.fechaSelectorCupertino ||
-          control.tipo == eTipoControl.horaSelectorCupertino) {
-        FocusScope.of(context).requestFocus(new FocusNode());
-        if (control.tipo == eTipoControl.calendario)
-          seleccionarFechaCalendario(context, control);
-        else if (control.tipo == eTipoControl.fechaSelector)
-          seleccionarFechaBotones(context, control);
-        else if (control.tipo == eTipoControl.horaSelector)
-          seleccionarFechaBotones(context, control);
-        else if (control.tipo == eTipoControl.fechaSelectorCupertino)
-          seleccionarFechaHoraCupertino(context, control);
-        else if (control.tipo == eTipoControl.horaSelectorCupertino)
-          seleccionarFechaHoraCupertino(context, control);
-      }
-    },
-    // se ejecuta cuando se termina la captura
-    onSubmitted: (valorIngresado) {
-      control.valor = valorIngresado;
-      control.accion!(control, valorIngresado);
-    },
-  );
-
-  return Cajatexto;
-}
-
-Widget crearCajaTextoForma(BuildContext context, Control control) {
-  // este NO control requiere   TextEditingController _controller1 = new TextEditingController();
-  // if (control.controlEdicion!=null)
-  //   control.controlEdicion.text = control.valor;
-  // if (control.valor != null) print(control.valor ?? control.valor);
-  // if (control.controlEdicion != null)
-  //   print(
-  //     control.controlEdicion.text,
-  //   );
-  Widget Cajatexto = TextFormField(
-    cursorColor: Colores.obtener(ParametrosSistema.colorPrimario),
-    // autofocus: true,
-    initialValue: control.valor != null ? control.valor : null,
-    // controller: control.controlEdicion != null && control.valor == null
-    //     ? control.controlEdicion
-    //     : null,
-    enableInteractiveSelection: control.tipo == eTipoControl.calendario ||
-            control.tipo == eTipoControl.fechaSelector ||
-            control.tipo == eTipoControl.fechaSelectorCupertino ||
-            control.tipo == eTipoControl.horaSelectorCupertino ||
-            control.tipo == eTipoControl.horaSelector
-        ? false
-        : true,
-    obscureText: control.protegerTextoEscrito! != null
-        ? control.protegerTextoEscrito!
-        : false,
-    textCapitalization: (control.textoCapitalizacion! != null)
-        ? control.textoCapitalizacion!
-        : TextCapitalization.none,
-    keyboardType: (control.tipoEntrada != null)
-        ? control.tipoEntrada
-        : TextInputType.text,
-    minLines: 1,
-    maxLines: control.protegerTextoEscrito != null ? 1 : 5,
-    decoration: crearDecoracionInput(control),
-    // se ejecuta cuando se termina la captura
-    onFieldSubmitted: (valorIngresado) {
-      control.valor = valorIngresado;
-      control.accion!(control, valorIngresado);
-    },
-    // se ejecuta cuando el metodo   formKey.currentState.save();  !formKey.currentState.validate()
-    onSaved: (valorIngresado) {
-      control.valor = valorIngresado;
-      control.accion!(control, valorIngresado);
-    },
-    // se ejecuta cuando el metodo   formKey.currentState.validate()
-    validator: (valorIngresado) {
-      return control.accionValidacion!(control, valorIngresado);
-    },
-  );
-
-  return Cajatexto;
 }
 
 Widget crearDropdownFijo(

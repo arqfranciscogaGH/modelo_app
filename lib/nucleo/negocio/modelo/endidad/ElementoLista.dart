@@ -151,6 +151,18 @@ class ElementoLista extends EntidadBase {
           // campoLLave: campoLLave!,
         );
 
+  ElementoLista iniciar() {
+    ElementoLista e = ElementoLista();
+    e.nombreTabla = 'ElementoLista';
+    e.campoLLave = 'id';
+    e.incrementar = false;
+    e.clave = "";
+    e.llave = " ";
+    e.nombre = "";
+    e.descripcion = "";
+    return e;
+  }
+
   factory ElementoLista.fromMap(Map<String, dynamic> map) => ElementoLista(
         valor: map["valor"],
         titulo: map["titulo"],
@@ -206,16 +218,16 @@ class ElementoLista extends EntidadBase {
   Map<String, dynamic> fromJsonToMap(String cadenaJson) =>
       json.decode(cadenaJson);
 
-  List<ElementoLista> mapTolist(List<dynamic> listaMapa) {
+  List<ElementoLista> mapTolista(List<dynamic> listaMapa) {
     List<ElementoLista> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }
 
-  List<ElementoLista> jsonToList(String cadenaJson) {
+  List<ElementoLista> jsonToLista(String cadenaJson) {
     List<dynamic> listaMap = json.decode(cadenaJson);
-    List<ElementoLista> lista = mapTolist(listaMap);
+    List<ElementoLista> lista = mapTolista(listaMap);
     return lista;
   }
 

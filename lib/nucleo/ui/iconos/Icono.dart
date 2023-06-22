@@ -16,10 +16,11 @@ class Icono {
   // double tamano;
   // Icono(this.nombre, this.color  , this.tamano )   { }
 
-  static Icon crear(String nombre, [dynamic color = "", double? tamano = 0]) {
+  static Icon crear(
+      [dynamic nombre = "", dynamic color = "", double? tamano = 0]) {
     if (nombre == null || nombre == "") nombre = 'info';
     if (color == null || color == "") color = ParametrosSistema.colorIcono;
-    if (tamano == null || tamano == 0) tamano != ParametrosSistema.tamanoIcono;
+    if (tamano == null || tamano == 0) tamano = ParametrosSistema.tamanoIcono;
     IconData? icono = listaIconosEstandar[nombre];
     return Icon(icono, color: Colores.obtener(color), size: tamano);
   }

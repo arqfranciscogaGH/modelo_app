@@ -6,11 +6,13 @@
 
 import '../../nucleo/baseDatos/baseDatos.dart';
 import '../negocio/modelo/ModeloAplicacion.dart';
+import '../negocio/modelo/TablasAplicacion.dart';
 
 export '../../nucleo/baseDatos/baseDatos.dart';
 export '../negocio/modelo/ModeloAplicacion.dart';
+export '../negocio/modelo/TablasAplicacion.dart';
 
-class DBAplicacion extends ModelodBase {
+class DBAplicacion {
   // declarar  variables
 
   // regresa instancia de  IAccesoBD por defecto
@@ -29,15 +31,32 @@ class DBAplicacion extends ModelodBase {
     }
   }
 
-  // declarar entidades
-  AccesoTabla<Autenticacion>? tablaAutenticacion;
-  AccesoTabla<CuentaUsuario>? tablaCuentaUsuario;
-  AccesoTabla<ServicioAplicacion>? tablaServicioAplicacion;
-  AccesoTabla<Producto>? tablaProducto;
-  AccesoTabla<Venta>? tablaVenta;
-  AccesoTabla<VentaProducto>? tablaVentaProducto;
-  AccesoTabla<Cliente>? tablaCliente;
-  AccesoTabla<Registro>? tablaRegistro;
+  DBAplicacion() {
+    iniciarTablas();
+  }
+  // declarar tablas  de aplicacion
+
+  // AccesoTabla<Autenticacion>? tablaAutenticacion;
+  // AccesoTabla<ServicioAplicacion>? tablaServicioAplicacion;
+
+  // AccesoTabla<CuentaUsuario>? tablaCuentaUsuario;
+
+  // AccesoTabla<Cliente>? tablaCliente;
+  // AccesoTabla<Producto>? tablaProducto;
+  // AccesoTabla<Venta>? tablaVenta;
+  // AccesoTabla<VentaProducto>? tablaVentaProducto;
+
+  // AccesoTabla<Registro>? tablaRegistro;
+
+  //   tablas
+  TablaServicioAplicacion? servicioAplicacion;
+  TablaAutenticacion? autenticacion;
+
+  TablaCuentaUsuario? cuentaUsuario;
+  TablaCliente? cliente;
+  TablaProducto? producto;
+  TablaVenta? venta;
+  TablaVentaProducto? ventaProducto;
 
 //   AccesoTabla<Suscripcion> tablaSuscripcion;
 
@@ -83,11 +102,6 @@ class DBAplicacion extends ModelodBase {
   AccesoTabla<Gasto> gastos;
   AccesoTabla<Scaneo> scaneos; */
 
-  DBAplicacion() {
-    iniciarTablas();
-    // creacionTablas();
-  }
-
   // iniciar entidades
   iniciarTablas() {
     ConfiguracionAccesoBD configuracionPersitenciaMemoria =
@@ -106,7 +120,7 @@ class DBAplicacion extends ModelodBase {
         ConfiguracionAccesoBD(
       persitencia: ePersitencia.BaseDatos,
       tipoDB: eTipoDB.SQLLITE,
-      nombreBD: 'prueba5',
+      nombreBD: 'prueba',
       version: 1,
       persitenciaPorDefecto: true,
       contadorRegistros: false,
@@ -185,29 +199,10 @@ class DBAplicacion extends ModelodBase {
       sincronizarServidor: true,
     );
 
-    tablaAutenticacion = agregarTabla<Autenticacion>(
-        Autenticacion().iniciar(), configuracionApiParametros);
+    // tablaRegistro =
+    //     agregarTabla<Registro>(Registro().iniciar(), configuracionApiPaginador);
 
-    tablaCuentaUsuario = agregarTabla<CuentaUsuario>(
-        CuentaUsuario().iniciar(), configuracionApiParametros);
-
-    tablaServicioAplicacion = agregarTabla<ServicioAplicacion>(
-        ServicioAplicacion().iniciar(), configuracionApiPaginador);
-
-    tablaProducto = agregarTabla<Producto>(
-        Producto().iniciar(), _configuracionPersitenciaSqlLite);
-
-    tablaVenta =
-        agregarTabla<Venta>(Venta().iniciar(), configuracionPersitenciaMemoria);
-
-    tablaVentaProducto = agregarTabla<VentaProducto>(
-        VentaProducto().iniciar(), configuracionPersitenciaMemoria);
-
-    tablaCliente = agregarTabla<Cliente>(
-        Cliente().iniciar(), configuracionPersitenciaApiIdentity);
-
-    tablaRegistro =
-        agregarTabla<Registro>(Registro().iniciar(), configuracionApiPaginador);
+///////////////////////////////////////////////////////////////////////
 
     //   tablaSuscripcion = agregarTabla<Suscripcion>(
     //       Suscripcion().iniciar(), configuracionApiParametros);
@@ -294,6 +289,45 @@ class DBAplicacion extends ModelodBase {
         // persitencia: ePersitencia.BaseDatos , tipoDB:eTipoDB.SQLLITE, 
         //nombreBD:'prueba', version:1,
        urlApi: 'http://www.apimenet.somee.com/api', controladorApi: "personas" , sincronizarServidor: true,) */
+
+    autenticacion = TablaAutenticacion();
+    autenticacion!
+        .iniciar(Autenticacion().iniciar(), configuracionApiParametros);
+
+    servicioAplicacion = TablaServicioAplicacion();
+    servicioAplicacion!
+        .iniciar(ServicioAplicacion().iniciar(), configuracionApiParametros);
+
+    cuentaUsuario = TablaCuentaUsuario();
+    cuentaUsuario!
+        .iniciar(CuentaUsuario().iniciar(), _configuracionPersitenciaSqlLite);
+
+    producto = TablaProducto();
+    producto!.iniciar(Producto().iniciar(), _configuracionPersitenciaSqlLite);
+
+    cliente = TablaCliente();
+    cliente!.iniciar(Cliente().iniciar(), _configuracionPersitenciaSqlLite);
+
+    venta = TablaVenta();
+    venta!.iniciar(Venta().iniciar(), _configuracionPersitenciaSqlLite);
+
+    ventaProducto = TablaVentaProducto();
+    ventaProducto!
+        .iniciar(VentaProducto().iniciar(), _configuracionPersitenciaSqlLite);
+
+    // TablaServicioAplicacion? servicioAplicacion;
+    // TablaAutenticacion? autenticacion;
+
+    // TablaCuentaUsuario? cuentaUsuario;
+    // TablaCliente? cliente;
+    // TablaProducto? producto;
+
+    // TablaVentaProducto? ventaProducto;
+
+    // producto!.Instanciar(
+    //     claseEntidad: Producto().iniciar(),
+    //     configuracion: _configuracionPersitenciaSqlLite);
+    //producto!.lista;
   }
 
   void creacionTablas() async {
@@ -302,9 +336,12 @@ class DBAplicacion extends ModelodBase {
 
   AccesoTabla<T> agregarTabla<T extends EntidadBase>(
       T entidad, ConfiguracionAccesoBD configuracion) {
-    if (configuracion.tablas == null) configuracion.tablas = [];
-    configuracion.tablas!.add(entidad);
-    return new AccesoTabla<T>(
-        claseEntidad: entidad, configuracion: configuracion);
+    // if (configuracion.tablas == null) configuracion.tablas = [];
+    // configuracion.tablas!.add(entidad);
+    AccesoTabla<T> abd = AccesoTabla<T>();
+    abd.iniciar(entidad, configuracion);
+    return abd;
+    // return  AccesoTabla<T>(
+    //     claseEntidad: entidad, configuracion: configuracion);
   }
 }

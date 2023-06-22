@@ -15,7 +15,7 @@ import 'Tabs.dart';
 import 'Boton.dart';
 import 'Captura.dart';
 import 'Grafica.dart';
-
+import 'AutoCompletar.dart';
 // exportar
 
 export 'decoracion.dart';
@@ -26,3 +26,4 @@ export 'Tabs.dart';
 export 'Boton.dart';
 export 'Captura.dart';
 export 'Grafica.dart';
+export 'AutoCompletar.dart';

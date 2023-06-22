@@ -4,7 +4,6 @@
 
 //  librerias externas  flutter
 
-import '../nucleo/nucleo.dart';
 import '../paquetesExternos/paquetesExternos.dart';
 
 // Descripcion de funcionalidad

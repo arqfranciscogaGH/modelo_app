@@ -81,7 +81,14 @@ class AccesoBD extends IAccesoBD {
   }
 
   @override
-  Future<dynamic> consultar(String nombreTabla, Map<String, dynamic> map,
+  Future<dynamic> filtrarTabla(String nombreTabla, Map<String, dynamic> map,
+      String campo, dynamic valor) async {
+    dynamic res = await _abd!.filtrarTabla(nombreTabla, map, campo, valor);
+    return res;
+  }
+
+  @override
+  Future<dynamic> obtener(String nombreTabla, Map<String, dynamic> map,
       String campo, dynamic valor) async {
     dynamic res = await _abd!.obtener(nombreTabla, map, campo, valor);
     return res;
@@ -105,13 +112,6 @@ class AccesoBD extends IAccesoBD {
   Future<Map<String, dynamic>> eliminar(String nombreTabla,
       Map<String, dynamic> map, String campo, dynamic valor) async {
     dynamic res = await _abd!.eliminar(nombreTabla, map, campo, valor);
-    return res;
-  }
-
-  @override
-  Future<dynamic> obtener(String nombreTabla, Map<String, dynamic> map,
-      String campo, dynamic valor) async {
-    dynamic res = await _abd!.obtener(nombreTabla, map, campo, valor);
     return res;
   }
 

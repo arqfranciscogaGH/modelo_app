@@ -12,13 +12,10 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 //  librerias  proyecto
 
 import '../../../../inicializacion/inicializacion.dart';
-import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
-import '../../../contexto/contexto.dart';
-import '../../../negocio/negocio.dart';
 
 class acceso_pagina extends StatefulWidget {
   acceso_pagina(
@@ -270,7 +267,7 @@ class _acceso_pagina_state extends State<acceso_pagina> {
       valor: entidadCaptura.cuenta,
     );
     controles.add(txtCuenta);
-    txtCuenta = txtCuenta.asignar("", pagina, entidadCaptura.cuenta,
+    txtCuenta = txtCuenta.asignar("", pagina, entidadCaptura.cuenta, 1,
         metodoActualizarValor, metodoValidar);
 
     Control txtContrasena = new Control(
@@ -292,7 +289,7 @@ class _acceso_pagina_state extends State<acceso_pagina> {
     );
     controles.add(txtContrasena);
     txtContrasena = txtContrasena.asignar("", pagina, entidadCaptura.contrasena,
-        metodoActualizarValor, metodoValidar);
+        1, metodoActualizarValor, metodoValidar);
 
     return cargarControlesCaptura(context, controles, '',
         ContextoUI.obtenerTipo(widget), cambiarValor, validar, []);
@@ -381,8 +378,8 @@ class _acceso_pagina_state extends State<acceso_pagina> {
     // dynamic usuario = elemento.argumento;
 
     entidadCaptura = elemento.argumento;
-    listaEntidad = ContextoAplicacion.db.tablaCuentaUsuario!.lista;
-    print(ContextoAplicacion.db.tablaCuentaUsuario!.lista.length);
+    listaEntidad = ContextoApp.db.cuentaUsuario!.lista;
+    print(ContextoApp.db.cuentaUsuario!.lista.length);
     if (!keyFormulario.currentState!.validate()) return;
     keyFormulario.currentState!.save();
     // obtenerInformacion(usuario);

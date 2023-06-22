@@ -39,8 +39,8 @@ class ComunCE extends ChangeNotifier {
   List<dynamic> get lista {
     // if (this._lista==null)
     // {
-    //     ContextoAplicacion ContextoAplicacion =ContextoAplicacion.obtener(null);
-    //     this._lista = ContextoAplicacion.db.tablaCliente.lista;
+    //     ContextoApp ContextoApp =ContextoApp.obtener(null);
+    //     this._lista = ContextoApp.db.tablaCliente.lista;
     // }
     return tabla!.lista;
   }

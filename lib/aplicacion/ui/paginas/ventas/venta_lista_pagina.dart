@@ -10,14 +10,11 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
-import '../../../contexto/contexto.dart';
-import '../../../negocio/negocio.dart';
 
 import 'VentaUI.dart';
 
@@ -25,18 +22,18 @@ import 'VentaUI.dart';
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class venta_lista_pagina extends StatefulWidget {
-  venta_lista_pagina(
+class Venta_lista_pagina extends StatefulWidget {
+  Venta_lista_pagina(
       {this.paginaSiguiente, this.paginaAnterior, this.activarAcciones});
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
   bool? activarAcciones = false;
 
   @override
-  _venta_lista_pagina_state createState() => _venta_lista_pagina_state();
+  _Venta_lista_pagina_state createState() => _Venta_lista_pagina_state();
 }
 
-class _venta_lista_pagina_state extends State<venta_lista_pagina> {
+class _Venta_lista_pagina_state extends State<Venta_lista_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -44,7 +41,7 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   //  controlador  de estado comun para  actulizar la UI
   ControlEstadoUI? controlEstadoUI;
   //  Interfaz  comun
-  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoAplicacion.db.tablaVenta);
+  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoApp.db.venta);
 
   // entidad
 
@@ -77,66 +74,71 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     super.initState();
     widget.paginaAnterior = ContextoUI.obtenerTipo(widget);
     controlEstadoUI = ControlEstadoUI();
-    ui = VentaUI(tabla: ContextoAplicacion.db.tablaVenta!);
+    ui = VentaUI(tabla: ContextoApp.db.venta!);
 
-    ui.tabla!.entidad = ui.tabla!.iniciar();
+    ui.tabla!.entidad = ui.tabla!.iniciarEntidad();
     entidadCaptura = ui.tabla!.entidad;
-
-    ui.tabla!.controlEstadoUI = controlEstadoUI!;
 
     //  paginación
     // numero de  pagina  inicial
     ui.tabla!.paginador.paginaActual = 1;
     // registro por  pagina
     ui.tabla!.paginador.registrosPorPagina = 10;
-    // indicador estatus  1 paginacion  en api 0 paginacion en lista obnenida
+    // indicador estatus  1 paginacion  en api ,  0 paginacion en lista obnenida
     // 1   la api hace la paginacion (solo regresa los registros se usaran en cada pagina, pero cada avance o regreso de pagina  e deben obtenr los registros )
     // se debe usar simpres el metodo consultarPaginacionTabla
     // 0   accesoTabla hace localmente la paginación  usando la lista , pero es necesaio obtener todos los registros en la primer llamada , ventaja : más rápido la pagicion  y menos  llamadas a la api  , desventaja  más datos en meomoria  y mas viajan por internet (viaja toda los registros)
     // se debe usar la primera vez consultarPaginacionTabla  y  en avanzar y regresar el metodo paginarTabla
     ui.tabla!.paginador.estatus = 0;
 
-// proporcionar  llave
+    // proporcionar  llave  si  se requiere
     ui.tabla!.configuracion!.llaveApi =
-        ContextoAplicacion.db.tablaAutenticacion!.entidad.llave!;
+        ContextoApp.db.autenticacion!.entidad.llave!;
 
+    //  si requiere  control  de estado  para actualizar  lista  se hailita  la linea o  se  indica  en el metodo de consulta el  metodo  para actalizar lista
+    ui.tabla!.controlEstadoUI = controlEstadoUI!;
+
+    // se  inicia  proceso se requiere  control el estado
+    // controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
+
+    //  consulta  tabla  inicialmente
+    //
+    //  toda la tabla
+    //
+    //  consulta  toda la tabla usando  control de estado
+    //
+    //  ui.tabla!.consultarTabla(entidadCaptura);
+    //
+    //  consulta  toda la tabla usando  metodo para actualizar lista
+    //
+    //  ui.tabla!.consultarTabla(entidadCaptura,actualizarEstadoLista);
+    //
+    //  paginacion
+    //
+    //  paginaion  usando  estado para  actualizar  lista
+    //  paginacion  sin  metodo
+    //
     ui.tabla!.consultarPaginacionTabla(entidadCaptura);
-    // ui.tabla!.filtrarLista(entidadCaptura, 'estatus', 1);
+    //
+    //  paginacion tabla usando  metodo  para actualizar  lista
+    //
+    //  ui.tabla!.consultarPaginacionTabla(entidadCaptura, actualizarEstadoLista);
+    //
+    //  filtrar tabla
+    //  ui.tabla!.filtrarTabla(entidadCaptura, 'estatus', 1);
+    //
+    //  filtrar lista
+    //  ui.tabla!.filtrarLista(entidadCaptura, 'estatus', 1);
 
     print("initState");
-
-    // ContextoAplicacion.db.tablaVenta!.consultarTabla(
-    //     ContextoAplicacion.db.tablaVenta!.entidad, actualizarEstadoLista);
-
-/*     ContextoAplicacion.db.tablaRegistro!.configuracion!.parmetros = "";
-    ContextoAplicacion.db.tablaRegistro!.paginador.estatus = 0;
-
-    ContextoAplicacion.db.tablaRegistro!
-        .consultarPaginacionTabla(ContextoAplicacion.db.tablaRegistro!.entidad)
-        .then((respuesta) {
-      print(respuesta);
-    });
-
-    ContextoAplicacion.db.tablaRegistro!
-        .filtrarTabla(
-            ContextoAplicacion.db.tablaRegistro!.entidad, "estatus", 1)
-        .then((respuesta) {
-      print(respuesta);
-    });
-
-    ContextoAplicacion.db.tablaRegistro!
-        .filtrarLista(
-            ContextoAplicacion.db.tablaRegistro!.entidad, "estatus", 1)
-        .then((respuesta) {
-      print(respuesta);
-    });
- */
+    print(ui.tabla!.entidad.id);
+    print(entidadCaptura.id);
 
     // provider.addListener(() {
     //      print("  actualizo, numero ${provider.entidad.id} ");
     // }) ;
 
-    // cuando es captura  parcial ,la ruta debe ser null    para qe  ejecute  la pagina siguiente
+    //  ACCIONES
 
     //  accion para agregar un elemento a la lista
     accionAgregar = ElementoLista(
@@ -159,8 +161,8 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
       ruta2: widget.paginaSiguiente,
       accion2: ui.eliminarElemento,
       callBackAccion2: ui.respuestaEliminar,
-      icono3: "documentos",
-      ruta3: widget.paginaSiguiente,
+      icono3: "list_alt",
+      ruta3: "Venta_producto_lista_pagina",
       accion3: ui.seleccionarElemento3,
       callBackAccion3: ui.respuestaSeleccionar3,
     );
@@ -176,16 +178,22 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
       ruta2: widget.paginaSiguiente,
       accion2: ui.eliminarElemento,
       callBackAccion2: ui.respuestaEliminar,
-      icono3: "documentos",
-      ruta3: widget.paginaSiguiente,
+      icono3: "list_alt",
+      ruta3: "Venta_producto_lista_pagina",
       accion3: ui.seleccionarElemento3,
       callBackAccion3: ui.respuestaSeleccionar3,
     );
+    //  definir  acciones y  botones de pagina Float
 
+    //  si requiere paginacion para  regresar
     ElementoLista elemento =
         ElementoLista(id: 4, icono: "arrow_back", accion: regresarPagina);
     opcionesPaginacion.add(elemento);
+
+    //  accion  para agregar  elementod
     opcionesPaginacion.add(accionAgregar!);
+
+    //  si requiere paginacion para  avanzar
     ElementoLista elemento3 =
         ElementoLista(id: 5, icono: "arrow_forward", accion: avanzarPagina);
     opcionesPaginacion.add(elemento3);
@@ -196,6 +204,7 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   void dispose() {
     super.dispose();
     controlEstadoUI!.dispose();
+    ui.tabla!.dispose();
     ui.dispose();
   }
 
@@ -208,9 +217,6 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
     print(ui.tabla!.entidad.id);
     print(entidadCaptura.id);
     ui.iniciar(context, scaffoldKey, widget);
-
-    ElementoLista elementoLista5 =
-        InjeccionDependencia.obtener<ElementoLista>();
 
     return ChangeNotifierProvider.value(
       value: controlEstadoUI,
@@ -235,12 +241,12 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
                 );
               },
             ),
-            //  IconButton(
-            //       icon: Icon( Icons.arrow_back  ),  onPressed: ()
-            //       {
-            //               Accion.regresar(context);
-            //       },
-            // ),
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Accion.regresar(context);
+              },
+            ),
           ],
         ),
         drawer: Menulateral.crearMenu(
@@ -287,10 +293,18 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
   Widget filtrarElementos(String query) {
     print("filtrarElementos");
     List<dynamic> lista = ui.tabla!.lista;
-    if (lista != null && query != "")
+    if (lista != null && lista.length > 0 && query != "")
       lista = lista
-          .where((s) => s.nombre.toLowerCase().contains(query.toLowerCase()))
+          .where((s) => s.id.toString().contains(query.toLowerCase()))
           .toList();
+
+    if (lista != null && lista.length == 0 && query != "") {
+      lista = ui.tabla!.lista;
+      lista = lista
+          .where((s) =>
+              s.nombreCliente.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
     return Vista_lista(
         lista: lista,
         acciones: accionFiltrar,
@@ -300,30 +314,40 @@ class _venta_lista_pagina_state extends State<venta_lista_pagina> {
         enProceso: controlEstadoUI!.enProceso);
   }
 
+  void actualizarEstadoLista(List<dynamic> listaRespuesta) {
+    // print(listaRespuesta);
+    // listaEntidad = listaRespuesta;
+    // controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.terminado);
+  }
+
   regresarPagina(BuildContext context, ElementoLista elemento,
       [dynamic argumento]) {
+    ui.tabla!.paginador.estatus = 0;
     if ((ui.tabla!.paginador.paginaActual as int) > 1) {
       ui.tabla!.paginador.paginaActual =
           (ui.tabla!.paginador.paginaActual as int) - 1;
-      // paginar  lista
       ui.tabla!.paginarTabla(entidadCaptura);
+      // paginar  lista obtenniedo  en el servidor y  y  actuaizar   Ui  usando el estado
+      // ui.tabla!.consultarPaginacionTabla(entidadCaptura);
+      // paginar  lista obtenniedo  en el servidor y  actualizado lista  en metodo
+      //ui.tabla!.consultarPaginacionTabla(entidadCaptura, actualizarEstadoLista);
     }
   }
 
   avanzarPagina(BuildContext context, ElementoLista elemento,
       [dynamic argumento]) {
+    ui.tabla!.paginador.estatus = 0;
     if ((ui.tabla!.paginador.paginaActual as int) <
         (ui.tabla!.paginador.totalPaginas as int)) {
       ui.tabla!.paginador.paginaActual =
           (ui.tabla!.paginador.paginaActual as int) + 1;
-      // paginar  lista
+      // paginar  lista usando lista
       ui.tabla!.paginarTabla(entidadCaptura);
+      // paginar  lista obtenniedo  en el servidor y  y  actuaizar   Ui  usando el estado
+      // ui.tabla!.consultarPaginacionTabla(entidadCaptura);
+      // paginar  lista obtenniedo  en el servidor y  actualizado lista  en metodo
+      //ui.tabla!.consultarPaginacionTabla(entidadCaptura, actualizarEstadoLista);
     }
-  }
-
-  void actualizarEstadoLista(List<dynamic> listaRespuesta) {
-    print(listaRespuesta);
-    listaEntidad = listaRespuesta;
   }
 }
 //

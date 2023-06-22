@@ -9,9 +9,8 @@ import 'package:provider/provider.dart';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
@@ -19,8 +18,6 @@ import '../../../../aplicacion/aplicacion.dart';
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
-
-// import '../../../contexto/contexto.dart';
 
 import 'ModeloUI.dart';
 
@@ -66,7 +63,7 @@ class _Modelo_pagina_lista_state extends State<Modelo_pagina_lista> {
 
   //    control de estado  con provider
 
-  ModeloCE? provider;
+  ControlEstadoUI? provider;
 
   //  Interfaz UI comun
 
@@ -83,9 +80,9 @@ class _Modelo_pagina_lista_state extends State<Modelo_pagina_lista> {
     //  aasignar  ruta  a pagina
     widget.pagina = Modelo_pagina_lista.ruta;
     //  provider
-    provider = ModeloCE();
+    provider = ControlEstadoUI();
     // UI
-    ui = ModuloUI(provider: provider!);
+    ui = ModuloUI();
 
     //  definir  url y sus  parametros para realizar  consulta de informacion
     String url = "FTConsulta/''/";
@@ -164,7 +161,7 @@ class _Modelo_pagina_lista_state extends State<Modelo_pagina_lista> {
           body: mostrarContenido(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Boton.crearBotonFlotante(
+          floatingActionButton: Boton.botonFlotante(
               context, ElementoLista(icono: "save", accion: ejecutar)),
         ));
   }
@@ -186,11 +183,13 @@ class _Modelo_pagina_lista_state extends State<Modelo_pagina_lista> {
   //
 
   Widget mostrarContenido() {
-    print(provider!.lista);
-    return Consumer<ModeloCE>(builder: (context, _provider, widgetPadre) {
+    List<dynamic> lista = [];
+
+    return Consumer<ControlEstadoUI>(
+        builder: (context, _provider, widgetPadre) {
       // _provider.obtenerRedPorSuscripcion(Configuracion.idSuscriptor);
       return Vista_lista(
-          lista: _provider.lista,
+          lista: lista,
           acciones: accionConsultar,
           metodoCrearElemento: ui!.crearElementoEntidad,
           context: context,
@@ -202,7 +201,7 @@ class _Modelo_pagina_lista_state extends State<Modelo_pagina_lista> {
   //  filtar  informacion
   //
   Widget filtrarElementos(String query) {
-    List<dynamic> lista = provider!.lista!;
+    List<dynamic> lista = [];
     if (query != "")
       lista = lista
           .where((s) => s.nombre.toLowerCase().contains(query.toLowerCase()))

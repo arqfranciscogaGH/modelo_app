@@ -10,8 +10,8 @@ menu_principal:
       opcion70 : { id : 70 , ruta : botones_pagina  , animacionPagina: rotationRoute ,      titulo : buttons , subtitulo : ,  icono: boton ,   iconoLateral : arrow_right , activo : 1 } 
       opcion80 : { id : 80 , ruta : Modelo_pagina_lista ,  animacionPagina: rotationRoute ,      titulo : query list , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
       opcion90 : { id : 90 , ruta : Modelo_pagina_captura ,  animacionPagina: rotationRoute ,      titulo : apture data, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion200 : { id : 200 , ruta : Producto_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : List Productos , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
-      opcion210 : { id : 210 , ruta : Producto_captura_pagina ,  animacionPagina: rotationRoute ,      titulo : Capture Producto, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion200 : { id : 200 , ruta : Producto_lista_pagina ,  animacionPagina: rotationRoute ,      titulo : List Products , subtitulo : ,  icono: list_alt ,   iconoLateral : arrow_right , activo : 1 } 
+      opcion210 : { id : 210 , ruta : Producto_captura_pagina ,  animacionPagina: rotationRoute ,      titulo : Capture Product, subtitulo : ,  icono: captura ,   iconoLateral : arrow_right , activo : 1 } 
 
 comun_pagina:
       borde :  Lineal        

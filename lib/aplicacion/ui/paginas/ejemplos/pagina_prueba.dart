@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-
 import 'dart:math';
-
 
 //  librerias importadas flutter
 
@@ -12,19 +10,15 @@ import 'dart:math';
 
 //  librerias  proyecto
 
-
-
-
-
-
 import '../../../../configuracion/configuracion.dart';
-import '../../../../nucleo/negocio/modelo/ModeloBase.dart';
-import '../../../../nucleo/ui/ui.dart';
-import '../../../../nucleo/negocio/controladorEstado/controladorEstadoTema.dart';
+import '../../../contexto/contexto.dart';
+
+import '../../../../nucleo/nucleo.dart';
+import '../../../../aplicacion/aplicacion.dart';
+
+//  librerias externas  flutter
+
 import '../../../../paquetesExternos/paquetesExternos.dart';
-import '../../../../administracion/administracion.dart';
-
-
 
 class pagina_prueba extends StatefulWidget {
   pagina_prueba({
@@ -36,7 +30,7 @@ class pagina_prueba extends StatefulWidget {
   }) : super(key: key);
   String? titulo;
   String? pagina;
-  String?  paginaSiguiente ;
+  String? paginaSiguiente;
   String? paginaAnterior;
 
   @override
@@ -46,7 +40,6 @@ class pagina_prueba extends StatefulWidget {
 class _pagina_prueba_state extends State<pagina_prueba> {
   //  declaración de variables
 
- 
   //  inicializar  variables
   @override
   void initState() {
@@ -56,15 +49,14 @@ class _pagina_prueba_state extends State<pagina_prueba> {
 
   @override
   Widget build(BuildContext context) {
-   // IdiomaAplicacion  idioma = IdiomaAplicacion.obtener(context, idioma);
-   // widget.titulo = idioma.obtenerElemento(widget.pagina, "titulo");
-   widget.titulo=widget.titulo??"";
+    // IdiomaAplicacion  idioma = IdiomaAplicacion.obtener(context, idioma);
+    // widget.titulo = idioma.obtenerElemento(widget.pagina, "titulo");
+    widget.titulo = widget.titulo ?? "";
 
+    String valor = Preferencias.obtener("id", "valor");
+    print(Sesion.nombre);
 
-String  valor =Preferencias.obtener("id","valor");
-print (Sesion.nombre);
-
-print (Sesion.nombre);
+    print(Sesion.nombre);
     return Scaffold(
       appBar: AppBar(title: Text(widget.titulo!)),
       body: Stack(
@@ -80,7 +72,8 @@ print (Sesion.nombre);
           )
         ],
       ),
-      drawer: Menulateral.crearMenu(context, OpcionesMenus.obtenerMenuPrincipal(), "Detalle de Directorio"),
+      drawer: Menulateral.crearMenu(context,
+          OpcionesMenus.obtenerMenuPrincipal(), "Detalle de Directorio"),
     );
   }
 

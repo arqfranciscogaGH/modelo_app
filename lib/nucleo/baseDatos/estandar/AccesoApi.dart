@@ -214,7 +214,10 @@ class AccesoApi implements IAccesoBD {
     if (configuracion.protocolo == null ||
         configuracion.protocolo == '' ||
         configuracion.protocolo == 'http')
-      uri = Uri.http(configuracion.dominioApi!, complUrl);
+      uri = Uri.http(
+        configuracion.dominioApi!,
+        complUrl,
+      );
     else
       uri = Uri.https(configuracion.dominioApi!, complUrl);
 

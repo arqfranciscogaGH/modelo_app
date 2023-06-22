@@ -39,6 +39,12 @@ class Boton {
   static Widget plano(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
     elemento = cambioColores(elemento);
+    Widget? titulo;
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
+
     Widget boton = TextButton(
         // minWidth: ParametrosSistema.minAncho,
         // height: ParametrosSistema.alto,
@@ -50,8 +56,7 @@ class Boton {
           shadowColor: Colors.greenAccent,
           disabledBackgroundColor: Colors.red,
         ),
-        child: Text(elemento.tituloAccion!,
-            style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+        child: titulo,
         onPressed: () {
           Accion.hacer(context, elemento);
         });
@@ -62,9 +67,14 @@ class Boton {
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
     elemento = cambioColores(elemento);
     Widget? icono;
-    if (elemento.icono != null)
-      icono = Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!);
+    Widget? titulo;
+    icono = Icono.crear(
+        elemento.icono!, elemento.colorTexto, elemento.tamanoIcono!);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
+
     Widget boton = TextButton.icon(
         // minWidth: ParametrosSistema.minAncho,
         // height: ParametrosSistema.alto,
@@ -74,11 +84,8 @@ class Boton {
           backgroundColor: Colores.obtener(elemento.colorFondo),
           foregroundColor: Colores.obtener(elemento.colorTexto),
         ),
-        icon: icono!,
-        label: Text(elemento.tituloAccion!,
-            style: TextStyle(
-                fontSize: elemento.tamanoFuente,
-                color: Colores.obtener(elemento.colorTexto))),
+        icon: icono,
+        label: titulo,
         onPressed: () {
           Accion.hacer(context, elemento);
         });
@@ -87,7 +94,13 @@ class Boton {
 
   static Widget texto(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
+
     return MaterialButton(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
@@ -95,8 +108,7 @@ class Boton {
       elevation: 15,
       padding: EdgeInsets.all(10),
       shape: seleccionarTipoBoton(tipo, elemento),
-      child: Text(elemento.tituloAccion!,
-          style: TextStyle(color: Colores.obtener(elemento.colorTexto))),
+      child: titulo,
       color: Colores.obtener(elemento.colorFondo),
       textColor: Colores.obtener(elemento.colorTexto),
       focusColor: Colors.amber,
@@ -114,7 +126,12 @@ class Boton {
 
   static Widget elevado(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
     return ElevatedButton(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
@@ -130,10 +147,7 @@ class Boton {
         // onPrimary: Colores.obtener(elemento.colorTexto),
         shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
       ),
-      child: Text(elemento.tituloAccion!,
-          style: TextStyle(
-              fontSize: elemento.tamanoFuente,
-              color: Colores.obtener(elemento.colorTexto))),
+      child: titulo,
       onPressed: () {
         print(" on tap ");
         Accion.hacer(context, elemento);
@@ -143,7 +157,12 @@ class Boton {
 
   static Widget elevadoIcono(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
     return ElevatedButton.icon(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
@@ -159,11 +178,8 @@ class Boton {
         shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
       ),
       icon: Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
-      label: Text(elemento.tituloAccion!,
-          style: TextStyle(
-              fontSize: elemento.tamanoFuente,
-              color: Colores.obtener(elemento.colorTexto))),
+          elemento.icono!, elemento.colorTexto, elemento.tamanoIcono!),
+      label: titulo,
 
       onPressed: () {
         print(" on tap ");
@@ -174,7 +190,12 @@ class Boton {
 
   static Widget lineasAfuera(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
     return OutlinedButton(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
@@ -187,10 +208,7 @@ class Boton {
         shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
       ),
 
-      child: Text(elemento.tituloAccion!,
-          style: TextStyle(
-              fontSize: elemento.tamanoFuente,
-              color: Colores.obtener(elemento.colorTexto))),
+      child: titulo,
 
       onPressed: () {
         print(" on tap ");
@@ -201,7 +219,12 @@ class Boton {
 
   static Widget lineasAfueraIcono(
       BuildContext context, ElementoLista elemento, eBotonTipo tipo) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
     return OutlinedButton.icon(
       // minWidth: ParametrosSistema.minAncho,
       // height: ParametrosSistema.alto,
@@ -214,11 +237,8 @@ class Boton {
         shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
       ),
       icon: Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono!),
-      label: Text(elemento.tituloAccion!,
-          style: TextStyle(
-              fontSize: elemento.tamanoFuente,
-              color: Colores.obtener(elemento.colorTexto))),
+          elemento.icono!, elemento.colorTexto, elemento.tamanoIcono!),
+      label: titulo,
 
       onPressed: () {
         print(" on tap ");
@@ -242,15 +262,17 @@ class Boton {
   }
 
   static Widget linkTexto(BuildContext context, ElementoLista elemento) {
+    Widget? titulo;
     elemento = cambioColores(elemento);
+    titulo = Text(elemento.tituloAccion == null ? '' : elemento.tituloAccion!,
+        style: TextStyle(
+            fontSize: elemento.tamanoFuente,
+            color: Colores.obtener(elemento.colorTexto)));
     return InkWell(
       highlightColor: Colors.grey.withOpacity(0.4),
       splashColor: Colors.black.withOpacity(0.5),
       borderRadius: BorderRadius.circular(1000),
-      child: Text(elemento.tituloAccion!,
-          style: TextStyle(
-              fontSize: elemento.tamanoFuente!,
-              color: Colores.obtener(elemento.colorTexto))),
+      child: titulo,
       onTap: () {
         print(" on tap ");
         Accion.hacer(context, elemento);
@@ -262,10 +284,10 @@ class Boton {
     elemento = cambioColores(elemento);
     Widget boton = IconButton(
         style: IconButton.styleFrom(
-          shape: seleccionarTipoBoton(eBotonTipo.Circulo, elemento),
-          padding: EdgeInsets.all(10),
-          // backgroundColor: Colores.obtener(elemento.colorTexto),
-          foregroundColor: Colores.obtener(elemento.colorFondo),
+          shape: seleccionarTipoBoton(ParametrosSistema.tipoBoton, elemento),
+          padding: EdgeInsets.all(20),
+          backgroundColor: Colores.obtener(elemento.colorFondo),
+          foregroundColor: Colores.obtener(elemento.colorTexto),
           shadowColor: Colores.obtener(ParametrosSistema.colorSombra),
         ),
         icon: Icono.crear(
@@ -356,7 +378,7 @@ class Boton {
       },
       tooltip: elemento.descripcion,
       child: Icono.crear(
-          elemento.icono!, elemento.colorIcono, elemento.tamanoIcono),
+          elemento.icono!, elemento.colorTexto, elemento.tamanoIcono),
     );
     return boton;
   }

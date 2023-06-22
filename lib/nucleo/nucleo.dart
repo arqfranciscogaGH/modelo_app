@@ -6,6 +6,8 @@
 export 'ui/ui.dart';
 export 'negocio/negocio.dart';
 export 'utilerias/utilerias.dart';
+export 'administracion/administracion.dart';
+
 
 //  librerias externas  flutter
 

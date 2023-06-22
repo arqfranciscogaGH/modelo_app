@@ -1,5 +1,7 @@
 //  librerias internas de flutter
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 //  librerias importadas flutter
@@ -9,10 +11,15 @@ import 'package:http/http.dart' as http;
 //  librerias  proyecto
 
 class ServicioRest {
+  static String token = "";
   static Map<String, String> _headers = {
     "Accept": "application/json",
-    "content-type": "application/json"
+    "content-type": "application/json",
+    "authorization": "Bearer  $token"
+    //  "authorization": "basic  $token"
   };
+  //  Map<String, String> header =  Map();
+  // header["token"]= "" ;
   static Future<dynamic> get(Uri uri) async {
     dynamic respuesta = await http.get(uri, headers: _headers);
     return respuesta;

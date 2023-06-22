@@ -62,6 +62,49 @@ class Listas {
     // }
   }
 
+  //
+  //  Crear  elemento de listas normal  , con  check  y  dismisible , este  es selecciona  el el metodo de creacion elemento
+  //
+
+  //  opciones  de crar un elemnto
+
+  //
+  //   crear  elemento   con  normal con la  opcion de seleccionar
+  //
+  static Widget crearElementoLista(
+      BuildContext context, ElementoLista elemento) {
+    return GestureDetector(
+      child: crearTituloElemento(context, elemento),
+      onTap: () {
+        Accion.hacer(context, elemento);
+      },
+    );
+  }
+
+  //
+  //   crear  titulo elemento   con  normal con la  opcion de seleccionar
+  //
+  static Widget crearTituloElemento(
+      BuildContext context, ElementoLista elemento) {
+    // if (elemento.color == null)
+    //   elemento.color = Theme.of(context).primaryColor.withOpacity(0.6);
+    return ListTile(
+      // contentPadding: EdgeInsets.all(1.0),
+      leading: elemento.icono != null
+          ? Icono.crear(elemento.icono!, elemento.color)
+          : null,
+      title: Text(elemento.titulo!),
+      subtitle: elemento.subtitulo != null ? Text(elemento.subtitulo!) : null,
+      trailing: elemento.iconoLateral != null
+          ? Icono.crear(elemento.iconoLateral!, elemento.color)
+          : null,
+      //onTap: ()  { Accion.hacer(context,elemento); },
+    );
+  }
+
+  //
+  //   crear  elemento   con check
+  //
   static Widget crearElementoListaCheck(
       BuildContext context, ElementoLista elemento) {
     return CheckboxListTile(
@@ -78,68 +121,7 @@ class Listas {
     );
   }
 
-  static Widget crearElementoLista(
-      BuildContext context, ElementoLista elemento) {
-    return GestureDetector(
-      child: crearTituloElemento(context, elemento),
-      onTap: () {
-        Accion.hacer(context, elemento);
-      },
-    );
-  }
-
-  static Widget crearTituloElemento(
-      BuildContext context, ElementoLista elemento) {
-    // if (elemento.color == null)
-    //   elemento.color = Theme.of(context).primaryColor.withOpacity(0.6);
-    return ListTile(
-      leading: elemento.icono != null
-          ? Icono.crear(elemento.icono!, elemento.color)
-          : null,
-      title: Text(elemento.titulo!),
-      subtitle: elemento.subtitulo != null ? Text(elemento.subtitulo!) : null,
-      trailing: elemento.iconoLateral != null
-          ? Icono.crear(elemento.iconoLateral!, elemento.color)
-          : null,
-      //onTap: ()  { Accion.hacer(context,elemento); },
-    );
-  }
-
-  static Widget crearElementoListaDismisible(
-      BuildContext context,
-      ElementoLista elemento,
-      dynamic argumentos,
-      // AccionModificarElementoLista metodoModificarElementoLista,
-      // AccionEliminarElementoLista metodoEliminarElementoLista
-      Function metodoModificarElementoLista,
-      Function metodoEliminarElementoLista) {
-    return Dismissible(
-        onDismissed: (direction) {
-          metodoEliminarElementoLista(context, elemento);
-        },
-        key: UniqueKey(),
-        background: Container(
-            color: Theme.of(context).selectedRowColor.withOpacity(0.6)),
-        child: ElementoAccion(
-            context: context, elemento: elemento, argumentos: argumentos));
-  }
-
-  static Widget crearElementoListaDismisibleConAcciones(
-      BuildContext context,
-      ElementoLista elemento,
-      // AccionModificarElementoLista metodoModificarElementoLista,
-      // AccionEliminarElementoLista metodoEliminarElementoLista
-      Function metodoModificarElementoLista,
-      Function metodoEliminarElementoLista) {
-    return Dismissible(
-        onDismissed: (direction) {
-          metodoEliminarElementoLista(context, elemento);
-        },
-        key: UniqueKey(),
-        background: Container(
-            color: Theme.of(context).selectedRowColor.withOpacity(0.6)),
-        child: ElementoAccion(context: context, elemento: elemento));
-  }
+  // crear  elemnento  con opcion  de modificar
 
   static Widget crearElementoconAccionModificar(
       BuildContext context,
@@ -159,13 +141,61 @@ class Listas {
         ]));
   }
 
+  // crear  elemnento  con acciones
+
   static Widget crearElementoConAcciones(
       BuildContext context, ElementoLista elemento) {
     return Padding(
         padding: EdgeInsets.all(20),
         child: ElementoAccion(context: context, elemento: elemento));
   }
+
+  //
+  //   crear  elemento   Dismisible
+  //
+  static Widget crearElementoListaDismisible(
+      BuildContext context,
+      ElementoLista elemento,
+      dynamic argumentos,
+      // AccionModificarElementoLista metodoModificarElementoLista,
+      // AccionEliminarElementoLista metodoEliminarElementoLista
+      Function metodoModificarElementoLista,
+      Function metodoEliminarElementoLista) {
+    return Dismissible(
+        onDismissed: (direction) {
+          metodoEliminarElementoLista(context, elemento);
+        },
+        key: UniqueKey(),
+        background: Container(
+            color: Theme.of(context).selectedRowColor.withOpacity(0.6)),
+        child: ElementoAccion(
+            context: context, elemento: elemento, argumentos: argumentos));
+  }
+
+  //
+  //   crear  elemento   Dismisible  con acciones
+  //
+  static Widget crearElementoListaDismisibleConAcciones(
+      BuildContext context,
+      ElementoLista elemento,
+      // AccionModificarElementoLista metodoModificarElementoLista,
+      // AccionEliminarElementoLista metodoEliminarElementoLista
+      Function metodoModificarElementoLista,
+      Function metodoEliminarElementoLista) {
+    return Dismissible(
+        onDismissed: (direction) {
+          metodoEliminarElementoLista(context, elemento);
+        },
+        key: UniqueKey(),
+        background: Container(
+            color: Theme.of(context).selectedRowColor.withOpacity(0.6)),
+        child: ElementoAccion(context: context, elemento: elemento));
+  }
 }
+
+//
+//  crear  acciones de elemento
+//
 
 class ElementoAccion extends StatelessWidget {
   BuildContext context;
@@ -202,7 +232,7 @@ class ElementoAccion extends StatelessWidget {
     acciones.add(Expanded(
         child: Column(children: <Widget>[
       Text(elemento.titulo!,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           style: TextStyle(
               color: elemento.colorTexto != null
                   ? elemento.colorTexto
@@ -210,7 +240,7 @@ class ElementoAccion extends StatelessWidget {
       elemento.subtitulo != null
           ? Text(
               elemento.subtitulo!,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
             )
           : Text(""),
       elemento.nota != null
@@ -263,6 +293,9 @@ class ElementoAccion extends StatelessWidget {
   }
 }
 
+//
+//  lista de tarjetas
+//
 Widget ListaTarjeta(BuildContext context, List<ElementoLista> elementos) {
   return Expanded(
     child: ListView.separated(

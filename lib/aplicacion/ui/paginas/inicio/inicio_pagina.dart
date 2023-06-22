@@ -8,18 +8,14 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
 
-import '../../../../nucleo/negocio/controladorEstado/controladorEstado.dart';
-
 //  librerias externas  flutter
-
-import '../../../../paquetesExternos/paquetesExternos.dart';
 
 class inicio_pagina extends StatefulWidget {
   inicio_pagina(

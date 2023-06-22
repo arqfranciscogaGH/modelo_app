@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 
 //  librerias  proyecto
 
-import '../nucleo/negocio/controladorEstado/ControlEstadoUI.dart';
-
-import '../aplicacion/contexto/ContextoAplicacion.dart';
-export '../aplicacion/contexto/ContextoAplicacion.dart';
+import '../aplicacion/contexto/Contexto.dart';
+export '../aplicacion/contexto/Contexto.dart';
 
 class InicializacionEntidades {
   static void iniciar() async {
-    await ContextoAplicacion.iniciar();
-
     await cargarEntidades();
   }
 
@@ -21,68 +17,122 @@ class InicializacionEntidades {
 
     // declarar entidades
 
+    // CuentaUsuario
+
+    // CuentaUsuario cu = CuentaUsuario().iniciar();
+    // cu.id = 1;
+    // cu.nombre = 'Administrador';
+    // cu.perfiles = "administrador";
+    // cu.cuenta = "admin";
+    // cu.contrasena = "123";
+
+    // await ContextoApp.db.cuentaUsuario!
+    //     .insertar(cu)
+    //     .then((respuesta) => {print(respuesta)});
+
+    // Cliente
+
+    Cliente c = Cliente().iniciar();
+    c.id = null;
+    c.nombre = 'Mostrador';
+
+    await ContextoApp.db.cliente!
+        .consultarTabla(ContextoApp.db.cliente!.entidad)
+        .then((respuesta) => {print(respuesta)});
+
+    if (ContextoApp.db.cliente!.lista.length == 0) {
+      // print(c.toJson());
+      print(c.fromJson(c.toJson()));
+
+      await ContextoApp.db.cliente!
+          .insertar(c)
+          .then((respuesta) => {print(respuesta)});
+
+      c = Cliente().iniciar();
+      c.id = null;
+      c.nombre = 'Francisco Garcia';
+      await ContextoApp.db.cliente!
+          .insertar(c)
+          .then((respuesta) => {print(respuesta)});
+
+      c = Cliente().iniciar();
+      c.id = null;
+      c.nombre = 'Fernando Garcia';
+      await ContextoApp.db.cliente!
+          .insertar(c)
+          .then((respuesta) => {print(respuesta)});
+    }
+
+    await ContextoApp.db.cliente!
+        .consultarTabla(ContextoApp.db.cliente!.entidad)
+        .then((respuesta) => {print(respuesta)});
+
+    // producto
+
+    // ContextoApp.db.producto!.configuracion!.llaveApi =
+    //     ContextoApp.db.tablaAutenticacion!.entidad.llave!;
+
+    print(ContextoApp.db.producto!.configuracion!.llaveApi);
+
+    await ContextoApp.db.producto!
+        .consultarTabla(ContextoApp.db.producto!.entidad)
+        .then((respuesta) => {print(respuesta)});
+
+    ContextoApp.db.producto!.paginador.registrosPorPagina = 100;
+    ContextoApp.db.producto!.paginador.estatus = 1;
+    await ContextoApp.db.producto!
+        .consultarPaginacionTabla(ContextoApp.db.producto!.entidad)
+        .then((respuesta) => {print(respuesta)});
+
     // venta
 
-    Venta v = Venta().iniciar();
-    v.nombre = 'fga';
+    // Venta v = Venta().iniciar();
+    // v.id = 1;
+    // v.nombreCliente = 'fga';
+    // v.importeVenta = 100;
+    // v.referencia = "uno";
+    // v.idMesa = 2;
+    // v.idCliente = 1;
+    // v.idVendedor = 3;
 
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
+    // await ContextoApp.db.venta!
+    //     .insertar(v)
+    //     .then((respuesta) => {print(respuesta)});
 
-    v = Venta().iniciar();
-    v.id = 2;
-    v.nombre = 'dos';
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
+    // v = Venta().iniciar();
+    // v.id = 2;
+    // v.idCliente = 2;
+    // v.nombreCliente = 'francisco';
+    // v.importeVenta = 200;
+    // v.referencia = "uno";
+    // v.idMesa = 2;
+    // v.idVendedor = 3;
 
-    v = Venta().iniciar();
-    v.id = 3;
-    v.nombre = 'tres';
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
+    // await ContextoApp.db.venta!
+    //     .insertar(v)
+    //     .then((respuesta) => {print(respuesta)});
 
-    v = Venta().iniciar();
-    v.id = 4;
-    v.nombre = 'cuatro';
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
+    // v = Venta().iniciar();
+    // v.id = 3;
+    // v.idCliente = 3;
+    // v.nombreCliente = 'fernado';
+    // v.importeVenta = 300;
+    // v.referencia = "uno";
+    // v.idMesa = 2;
+    // v.idVendedor = 3;
 
-    v = Venta().iniciar();
-    v.id = 5;
-    v.nombre = 'cinco';
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
+    // await ContextoApp.db.venta!
+    //     .insertar(v)
+    //     .then((respuesta) => {print(respuesta)});
 
-    v = Venta().iniciar();
-    v.id = 6;
-    v.nombre = 'seis';
+// //////////////////////////////////////////////////////////////////////////////////////////
 
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
-
-    v = Venta().iniciar();
-    v.id = 7;
-    v.nombre = 'siete';
-    await ContextoAplicacion.db.tablaVenta!
-        .insertar(v)
-        .then((respuesta) => {print(respuesta)});
-
-    await ContextoAplicacion.db.tablaVenta!
-        .consultarTabla(ContextoAplicacion.db.tablaVenta!.entidad)
-        .then((respuesta) => {print(respuesta)});
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
+/*
     // tablaAutenticacion
 
     // obtener  token por  get y parametros en url
-    ContextoAplicacion.db.tablaAutenticacion!.configuracion!.llaveApi = "";
+
+    ContextoApp.db.tablaAutenticacion!.configuracion!.llaveApi = "";
 
     Map<String, String> parametros = {
       'id': '1',
@@ -92,11 +142,11 @@ class InicializacionEntidades {
       'estacionTrabajo': 'fga',
     };
 
-    await ContextoAplicacion.db.tablaAutenticacion!
-        .ejecutar(ContextoAplicacion.db.tablaAutenticacion!.entidad, parametros)
+    await ContextoApp.db.tablaAutenticacion!
+        .ejecutar(ContextoApp.db.tablaAutenticacion!.entidad, parametros)
         .then((respuesta) {
       if (respuesta != null) {
-        ContextoAplicacion.db.tablaAutenticacion!.configuracion!.llaveApi =
+        ContextoApp.db.tablaAutenticacion!.configuracion!.llaveApi =
             respuesta[0]["llave"];
         String diass = respuesta[0]["diasVigencia"].toString();
         int dias = int.parse(diass);
@@ -104,74 +154,60 @@ class InicializacionEntidades {
         print(respuesta);
       }
     });
-    print(ContextoAplicacion.db.tablaAutenticacion!.entidad.llave);
+    print(ContextoApp.db.tablaAutenticacion!.entidad.llave);
 
     // obetenr  token por  post
-    ContextoAplicacion.db.tablaAutenticacion!.configuracion!.llaveApi = "";
+    ContextoApp.db.tablaAutenticacion!.configuracion!.llaveApi = "";
 
-    // ContextoAplicacion.db.tablaAutenticacion!.configuracion!.llaveApi =
+    // ContextoApp.db.tablaAutenticacion!.configuracion!.llaveApi =
     //     "794B0B5A-6BE3-4523-B16C-FC24E884AACE";
-    ContextoAplicacion.db.tablaAutenticacion!.entidad.id = 1;
-    ContextoAplicacion.db.tablaAutenticacion!.entidad.cuenta = 'giorgio';
-    ContextoAplicacion.db.tablaAutenticacion!.entidad.clave = '123';
-    ContextoAplicacion.db.tablaAutenticacion!.entidad.operacion = 'insertar';
-    ContextoAplicacion.db.tablaAutenticacion!.entidad.estacionTrabajo = 'VVVV';
+    ContextoApp.db.tablaAutenticacion!.entidad.id = 1;
+    ContextoApp.db.tablaAutenticacion!.entidad.cuenta = 'giorgio';
+    ContextoApp.db.tablaAutenticacion!.entidad.clave = '123';
+    ContextoApp.db.tablaAutenticacion!.entidad.operacion = 'insertar';
+    ContextoApp.db.tablaAutenticacion!.entidad.estacionTrabajo = 'VVVV';
 
-    await ContextoAplicacion.db.tablaAutenticacion!
-        .insertar(ContextoAplicacion.db.tablaAutenticacion!.entidad)
+    await ContextoApp.db.tablaAutenticacion!
+        .insertar(ContextoApp.db.tablaAutenticacion!.entidad)
         .then((respuesta) {
       if (respuesta != null)
-        ContextoAplicacion.db.tablaAutenticacion!.configuracion!.llaveApi =
+        ContextoApp.db.tablaAutenticacion!.configuracion!.llaveApi =
             respuesta.llave;
       print(respuesta);
     });
 
-    print(ContextoAplicacion.db.tablaAutenticacion!.entidad.llave);
-
-    // tablaProducto
-
-    ContextoAplicacion.db.tablaProducto!.configuracion!.llaveApi =
-        ContextoAplicacion.db.tablaAutenticacion!.entidad.llave!;
-
-    print(ContextoAplicacion.db.tablaProducto!.configuracion!.llaveApi);
-
-    await ContextoAplicacion.db.tablaProducto!
-        .consultarTabla(ContextoAplicacion.db.tablaProducto!.entidad)
-        .then((respuesta) => {print(respuesta)});
-
-    ContextoAplicacion.db.tablaProducto!.paginador.registrosPorPagina = 100;
-    ContextoAplicacion.db.tablaProducto!.paginador.estatus = 1;
-    await ContextoAplicacion.db.tablaProducto!
-        .consultarPaginacionTabla(ContextoAplicacion.db.tablaProducto!.entidad)
-        .then((respuesta) => {print(respuesta)});
+    print(ContextoApp.db.tablaAutenticacion!.entidad.llave);
 
     // tablaCuentaUsuario
 
-    ContextoAplicacion.db.tablaCuentaUsuario!.configuracion!.llaveApi =
-        ContextoAplicacion.db.tablaAutenticacion!.entidad.llave!;
+    ContextoApp.db.tablaCuentaUsuario!.configuracion!.llaveApi =
+        ContextoApp.db.tablaAutenticacion!.entidad.llave!;
 
-    print(ContextoAplicacion.db.tablaCuentaUsuario!.configuracion!.llaveApi);
+    print(ContextoApp.db.tablaCuentaUsuario!.configuracion!.llaveApi);
 
-    await ContextoAplicacion.db.tablaCuentaUsuario!
-        .consultarTabla(ContextoAplicacion.db.tablaCuentaUsuario!.entidad)
+    await ContextoApp.db.tablaCuentaUsuario!
+        .consultarTabla(ContextoApp.db.tablaCuentaUsuario!.entidad)
         .then((respuesta) => {print(respuesta)});
 
-    ContextoAplicacion.db.tablaCuentaUsuario!.entidad =
-        ContextoAplicacion.db.tablaCuentaUsuario!.iniciar();
+    ContextoApp.db.tablaCuentaUsuario!.entidad =
+        ContextoApp.db.tablaCuentaUsuario!.iniciarEntidad();
 
-    ContextoAplicacion.db.tablaCuentaUsuario!.controlEstadoUI =
+    ContextoApp.db.tablaCuentaUsuario!.controlEstadoUI =
         ControlEstadoUI();
 
-    ContextoAplicacion.db.tablaCuentaUsuario!.paginador.registrosPorPagina =
+    ContextoApp.db.tablaCuentaUsuario!.paginador.registrosPorPagina =
         100;
-    ContextoAplicacion.db.tablaCuentaUsuario!.paginador.estatus = 1;
-    await ContextoAplicacion.db.tablaCuentaUsuario!
+    ContextoApp.db.tablaCuentaUsuario!.paginador.estatus = 1;
+    await ContextoApp.db.tablaCuentaUsuario!
         .consultarPaginacionTabla(
-            ContextoAplicacion.db.tablaCuentaUsuario!.entidad)
+            ContextoApp.db.tablaCuentaUsuario!.entidad)
         .then((respuesta) => {print(respuesta)});
 
-    // print(ContextoAplicacion.db.tablaCliente!.lista.length);
-    // print(ContextoAplicacion.db.tablaVenta!.lista.length);
+
+*/
+
+    // print(ContextoApp.db.tablaCliente!.lista.length);
+    // print(ContextoApp.db.venta!.lista.length);
 
     // AccesoTabla<EntidadBase>? tablaModelo;
     // AccesoTabla<EntidadBase>? tablaModelo2;

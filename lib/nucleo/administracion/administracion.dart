@@ -1,3 +1,4 @@
+
 //  librerias internas de flutter
 
 //  librerias importadas flutter
@@ -5,8 +6,8 @@
 //  librerias  proyecto
 
 export 'AdministradorIdioma.dart';
-export 'AdministradorTema.dart';
-export 'AdministradorSesion.dart';
+export 'administradorTema.dart';
+export 'administradorSesion.dart';
 
 
 

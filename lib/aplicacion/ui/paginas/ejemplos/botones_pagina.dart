@@ -1,6 +1,7 @@
 //  librerias internas de flutter
 
 import 'package:flutter/material.dart';
+import 'package:modelo_app/nucleo/ui/controles/estandar/AutoCompletar.dart';
 import 'dart:math';
 import 'dart:ui';
 
@@ -12,20 +13,17 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
-import '../../../aplicacion.dart';
-
-import '../../../../nucleo/negocio/controladorEstado/ParametrosSistemaCE.dart';
+import '../../../../aplicacion/aplicacion.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-import '../ventas/AutoCompletar.dart';
+// import '../../../../nucleo/ui/controles/estandar/AutoCompletar.dart';
 
 class botones_pagina extends StatefulWidget {
   botones_pagina(
@@ -106,17 +104,50 @@ class _botones_paginas_state extends State<botones_pagina> {
         titulo: 'Titulo 2',
         subtitulo: "Subtitulo 2",
         descripcion: " descripcion 2");
-    TextEditingController _controllerAutoCompletar = TextEditingController();
-    Control control = Control(controlEdicion: _controllerAutoCompletar);
-    control.controlEdicion = _controllerAutoCompletar;
+
+    ElementoLista elementoT = ElementoLista(
+      // icono: 'nivel',
+      accion: ejecutar,
+      // tituloAccion: "accion A",
+      // titulo: 'Titulo 2',
+      // subtitulo: "Subtitulo 2",
+      // descripcion: " descripcion 2"
+    );
+
+    ElementoLista elementoI = ElementoLista(
+      icono: 'nivel',
+      // tituloAccion: "accion B",
+      accion: ejecutar,
+      // titulo: 'Titulo 2',
+      // subtitulo: "Subtitulo 2",
+      // descripcion: " descripcion 2"
+    );
 
     List<ElementoLista> opciones = [];
 
-    opciones.add(ElementoLista(titulo: 'aardvark'));
-    opciones.add(ElementoLista(titulo: 'bobcat'));
-    opciones.add(ElementoLista(titulo: 'chameleon'));
+    opciones.add(ElementoLista(id: 1, titulo: 'aardvark'));
+    opciones.add(ElementoLista(id: 2, titulo: 'bobcat'));
+    opciones.add(ElementoLista(id: 3, titulo: 'chameleon'));
+
+    TextEditingController _controllerAutoCompletar = TextEditingController();
+    Control control = Control(controlEdicion: _controllerAutoCompletar);
+    control.controlEdicion = _controllerAutoCompletar;
+    control.textoEtiqueta = "cliente";
+    control.marcaAguaTexto = "cliente";
+    control.lista = opciones;
+    ParametrosSistema.tipoBoton = eBotonTipo.Pentagono;
+
+//
+
+    TextEditingController _controllerAutoCompletarTabla =
+        TextEditingController();
+    Control controlP = Control(controlEdicion: _controllerAutoCompletarTabla);
+    controlP.controlEdicion = _controllerAutoCompletarTabla;
+    controlP.textoEtiqueta = "producto";
+    controlP.marcaAguaTexto = "producto";
 
     ParametrosSistema.tipoBoton = eBotonTipo.Pentagono;
+    print(ContextoApp.db.producto!.lista);
 
     return Scaffold(
       key: scaffoldKey,
@@ -133,12 +164,10 @@ class _botones_paginas_state extends State<botones_pagina> {
           OpcionesMenus.obtenerMenuPrincipal(),
           ContextoUI.obtenerTitulo(widget),
           ParametrosSistema.paginaAccesso),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Autocompletar(
-                opciones: opciones, control: control, metodo: cambiarValor),
             // const Text(
             //   'You have pushed the button this many times:',
             // ),
@@ -148,8 +177,22 @@ class _botones_paginas_state extends State<botones_pagina> {
             //   style: Theme.of(context).textTheme.headline4,
             // ),
 
+            AutoCompletarLista(
+                lista: opciones, control: control, metodo: ejecutar),
+
+            Boton.plano(context, elementoT, ParametrosSistema.tipoBoton),
+            Boton.planoIcono(context, elementoI, ParametrosSistema.tipoBoton),
+
             Boton.plano(context, elemento2, ParametrosSistema.tipoBoton),
             Boton.planoIcono(context, elemento2, ParametrosSistema.tipoBoton),
+
+            // Autocompletar(lista: opciones, control: control, metodo: ejecutar),
+
+            AutoCompletarTabla(
+              tabla: ContextoApp.db.producto,
+              control: controlP,
+              metodo: ejecutar,
+            ),
 
             Boton.texto(context, elementoP, ParametrosSistema.tipoBoton),
 

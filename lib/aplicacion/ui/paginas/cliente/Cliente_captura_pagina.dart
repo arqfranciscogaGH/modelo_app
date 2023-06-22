@@ -18,14 +18,14 @@ import '../../../contexto/contexto.dart';
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
 
-import 'ProductoUI.dart';
+import 'ClienteUI.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class Producto_captura_pagina extends StatefulWidget {
-  Producto_captura_pagina(
+class Cliente_captura_pagina extends StatefulWidget {
+  Cliente_captura_pagina(
       {Key? key,
       this.paginaSiguiente,
       this.paginaAnterior,
@@ -37,11 +37,11 @@ class Producto_captura_pagina extends StatefulWidget {
   bool? activarAcciones = false;
 
   @override
-  _Producto_captura_pagina_state createState() =>
-      _Producto_captura_pagina_state();
+  _Cliente_captura_pagina_state createState() =>
+      _Cliente_captura_pagina_state();
 }
 
-class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
+class _Cliente_captura_pagina_state extends State<Cliente_captura_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -49,11 +49,10 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
   ControlEstadoUI? controlEstadoUI;
 
   //  Interfaz  comun
-  ProductoUI<Producto> ui =
-      ProductoUI<Producto>(tabla: ContextoApp.db.producto);
+  ClienteUI<Cliente> ui = ClienteUI<Cliente>(tabla: ContextoApp.db.cliente);
 
   // entidad
-  Producto entidadCaptura = Producto();
+  Cliente entidadCaptura = Cliente();
 
   // KEYS
 
@@ -77,7 +76,7 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
     super.initState();
     // widget.paginaAnterior = ContextoUI.obtenerTipo(widget);
     controlEstadoUI = ControlEstadoUI();
-    ui = ProductoUI(tabla: ContextoApp.db.producto!);
+    ui = ClienteUI(tabla: ContextoApp.db.cliente!);
 
     entidadCaptura = ui.tabla!.entidad;
 
@@ -184,14 +183,14 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
     controles.add(Control().crear('', pagina, "txtnombre",
         entidadCaptura.nombre, 1, cambiarValor, validar));
 
-    controles.add(Control().crear('', pagina, "txtprecio",
-        entidadCaptura.precio.toString(), 1, cambiarValor, validar));
+    // controles.add(Control().crear('', pagina, "txtprecio",
+    //     entidadCaptura.precio.toString(), 1, cambiarValor, validar));
 
-    controles.add(Control().crear('', pagina, "txtcosto",
-        entidadCaptura.costo.toString(), 1, cambiarValor, validar));
+    // controles.add(Control().crear('', pagina, "txtcosto",
+    //     entidadCaptura.costo.toString(), 1, cambiarValor, validar));
 
-    controles.add(Control().crear('', pagina, "txtexistencia",
-        entidadCaptura.existencia.toString(), 1, cambiarValor, validar));
+    // controles.add(Control().crear('', pagina, "txtexistencia",
+    //     entidadCaptura.existencia.toString(), 1, cambiarValor, validar));
 
     bool estatus = entidadCaptura.estatus == 1 ? true : false;
     controles.add(Control()
@@ -208,7 +207,7 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
   dynamic validar(Control control, dynamic valor) {}
   dynamic cambiarValor(Control control, dynamic valor) {
     // setState(() {
-    // entidadCaptura = ContextoApp.db.producto!.entidad;
+    // entidadCaptura = ContextoApp.db.Cliente!.entidad;
     print("cambiarValor");
     print(ui.tabla!.entidad.id);
     print(entidadCaptura.id);
@@ -220,15 +219,15 @@ class _Producto_captura_pagina_state extends State<Producto_captura_pagina> {
       case "txtnombre":
         entidadCaptura.nombre = valor;
         break;
-      case "txtprecio":
-        entidadCaptura.precio = int.parse(valor);
-        break;
-      case "txtcosto":
-        entidadCaptura.costo = int.parse(valor);
-        break;
-      case "txtexistencia":
-        entidadCaptura.existencia = int.parse(valor);
-        break;
+      // case "txtprecio":
+      //   entidadCaptura.precio = int.parse(valor);
+      //   break;
+      // case "txtcosto":
+      //   entidadCaptura.costo = int.parse(valor);
+      //   break;
+      // case "txtexistencia":
+      //   entidadCaptura.existencia = int.parse(valor);
+      //   break;
       case "apaactivo":
         entidadCaptura.estatus = valor == true ? 1 : 0;
         break;

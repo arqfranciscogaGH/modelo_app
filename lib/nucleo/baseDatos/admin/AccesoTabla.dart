@@ -18,7 +18,7 @@ class AccesoTabla<T extends EntidadBase> {
 
   ConfiguracionAccesoBD? configuracion;
   Paginador<T>? _paginador = Paginador<T>();
-  T claseEntidad;
+  T? _entidad;
   List<T> _lista = [];
   int consecutivo = 0;
   String parametros = "";
@@ -33,12 +33,27 @@ class AccesoTabla<T extends EntidadBase> {
   /*   ControlLista<T> elementos; */
 
   //  Cosntructor
-  AccesoTabla({required this.claseEntidad, this.configuracion}) {
+  // AccesoTabla({required this.claseEntidad, this.configuracion}) {
+  //   _abd = AdministradorAcceso.obtener(this.configuracion!);
+  //   _resultado = EntidadResultado();
+  //   _registro = EntidadRegistro();
+  //   _resultado!.campoLLave = claseEntidad.campoLLave;
+  //   entidad = claseEntidad;
+  //   _paginador = Paginador<T>();
+
+  //   if (configuracion!.persitenciaPorDefecto != true) _abd!.iniciar();
+  // }
+
+  iniciar(T entidad, ConfiguracionAccesoBD configuracion) {
+    this.configuracion = configuracion;
+    // agregar  tabla  a lista  de tablas  en c onfiguración
+    if (configuracion.tablas == null) configuracion.tablas = [];
+    configuracion.tablas!.add(entidad);
     _abd = AdministradorAcceso.obtener(this.configuracion!);
     _resultado = EntidadResultado();
     _registro = EntidadRegistro();
-    _resultado!.campoLLave = claseEntidad.campoLLave;
-    entidad = claseEntidad;
+    _resultado!.campoLLave = entidad.campoLLave;
+    this.entidad = entidad;
     _paginador = Paginador<T>();
 
     if (configuracion!.persitenciaPorDefecto != true) _abd!.iniciar();
@@ -72,18 +87,18 @@ class AccesoTabla<T extends EntidadBase> {
   //  asignar map a entidad  registro texto
   set registro(EntidadRegistro r) {
     registro = r;
-    claseEntidad.fromMap(registro.datos);
+    _entidad!.fromMap(registro.datos);
   }
 
   //  obtener entidad
 
   T get entidad {
-    return claseEntidad;
+    return _entidad!;
   }
 
   //  asignar entidad
   set entidad(T e) {
-    claseEntidad = e;
+    _entidad = e;
     registro.datos = e.toMap();
   }
 
@@ -103,8 +118,8 @@ class AccesoTabla<T extends EntidadBase> {
   @override
   void dispose() {}
 
-  dynamic iniciar() {
-    return claseEntidad.iniciar();
+  dynamic iniciarEntidad() {
+    return _entidad!.iniciar();
   }
 
   //  metodos conversion  lista de MAp  a   lista  de entidades
@@ -205,23 +220,6 @@ class AccesoTabla<T extends EntidadBase> {
     return lista;
   }
 
-  Future<dynamic> paginarTabla(T e, [Function? metodoRespuesta = null]) async {
-    dynamic respuesta;
-    dynamic lista;
-    if (controlEstadoUI != null)
-      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
-
-    respuesta = resultado.datos;
-    lista = paginar(e, respuesta);
-
-    if (metodoRespuesta != null)
-      metodoRespuesta(lista);
-    else if (controlEstadoUI != null)
-      controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
-
-    return lista;
-  }
-
   Future<List<dynamic>> filtrarTabla(T e, String campo, dynamic valor,
       [Function? metodoRespuesta = null]) async {
     dynamic respuesta;
@@ -238,6 +236,23 @@ class AccesoTabla<T extends EntidadBase> {
     else if (controlEstadoUI != null)
       controlEstadoUI!.actualizarUI(eProceso.filtrar, eEstatus.filtrado);
     // }
+    return lista;
+  }
+
+  Future<dynamic> paginarTabla(T e, [Function? metodoRespuesta = null]) async {
+    dynamic respuesta;
+    dynamic lista;
+    if (controlEstadoUI != null)
+      controlEstadoUI!.iniciarProceso(eProceso.consultar, eEstatus.iniciado);
+
+    respuesta = resultado.datos;
+    lista = paginar(e, respuesta);
+
+    if (metodoRespuesta != null)
+      metodoRespuesta(lista);
+    else if (controlEstadoUI != null)
+      controlEstadoUI!.actualizarUI(eProceso.consultar, eEstatus.consultado);
+
     return lista;
   }
 
@@ -260,13 +275,20 @@ class AccesoTabla<T extends EntidadBase> {
       }
       // solo regresa la lista  para  paginar
       else {
+        // total  registros en lista
         paginador.totalRegistros = respuesta.length;
-        if (paginador.registrosPorPagina == 0) {
+        // registros  por pagina  si es cero
+        if (paginador.registrosPorPagina == 0)
           paginador.registrosPorPagina = paginador.totalRegistros;
-          paginador.paginaActual = 1;
-        }
+        //  total de paginas
         paginador.totalPaginas =
             (paginador.totalRegistros! / paginador.registrosPorPagina!).ceil();
+
+        // determina la pagina  donde  inciará
+        if (paginador.paginaActual == 0)
+          paginador.paginaActual = paginador.totalPaginas;
+
+        // determina el numero de registros que se  saltará  considerando la  pagina  actual
         int salto = ((paginador.paginaActual as int) - 1) *
             (paginador.registrosPorPagina as int);
         // asigna  datos de registros en MAP
@@ -310,6 +332,18 @@ class AccesoTabla<T extends EntidadBase> {
       else if (controlEstadoUI != null)
         controlEstadoUI!.actualizarUI(eProceso.obtener, eEstatus.obtenido);
     }
+    return this.entidad;
+  }
+
+  T seleccionar(T e, [Function? metodoRespuesta = null]) {
+    T? entidad;
+    if (e.id != null && e.id != 0)
+      entidad = lista.firstWhere((s) => s.id == e.id);
+
+    if (entidad == null) entidad = e;
+
+    this.entidad = entidad;
+    if (metodoRespuesta != null) metodoRespuesta(this.entidad);
     return this.entidad;
   }
 

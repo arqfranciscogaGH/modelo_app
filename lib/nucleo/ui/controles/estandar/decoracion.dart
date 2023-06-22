@@ -17,7 +17,7 @@ Decoration crearDecoracionContenedor(BuildContext context, Control control) {
     width: 0,
     style: BorderStyle.none,
   ));
-
+  control.colorBorde = ParametrosSistema.colorBorde;
   if (control.borde == null || control.borde == eTipoBorde.ninguno)
     contenedorDecoracion = BoxDecoration(
         border: Border.all(
@@ -28,19 +28,23 @@ Decoration crearDecoracionContenedor(BuildContext context, Control control) {
     contenedorDecoracion = BoxDecoration(
       border: Border.all(
         //color: Theme.of(context).disabledColor,
-        color: Theme.of(context).primaryColor,
+        color: Colores.obtener(control.colorBorde),
       ),
       borderRadius: BorderRadius.circular(20),
     );
   else if (control.borde == eTipoBorde.rectangular)
     contenedorDecoracion = BoxDecoration(
-      border: Border.all(/* color:Colores.obtenerColor(control.colorBorde)  */),
+      border: Border.all(
+          //color: Theme.of(context).disabledColor,
+          color: Colores.obtener(control.colorBorde)),
     );
   else if (control.borde == eTipoBorde.lineal)
     contenedorDecoracion = BoxDecoration(
         border: Border(
             bottom: BorderSide(
-                /* color:Colores.obtenerColor(control.colorBorde) */)));
+      //color: Theme.of(context).disabledColor,
+      color: Colores.obtener(control.colorBorde),
+    )));
 
   return contenedorDecoracion;
 }
@@ -48,6 +52,7 @@ Decoration crearDecoracionContenedor(BuildContext context, Control control) {
 InputDecoration crearDecoracionInput(Control control) {
   FocusNode focusNode = new FocusNode();
   return InputDecoration(
+    contentPadding: EdgeInsets.all(10.0),
     border: control.borde == null || control.borde == eTipoBorde.ninguno
         ? InputBorder.none
         : crearBordeInput(control, ""),
@@ -60,7 +65,8 @@ InputDecoration crearDecoracionInput(Control control) {
     errorBorder: control.borde == null || control.borde == eTipoBorde.ninguno
         ? InputBorder.none
         : crearBordeInput(control, "error"),
-    counter: mostrarContadorLetras(control),
+    counter:
+        control.textoContador != null ? mostrarContadorLetras(control) : null,
     hintText: control.marcaAguaTexto != null ? control.marcaAguaTexto : null,
     labelText: control.textoEtiqueta != null ? control.textoEtiqueta : null,
     labelStyle: TextStyle(
@@ -108,14 +114,20 @@ Widget mostrarContadorLetras(Control control) {
 Widget contadorLetrasTexto(Control control) {
   dynamic valor = control.valor;
   Widget? texto;
+  print(control.valor.runtimeType.toString());
   if ((control.tipo == eTipoControl.cajaTexto ||
-          control.tipo == eTipoControl.cajaTexto) &&
+          control.tipo == eTipoControl.cajaTextoForma) &&
       control.textoContador != null) {
-    if (control.textoContador!.length < 3)
-      texto = Text(control.textoContador! + ' ${valor.length} ');
-    else
-      texto = Text(' ${valor.length} ');
+    if (control.activo == 1 &&
+        control.valor.runtimeType.toString() == "String") {
+      if (control.textoContador!.length == 1)
+        texto = Text(' ${valor.length} ');
+      else if (control.textoContador!.length > 1)
+        texto = Text(control.textoContador! + ' ${valor.length} ');
+    } else
+      texto = Container();
   } else
-    texto = Text('');
-  return texto;
+    texto = Container();
+
+  return texto!;
 }

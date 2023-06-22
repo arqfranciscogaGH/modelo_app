@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 //  librerias  proyecto
 import 'inicializacion/inicializacion.dart';
 import 'configuracion/configuracion.dart';
-import 'administracion/administracion.dart';
 
 import 'nucleo/nucleo.dart';
 import 'aplicacion/aplicacion.dart';
@@ -22,6 +21,9 @@ import '../paquetesExternos/paquetesExternos.dart';
 void main() async {
   // esta  linea  es para  asegurar que  se inicialicen las variables  asincronas  como preferences
   WidgetsFlutterBinding.ensureInitialized();
+
+  // inciar  contexto de aplicación y  base de datos
+  await ContextoApp.iniciar();
 
   // iniciar servicios y variables  Sincronos
   InicializacionServicios.inicicializarServiciosSincronos();
@@ -37,7 +39,7 @@ void main() async {
       MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ParametrosSistemaCE()),
-      ChangeNotifierProvider(create: (_) => ModeloCE())
+      ChangeNotifierProvider(create: (_) => ControlEstadoUI())
     ],
     child: const MyApp(),
   ));

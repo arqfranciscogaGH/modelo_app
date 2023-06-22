@@ -133,7 +133,9 @@ final listaIconosEstandar = <String, IconData>{
 
   'banco': Icons.account_balance,
   'listanumero': Icons.format_list_numbered,
-  'numero': Icons.confirmation_number,
+
+  'numero': Icons.numbers,
+
   'telefono': Icons.call_end,
   'comentario': Icons.comment,
   'timer': Icons.timer,
@@ -203,6 +205,8 @@ final listaIconosEstandar = <String, IconData>{
   'socio': Icons.card_membership,
   'redGrupo': Icons.group_sharp,
   'grupo': Icons.group,
+  'captura': Icons.dataset_outlined,
+  'clase': Icons.class_sharp,
 
   // 'pin_outlined  '     : Icons.pin       ,
   //  'pin_rounded '      : Icons.pin_rounded      ,

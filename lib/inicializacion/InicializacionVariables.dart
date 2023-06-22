@@ -8,12 +8,10 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import '../nucleo/negocio/controladorEstado/ControlEstadoUI.dart';
 import '../nucleo/nucleo.dart';
-import '../administracion/administracion.dart';
+import '../nucleo/administracion/administracion.dart';
 
-import '../aplicacion/contexto/ContextoAplicacion.dart';
-export '../aplicacion/contexto/ContextoAplicacion.dart';
-
-import '../aplicacion/negocio/controladorEstado/ClienteCE.dart';
+import '../aplicacion/contexto/ContextoApp.dart';
+export '../aplicacion/contexto/ContextoApp.dart';
 
 //  librerias externas  flutter
 
@@ -53,7 +51,7 @@ class InicializacionVariables {
     await Traductor.cargar();
 
     // obtener información de tema
-    AdministradorTema.obtener();
+    AdministradorTema.obtenerTema();
 
     // obtener  información de sesion
     AdministradorSesion.obtener();

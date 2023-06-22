@@ -47,6 +47,8 @@ class CuentaUsuario extends EntidadBase {
     this.cuenta,
     this.contrasena,
     this.correo,
+    this.telefono,
+    this.fechaNacimiento,
     this.rutaFoto,
     this.urlFoto,
     this.idEstacionTrabajo,
@@ -72,7 +74,8 @@ class CuentaUsuario extends EntidadBase {
           llave: llave,
           nombre: nombre,
           nombreTabla: 'CuentaUsuarios',
-          campoLLave: 'id',
+          campoLLave: 'IdUsuario',
+          incrementar: false,
         );
   //    métodos
 
@@ -81,11 +84,11 @@ class CuentaUsuario extends EntidadBase {
         llave: map["llave"],
         clave: map["clave"],
         nombre: map["nombre"],
-
         cuenta: map["Cuenta"],
         contrasena: map["Contrasena"],
         correo: map["correo"],
-
+        telefono: map["telefono"],
+        fechaNacimiento: map["fechaNacimiento"],
         rutaFoto: map["rutaFoto"],
         urlFoto: map["urlFoto"],
         idEstacionTrabajo: map["IdEstacionTrabajo"],
@@ -119,7 +122,8 @@ class CuentaUsuario extends EntidadBase {
         cuenta: map["Cuenta"],
         contrasena: map["Contrasena"],
         correo: map["correo"],
-
+        telefono: map["telefono"],
+        fechaNacimiento: map["fechaNacimiento"],
         rutaFoto: map["rutaFoto"],
         urlFoto: map["urlFoto"],
         idEstacionTrabajo: map["IdEstacionTrabajo"],
@@ -143,20 +147,19 @@ class CuentaUsuario extends EntidadBase {
         // estatus: int.parse(map["estatus"].toString()),
       );
   Map<String, dynamic> toMap() => {
-        "id": id,
+        "IdUsuario": id,
         "llave": llave,
         "clave": clave,
         "nombre": nombre,
         "Cuenta": cuenta,
         "Contrasena": contrasena,
         "correo": correo,
+        "telefono": telefono,
+        "fechaNacimiento": fechaNacimiento,
         "rutaFoto": rutaFoto,
         "urlFoto": urlFoto,
-        "IdUsuarioSuperior": idUsuarioSuperior,
-        "IdEstatusUsuario": idEstatusUsuario,
-        "Activo": activo,
         "IdEstacionTrabajo": idEstacionTrabajo,
-        "Tema": tema,
+        "IdUsuarioSuperior": idUsuarioSuperior,
         "IdIdioma": idIdioma,
         "Sesiones": sesiones,
         "Intentos": intentos,
@@ -165,24 +168,30 @@ class CuentaUsuario extends EntidadBase {
         "Privilegios": privilegios,
         "Expira": expira,
         "IdSuscriptor": idSuscriptor,
+        "Tema": tema,
+        "IdEstatusUsuario": idEstatusUsuario,
+        "Activo": activo,
+        "fechaRegistro": fechaRegistro,
+        "fechaVigencia": fechaVigencia,
+        "fechaCambioEstatus": fechaCambioEstatus,
       };
   String sqlTabla() {
     String sql = "CREATE TABLE if not exists  " +
         nombreTabla! +
         " ("
-            "id INTEGER PRIMARY KEY ,"
+            "IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,"
             "llave   TEXT , "
             "clave   TEXT , "
             "nombre   TEXT , "
             "cuenta    TEXT , "
             "contrasena   TEXT, "
             "correo   TEXT, "
+            "telefono   TEXT, "
+            "fechaNacimiento   TEXT, "
             "rutaFoto  TEXT , "
             "urlFoto  TEXT , "
             "idEstacionTrabajo   TEXT , "
-            "tema   TEXT , "
             "idUsuarioSuperior   INTEGER , "
-            "idEstatusUsuario   INTEGER , "
             "idIdioma   INTEGER , "
             "sesiones   INTEGER , "
             "intentos   INTEGER , "
@@ -190,7 +199,13 @@ class CuentaUsuario extends EntidadBase {
             "perfiles   TEXT , "
             "privilegios   TEXT , "
             "expira   INTEGER , "
-            "idSuscriptor   INTEGER ) ";
+            "idSuscriptor   INTEGER, "
+            "tema   TEXT , "
+            "idEstatusUsuario   INTEGER , "
+            "fechaRegistro   TEXT , "
+            "fechaVigencia   TEXT , "
+            "fechaCambioEstatus   TEXT , "
+            "Activo   INTEGER , ) ";
 
     return sql;
   }
@@ -204,24 +219,26 @@ class CuentaUsuario extends EntidadBase {
     entidad.cuenta = "";
     entidad.contrasena = "";
     entidad.correo = "";
+    entidad.telefono = "";
+    entidad.fechaNacimiento = "";
     entidad.rutaFoto = "";
     entidad.urlFoto = "";
     entidad.idEstacionTrabajo = "";
     entidad.idUsuarioSuperior = 0;
     entidad.idEstatusUsuario = 0;
-    entidad.tema = "";
     entidad.idIdioma = 0;
     entidad.intentos = 3;
     entidad.sesiones = 0;
-
     entidad.grupos = "";
     entidad.perfiles = "";
     entidad.privilegios = "0";
-
     entidad.expira = 0;
-
     entidad.idSuscriptor = 0;
-
+    entidad.tema = "";
+    entidad.fechaRegistro = "";
+    entidad.fechaVigencia = "";
+    entidad.fechaCambioEstatus = "";
+    entidad.activo = 1;
     return entidad;
   }
 
@@ -234,7 +251,7 @@ class CuentaUsuario extends EntidadBase {
 
   List<CuentaUsuario> mapTolista(List<dynamic> listaMapa) {
     List<CuentaUsuario> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }

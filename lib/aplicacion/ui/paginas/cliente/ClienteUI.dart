@@ -28,8 +28,8 @@ import '../../../../aplicacion/aplicacion.dart';
 //   iniciar<T extends EntidadBase>(T entidad, AccesoTabla<T> tabla) {}
 // }
 
-class ProductoUI<T extends EntidadBase> {
-  ProductoUI(
+class ClienteUI<T extends EntidadBase> {
+  ClienteUI(
       {required this.tabla,
       this.context,
       this.widget,
@@ -84,10 +84,7 @@ class ProductoUI<T extends EntidadBase> {
 
     elemento.id = entidad.id;
     elemento.titulo = entidad.id.toString() + ', : ' + entidad.nombre;
-    elemento.subtitulo = "Precio: " +
-        entidad.precio.toString() +
-        " , Existencia: " +
-        entidad.existencia.toString();
+    elemento.subtitulo = "";
 
     elemento.icono = accion.icono;
     elemento.accion = accion.accion;

@@ -12,18 +12,10 @@ import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 
 //  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
-import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
-
 import '../../../../nucleo/nucleo.dart';
 import '../../../aplicacion.dart';
 
-import '../../../../nucleo/negocio/controladorEstado/ParametrosSistemaCE.dart';
-
 //  librerias externas  flutter
-
-import '../../../../paquetesExternos/paquetesExternos.dart';
 
 class preferencias_pagina extends StatefulWidget {
   preferencias_pagina(
@@ -101,7 +93,7 @@ class _preferencias_pagina_state extends State<preferencias_pagina> {
       body: mostrarCaptura(context, formKey, cambiarValor, validar,
           definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(
+      floatingActionButton: Boton.botonFlotante(
         context,
         ElementoLista(icono: "save", accion: guardar),
       ),
@@ -147,7 +139,7 @@ class _preferencias_pagina_state extends State<preferencias_pagina> {
     );
 
     listaIdiomas = listaIdiomas.asignar('', ContextoUI.obtenerTipo(widget),
-        ParametrosSistema.idioma, cambiarValor, validar);
+        ParametrosSistema.idioma, 1, cambiarValor, validar);
     listaIdiomas.controlEdicion = _controllerListaIdioma;
     listaIdiomas.lista = _listaIdiomas;
     controles.add(listaIdiomas);

@@ -16,24 +16,24 @@ import '../../../contexto/contexto.dart';
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
 
-import 'ProductoUI.dart';
+import 'ClienteUI.dart';
 
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class Producto_lista_pagina extends StatefulWidget {
-  Producto_lista_pagina(
+class Cliente_lista_pagina extends StatefulWidget {
+  Cliente_lista_pagina(
       {this.paginaSiguiente, this.paginaAnterior, this.activarAcciones});
   String? paginaSiguiente = "";
   String? paginaAnterior = "";
   bool? activarAcciones = false;
 
   @override
-  _Producto_lista_pagin_state createState() => _Producto_lista_pagin_state();
+  _Cliente_lista_pagin_state createState() => _Cliente_lista_pagin_state();
 }
 
-class _Producto_lista_pagin_state extends State<Producto_lista_pagina> {
+class _Cliente_lista_pagin_state extends State<Cliente_lista_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -41,12 +41,11 @@ class _Producto_lista_pagin_state extends State<Producto_lista_pagina> {
   //  controlador  de estado comun para  actulizar la UI
   ControlEstadoUI? controlEstadoUI;
   //  Interfaz  comun
-  ProductoUI<Producto> ui =
-      ProductoUI<Producto>(tabla: ContextoApp.db.producto);
+  ClienteUI<Cliente> ui = ClienteUI<Cliente>(tabla: ContextoApp.db.cliente);
 
   // entidad
 
-  Producto entidadCaptura = Producto();
+  Cliente entidadCaptura = Cliente();
   List<dynamic> listaEntidad = [];
 
   // KEYS
@@ -78,7 +77,7 @@ class _Producto_lista_pagin_state extends State<Producto_lista_pagina> {
     // se crea  instncia de  control de estado comun  en clase provider  ControlEstadoUI
     controlEstadoUI = ControlEstadoUI();
     // se crea  instancia ui  y  se pasa contexto de tabla a usar
-    ui = ProductoUI(tabla: ContextoApp.db.producto!);
+    ui = ClienteUI(tabla: ContextoApp.db.cliente!);
 
     // iniciar entidad
     ui.tabla!.entidad = ui.tabla!.iniciarEntidad();

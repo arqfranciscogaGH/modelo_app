@@ -6,25 +6,20 @@ import 'dart:ui';
 
 //  librerias importadas flutter
 
- import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 // import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 //  librerias  proyecto
 
-
-import '../../../../inicializacion/inicializacion.dart';
 import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+import '../../../contexto/contexto.dart';
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
 
-
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
-
-
 
 class prueba_pagina extends StatefulWidget {
   prueba_pagina(
@@ -38,9 +33,9 @@ class prueba_pagina extends StatefulWidget {
       : super(key: key);
 
   String? titulo;
-  String? pagina= "";
+  String? pagina = "";
   String? paginaSiguiente = "";
-  String? paginaAnterior= "";
+  String? paginaAnterior = "";
   String? accionPagina = ""; // avanzar, regresar
   bool? activarAcciones = false;
   static String ruta = "pagina_prueba";
@@ -52,52 +47,49 @@ class prueba_pagina extends StatefulWidget {
 class _prueba_pagina_state extends State<prueba_pagina> {
   //  declaración de variables
 
- 
   //  inicializar  widget
   @override
   void initState() {
- widget.pagina = prueba_pagina.ruta;
+    widget.pagina = prueba_pagina.ruta;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-     widget.titulo=Traductor.obtenerEtiquetaSeccion(widget.pagina!,'titulo');
-     print (widget.titulo);
+    widget.titulo = Traductor.obtenerEtiquetaSeccion(widget.pagina!, 'titulo');
+    print(widget.titulo);
 
     Preferencias.iniciar();
-    Preferencias.guardar("id","xxx");
+    Preferencias.guardar("id", "xxx");
 
     // final  provTema =Provider.of<controladorEstadoTema>(context,listen: false);
-    if  (ParametrosSistema.esModoObscuro)
-    {
-      ParametrosSistema.esModoObscuro=false;
+    if (ParametrosSistema.esModoObscuro) {
+      ParametrosSistema.esModoObscuro = false;
       //  provTema.cambiarModoClaro();
-    }
-    else 
-    {
-      ParametrosSistema.esModoObscuro=true;
+    } else {
+      ParametrosSistema.esModoObscuro = true;
       // provTema.cambiarModoObscuro();
     }
 
-
-    String  valor =Preferencias.obtener("id","valor");
-    print (Sesion.nombre);
-    AdministradorSesion.asignar(nombre: "hello");
+    String valor = Preferencias.obtener("id", "valor");
+    print(Sesion.nombre);
+    AdministradorSesion.guardar(nombre: "hello");
     AdministradorSesion.obtener();
-    print (Sesion.nombre);
+    print(Sesion.nombre);
 
-List<ElementoLista> elementos=[];
+    List<ElementoLista> elementos = [];
 
-ElementoLista elemento =ElementoLista( id:1 ,  icono: "save",   accion:  ejecutar );
-elementos.add(elemento);
-ElementoLista elemento2 =ElementoLista( id:2 , icono: "info",    accion:  ejecutar  );
-elementos.add(elemento2);
+    ElementoLista elemento =
+        ElementoLista(id: 1, icono: "save", accion: ejecutar);
+    elementos.add(elemento);
+    ElementoLista elemento2 =
+        ElementoLista(id: 2, icono: "info", accion: ejecutar);
+    elementos.add(elemento2);
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.titulo!)),
-      drawer: Menulateral.crearMenu(context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
+      drawer: Menulateral.crearMenu(
+          context, OpcionesMenus.obtenerMenuPrincipal(), widget.titulo!),
       body: Stack(
         children: <Widget>[
           _fondoApp(),
@@ -111,28 +103,15 @@ elementos.add(elemento2);
           )
         ],
       ),
-          //   body: mostrarCaptura(context, formKey, cambiarValor, validar,
-          // definicionControles, entidadCaptura),
+      //   body: mostrarCaptura(context, formKey, cambiarValor, validar,
+      // definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:  Boton.crearRenglonBotonesFlotantes(context,elementos  ),
+      floatingActionButton: Boton.renglonBotonesFlotantes(context, elementos),
     );
   }
 
   Widget _fondoApp() {
-  
-    final gradiente = Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: FractionalOffset(0.0, 0.6),
-              end: FractionalOffset(0.0, 1.0),
-              colors: <Color>[
-            //Colors.grey ,
-            Theme.of(context).primaryColorLight,
-            Color.fromRGBO(82, 72, 72, 1.0)
-          ])),
-    );
+    Widget fondoGradiente = Fondo.gradiente(context, "", "");
 
     final cajaRosa = Transform.rotate(
         angle: -pi / 6.0,
@@ -154,11 +133,12 @@ elementos.add(elemento2);
             // )
           ),
         ));
+    Widget caja = Fondo.cajaGradienteRotacion(context, "", "");
 
     return Stack(
       children: <Widget>[
-        gradiente,
-        Positioned(top: -185.0, child: cajaRosa),
+        fondoGradiente,
+        Positioned(top: -185.0, child: caja),
         _titulos(),
       ],
     );
@@ -182,8 +162,8 @@ elementos.add(elemento2);
       ),
     );
   }
-  ejecutar(BuildContext context, ElementoLista elemento, [dynamic argumetos])
-  {
-    print ("ejecuto ");
+
+  ejecutar(BuildContext context, ElementoLista elemento, [dynamic argumetos]) {
+    print("ejecuto ");
   }
 }

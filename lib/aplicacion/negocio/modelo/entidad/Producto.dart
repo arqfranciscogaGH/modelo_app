@@ -14,6 +14,7 @@ class Producto extends EntidadBase {
   //    propiedades
 
   int? precio;
+  int? costo;
   int? existencia;
   String? descripcion;
   String? clase;
@@ -28,6 +29,7 @@ class Producto extends EntidadBase {
     nombreTabla,
     campoLLave,
     this.precio,
+    this.costo,
     this.existencia,
     this.descripcion,
     this.clase,
@@ -52,6 +54,7 @@ class Producto extends EntidadBase {
         clave: map["clave"],
         nombre: map["nombre"],
         precio: int.parse(map["precio"].toString()),
+        // costo: int.parse(map["costo"].toString()),
         existencia: map["existencia"],
         descripcion: map["descripcion"],
         clase: map["clase"],
@@ -67,6 +70,7 @@ class Producto extends EntidadBase {
     nombre = map["nombre"];
 
     precio = int.parse(map["precio"].toString());
+    // costo = int.parse(map["costo"].toString());
     existencia = map["existencia"];
     descripcion = map["descripcion"];
     clase = map["clase"];
@@ -83,6 +87,7 @@ class Producto extends EntidadBase {
         "clave": clave,
         "nombre": nombre,
         "precio": precio,
+        // "costo": costo,
         "existencia": existencia,
         "descripcion": descripcion,
         "clase": clase,
@@ -100,6 +105,7 @@ class Producto extends EntidadBase {
             "clave   TEXT , "
             "nombre   TEXT , "
             "precio   INTEGER , "
+            "costo   INTEGER , "
             "existencia   INTEGER, "
             "descripcion   TEXT, "
             "clase   TEXT , "
@@ -111,21 +117,22 @@ class Producto extends EntidadBase {
 
   @override
   Producto iniciar() {
-    Producto entidad = Producto();
-    entidad.id = null;
-    entidad.llave = "";
-    entidad.clave = "";
-    entidad.nombre = "";
-    entidad.clase = "";
-    entidad.subclase = "";
+    Producto e = Producto();
+    e.id = null;
+    e.llave = "";
+    e.clave = "";
+    e.nombre = "";
+    e.clase = "";
+    e.subclase = "";
 
-    entidad.precio = 0;
-    entidad.existencia = 0;
-    entidad.descripcion = "";
+    e.precio = 0;
+    e.costo = 0;
+    e.existencia = 0;
+    e.descripcion = "";
 
-    entidad.fechaEstatus = DateTime.now().toString();
-    entidad.estatus = 1;
-    return entidad;
+    e.fechaEstatus = DateTime.now().toString();
+    e.estatus = 1;
+    return e;
   }
 
   String toJson() => json.encode(this.toMap());

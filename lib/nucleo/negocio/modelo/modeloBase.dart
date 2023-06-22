@@ -20,6 +20,4 @@ export 'endidad/ElementoLista.dart';
 export 'endidad/ElementoSerie.dart';
 export 'endidad/Sesion.dart';
 export 'endidad/ParametrosSistema.dart';
-export 'endidad/ParametrosSistema.dart';
-
-class ModelodBase {}
+export 'endidad/ServicioAplicacion.dart';

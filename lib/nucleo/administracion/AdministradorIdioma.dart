@@ -4,8 +4,8 @@
 
 //  librerias  proyecto
 
-import '../nucleo/negocio/negocio.dart';
-import '../paquetesExternos/paquetesExternos.dart';
+import '../negocio/negocio.dart';
+import '../../paquetesExternos/paquetesExternos.dart';
 
 //  librerias externas  flutter
 
@@ -16,13 +16,13 @@ import '../paquetesExternos/paquetesExternos.dart';
 const IDIOMA = "idioma";
 
 class AdministradorIdioma {
-  static void asignar(String idioma) {
+  static void obtener() {
+    String idioma = Preferencias.obtener(IDIOMA, ParametrosSistema.idioma);
     ParametrosSistema.idioma = idioma;
   }
 
-  static void obtener() {
-    ParametrosSistema.idioma =
-        Preferencias.obtener(IDIOMA, ParametrosSistema.idioma);
+  static void cambiar(String idioma) {
+    ParametrosSistema.idioma = idioma;
   }
 
   static void guardar() {

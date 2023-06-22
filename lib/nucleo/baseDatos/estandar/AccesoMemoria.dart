@@ -99,7 +99,8 @@ class AccesoMemoria implements IAccesoBD {
       String campo, dynamic valor) async {
     Map<String, dynamic> resultado;
     resultado = map;
-    _datos![map[campo]] = map;
+    int index = map[campo] - 1;
+    _datos![index] = map;
 
     // _datos!.removeWhere((o) => o[campo] == valor);
     // _datos!..add(map);

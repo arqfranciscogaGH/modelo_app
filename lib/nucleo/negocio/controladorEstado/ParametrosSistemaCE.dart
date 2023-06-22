@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 //  librerias  proyecto
 
-import '../../nucleo.dart';
-import '../../../administracion/administracion.dart';
-import '../../../paquetesExternos/paquetesExternos.dart';
+import '../../ui/ui.dart';
+import '../../utilerias/utilerias.dart';
+import '../../administracion/administracion.dart';
 
 //  librerias externas  flutter
 
@@ -15,7 +15,7 @@ class ParametrosSistemaCE extends ChangeNotifier {
   // temma
 
   void obtenerTema() {
-    AdministradorTema.obtener();
+    AdministradorTema.obtenerTema();
     notifyListeners();
   }
 
@@ -25,37 +25,36 @@ class ParametrosSistemaCE extends ChangeNotifier {
   }
 
   void guardarTema() {
-    AdministradorTema.guardar();
+    AdministradorTema.guardarTema();
     notifyListeners();
   }
 
   void cambiarColorPrimario(String color) {
-    AdministradorTema.asignarColorPrimario(color);
+    AdministradorTema.cambiarColorTema(color);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
   void cambiarColorSecundario(String color) {
-    AdministradorTema.asignarColorSecundario(color);
+    AdministradorTema.cambiarColorSecundario(color);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
   void cambiarEsModoObscuro(bool esModoObscuro) {
-    AdministradorTema.asignarEsModoObscuro(esModoObscuro);
+    AdministradorTema.cambiarEsModoObscuro(esModoObscuro);
     AdministradorTema.cambiarTema();
     notifyListeners();
   }
 
   // Idioma
 
-  String obtenerIdioma() {
-    AdministradorIdioma.obtener();
-    return ParametrosSistema.idioma;
+  dynamic obtenerIdioma() {
+    return AdministradorIdioma.obtener();
   }
 
   void cambiarIdioma(String idioma) {
-    AdministradorIdioma.asignar(idioma);
+    AdministradorIdioma.cambiar(idioma);
     Traductor.cargar();
     OpcionesMenus.limpiar();
     notifyListeners();

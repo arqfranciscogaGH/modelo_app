@@ -1,6 +1,7 @@
 //  librerias internas de flutter
 import 'package:flutter/material.dart';
 import '../../../ui/comun/Enumerados.dart';
+
 //  librerias importadas flutter
 
 //  librerias  proyecto
@@ -21,7 +22,7 @@ class ParametrosSistema {
   static String formatoFecha = 'dd-MM-yyyy';
   static String formatoHora = 'hh:mm';
   static String formatoImporte = '';
-
+  static eTipoBorde tipoBorde = eTipoBorde.ninguno;
   static String colorTema = 'azul';
   static String colorPrimario = 'azul';
   static String colorSecundario = 'azul';

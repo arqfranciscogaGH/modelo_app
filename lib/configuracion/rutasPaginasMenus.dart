@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 //  librerias  proyecto
 
-import '../nucleo/nucleo.dart';
 import '../aplicacion/aplicacion.dart';
 
 //  librerias externas  flutter
@@ -40,19 +39,19 @@ List<ElementoLista> definirPaginas() {
   paginas.add(ElementoLista(pagina: prueba_pagina(), ruta: 'prueba_pagina'));
 
   paginas.add(ElementoLista(
-    pagina: venta_lista_pagina(
-      paginaAnterior: 'venta_lista_pagina',
-      paginaSiguiente: 'venta_captura_pagina',
+    pagina: Cliente_lista_pagina(
+      paginaAnterior: 'Cliente_lista_pagina',
+      paginaSiguiente: 'Cliente_captura_pagina',
     ),
-    ruta: 'venta_lista_pagina',
+    ruta: 'Cliente_lista_pagina',
   ));
 
   paginas.add(ElementoLista(
-      pagina: venta_captura_pagina(
-        paginaAnterior: 'venta_lista_pagina',
-        paginaSiguiente: 'venta_captura_pagina',
+      pagina: Cliente_captura_pagina(
+        paginaAnterior: 'Cliente_lista_pagina',
+        paginaSiguiente: 'Cliente_captura_pagina',
       ),
-      ruta: 'venta_captura_pagina'));
+      ruta: 'Cliente_captura_pagina'));
 
   paginas.add(ElementoLista(
     pagina: Producto_lista_pagina(
@@ -68,6 +67,44 @@ List<ElementoLista> definirPaginas() {
         paginaSiguiente: 'Producto_captura_pagina',
       ),
       ruta: 'Producto_captura_pagina'));
+
+  paginas.add(ElementoLista(
+    pagina: Pedido_pagina(
+      paginaAnterior: '',
+      paginaSiguiente: '',
+    ),
+    ruta: 'Pedido_pagina',
+  ));
+
+  paginas.add(ElementoLista(
+    pagina: Venta_lista_pagina(
+      paginaAnterior: 'Venta_lista_pagina',
+      paginaSiguiente: 'Venta_captura_pagina',
+    ),
+    ruta: 'Venta_lista_pagina',
+  ));
+
+  paginas.add(ElementoLista(
+      pagina: Venta_captura_pagina(
+        paginaAnterior: 'Venta_lista_pagina',
+        paginaSiguiente: 'Venta_captura_pagina',
+      ),
+      ruta: 'Venta_captura_pagina'));
+
+  paginas.add(ElementoLista(
+    pagina: Venta_producto_lista_pagina(
+      paginaAnterior: 'Venta_producto_lista_pagina',
+      paginaSiguiente: 'Venta_producto_captura_pagina',
+    ),
+    ruta: 'Venta_producto_lista_pagina',
+  ));
+
+  paginas.add(ElementoLista(
+      pagina: Venta_producto_captura_pagina(
+        paginaAnterior: 'Venta_producto_lista_pagina',
+        paginaSiguiente: 'Venta_producto_captura_pagina',
+      ),
+      ruta: 'Venta_producto_captura_pagina'));
 
   return paginas;
 }

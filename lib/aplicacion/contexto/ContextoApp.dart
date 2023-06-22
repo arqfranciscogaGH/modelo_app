@@ -9,8 +9,8 @@ import '../db/DBAplicacion.dart';
 
 export '../db/DBAplicacion.dart';
 
-class ContextoAplicacion {
-  static ContextoAplicacion? _contextoAplicacion;
+class ContextoApp {
+  static ContextoApp? _ContextoApp;
 
   static DBAplicacion? _db;
 
@@ -19,7 +19,7 @@ class ContextoAplicacion {
     return _db!;
   }
 
-  ContextoAplicacion() {}
+  ContextoApp() {}
 
   static iniciar() async {
     // _accesoDB = AccesoBD();
@@ -34,9 +34,9 @@ class ContextoAplicacion {
     // });
   }
 
-  static ContextoAplicacion obtener() {
-    if (_contextoAplicacion == null)
-      _contextoAplicacion = new ContextoAplicacion();
-    return _contextoAplicacion!;
+  static ContextoApp obtener() {
+    if (_ContextoApp == null)
+      _ContextoApp = new ContextoApp();
+    return _ContextoApp!;
   }
 }

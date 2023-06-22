@@ -100,9 +100,7 @@ class EntidadBase {
 
   // conversión de  cadena Json  a entidad
 
-  dynamic fromJson(String cadenaJson) {
-    this.fromMap(json.decode(cadenaJson));
-  }
+  dynamic fromJson(String cadenaJson) => this.fromMap(json.decode(cadenaJson));
 
   // metodos conversion listas
 
@@ -117,7 +115,7 @@ class EntidadBase {
 
   List<EntidadBase> mapTolista(List<dynamic> listaMapa) {
     List<EntidadBase> lista = listaMapa.isNotEmpty
-        ? listaMapa.map((c) => this.fromMap(c)).toList()
+        ? listaMapa.map((c) => this.iniciar().fromMap(c)).toList()
         : [];
     return lista;
   }

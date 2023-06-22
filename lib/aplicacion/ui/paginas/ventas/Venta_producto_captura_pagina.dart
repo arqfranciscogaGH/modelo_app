@@ -21,15 +21,14 @@ import '../../../contexto/contexto.dart';
 import '../../../../nucleo/nucleo.dart';
 import '../../../../aplicacion/aplicacion.dart';
 
-import 'VentaUI.dart';
-import 'VentasRN.dart' as RN;
-
+import 'VentaProductoUI.dart';
+import 'ventasRN.dart' as RN;
 //  librerias externas  flutter
 
 import '../../../../paquetesExternos/paquetesExternos.dart';
 
-class Venta_captura_pagina extends StatefulWidget {
-  Venta_captura_pagina(
+class Venta_producto_captura_pagina extends StatefulWidget {
+  Venta_producto_captura_pagina(
       {Key? key,
       this.paginaSiguiente,
       this.paginaAnterior,
@@ -41,10 +40,12 @@ class Venta_captura_pagina extends StatefulWidget {
   bool? activarAcciones = false;
 
   @override
-  _Venta_captura_pagina_state createState() => _Venta_captura_pagina_state();
+  _Venta_producto_captura_pagina_state createState() =>
+      _Venta_producto_captura_pagina_state();
 }
 
-class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
+class _Venta_producto_captura_pagina_state
+    extends State<Venta_producto_captura_pagina> {
   //  propiedades  widget
 
   //    control de estado  con provider
@@ -52,10 +53,11 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
   ControlEstadoUI? controlEstadoUI;
 
   //  Interfaz  comun
-  VentaUI<Venta> ui = VentaUI<Venta>(tabla: ContextoApp.db.venta);
+  VentaProductoUI<VentaProducto> ui =
+      VentaProductoUI<VentaProducto>(tabla: ContextoApp.db.ventaProducto);
 
   // entidad
-  Venta entidadCaptura = Venta();
+  VentaProducto entidadCaptura = VentaProducto();
 
   // KEYS
 
@@ -68,10 +70,11 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
 
   //  controladores
 
-  TextEditingController _controller_txtFechaVenta = TextEditingController();
-  TextEditingController _controller_autCliente = new TextEditingController();
-  TextEditingController _controller_lisTipoVenta = new TextEditingController();
-  TextEditingController _controller_lisFormaPago = TextEditingController();
+  TextEditingController _controller_autProducto = new TextEditingController();
+  TextEditingController _controller_txtCantidad = new TextEditingController();
+  TextEditingController _controller_txtPrecio = TextEditingController();
+
+  TextEditingController _controller_etiImporteVenta = TextEditingController();
 
   //  otros
 
@@ -81,7 +84,7 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
     super.initState();
     // widget.paginaAnterior = ContextoUI.obtenerTipo(widget);
     controlEstadoUI = ControlEstadoUI();
-    ui = VentaUI(tabla: ContextoApp.db.venta!);
+    ui = VentaProductoUI(tabla: ContextoApp.db.ventaProducto!);
 
     entidadCaptura = ui.tabla!.entidad;
 
@@ -122,14 +125,6 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
           Colores.obtener(ParametrosSistema.colorSecundario)
         ]),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.list_alt),
-            onPressed: () {
-              Accion.hacer(context,
-                  OpcionesMenus.obtener("Venta_producto_lista_pagina"));
-              // Accion.regresar(context);
-            },
-          ),
           IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -190,20 +185,6 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
       dynamic entidadCaptura) {
     List<Control> controles = [];
 
-    List<ElementoLista> lista_TipoVenta = [];
-    lista_TipoVenta.add(ElementoLista(valor: "Contado", titulo: "Contado"));
-    lista_TipoVenta.add(ElementoLista(valor: "Credito", titulo: "Credito"));
-    lista_TipoVenta.add(ElementoLista(valor: "Apartado", titulo: "Apartado"));
-
-    List<ElementoLista> lista_FormaPago = [];
-    lista_FormaPago.add(ElementoLista(valor: "Efectivo", titulo: "Efectivo"));
-    lista_FormaPago
-        .add(ElementoLista(valor: "Trasferencia", titulo: "Trasferencia"));
-    lista_FormaPago
-        .add(ElementoLista(valor: "Tarjeta Debito", titulo: "Tarjeta Debito"));
-    lista_FormaPago.add(
-        ElementoLista(valor: "Tarjeta Credito", titulo: "Tarjeta Credito"));
-
     // List<ElementoLista> lista_Cliente = [];
     // for (Cliente tabla in ContextoApp.db.cliente!.lista)
     // // ContextoApp.db.venta!.lista.forEach((tabla)
@@ -215,70 +196,28 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
 
     String pagina = ContextoUI.obtenerTipo(widget);
 
-    // fecha venta
-    if (entidadCaptura.fechaVenta == null || entidadCaptura.fechaVenta == "") {
-      DateTime fechaSeleccionada = DateTime.now();
-      entidadCaptura.fechaVenta =
-          DateFormat(ParametrosSistema.formatoFecha).format(fechaSeleccionada);
-      // entidadCaptura.fechaVenta = DateFormat(ParametrosSistema.formatoFecha).parse(control.valor);
-    }
-
-    Control txtFechaVenta = Control().crear('', pagina, "txtFechaVenta",
-        entidadCaptura.fechaVenta, 1, cambiarValor, validar);
-    txtFechaVenta.controlEdicion = _controller_txtFechaVenta;
-    controles.add(txtFechaVenta);
-
-    // obtener nombre cliente
+    // obtener nombre producto
     entidadCaptura = ui.obtenerNombre(entidadCaptura);
 
-    Control autCLiente = Control().crear('', pagina, "autCliente",
+    Control autProducto = Control().crear('', pagina, "autProducto",
         entidadCaptura.nombre, 1, cambiarValor, validar);
-    autCLiente.controlEdicion = _controller_autCliente;
+    autProducto.controlEdicion = _controller_autProducto;
     // autCLiente.lista = lista_Cliente;
-    autCLiente.tabla = ContextoApp.db.cliente;
-    controles.add(autCLiente);
+    autProducto.tabla = ContextoApp.db.producto;
+    controles.add(autProducto);
 
-    // tipo venta
-    entidadCaptura.tipoVenta =
-        entidadCaptura.tipoVenta == null || entidadCaptura.tipoVenta == ""
-            ? "Contado"
-            : entidadCaptura.tipoVenta;
-    Control lisTipoVenta = new Control(idControl: "lisTipoVenta");
+    Control txtCantidad = Control().crear('', pagina, "txtCantidad",
+        entidadCaptura.cantidad.toString(), 1, cambiarValor, validar);
+    txtCantidad.controlEdicion = _controller_txtCantidad;
+    controles.add(txtCantidad);
 
-    lisTipoVenta = lisTipoVenta.asignar(
-        '', pagina, entidadCaptura.tipoVenta, 1, cambiarValor, validar);
-    lisTipoVenta.controlEdicion = _controller_lisTipoVenta;
-    lisTipoVenta.lista = lista_TipoVenta;
-    controles.add(lisTipoVenta);
-
-    // forma de pago
-    entidadCaptura.formaPago =
-        entidadCaptura.formaPago == null || entidadCaptura.formaPago == ""
-            ? "Efectivo"
-            : entidadCaptura.formaPago;
-
-    Control lisFormaPago = new Control(idControl: "lisFormaPago");
-
-    lisFormaPago = lisFormaPago.asignar(
-        '', pagina, entidadCaptura.formaPago, 1, cambiarValor, validar);
-    lisFormaPago.controlEdicion = _controller_lisFormaPago;
-    lisFormaPago.lista = lista_FormaPago;
-    controles.add(lisFormaPago);
-
-    controles.add(Control().crear('', pagina, "etiImportePagado",
-        entidadCaptura.importePagado.toString(), 1, cambiarValor, validar));
+    Control txtPrecio = Control().crear('', pagina, "txtPrecio",
+        entidadCaptura.precio.toString(), 1, cambiarValor, validar);
+    txtPrecio.controlEdicion = _controller_txtPrecio;
+    controles.add(txtPrecio);
 
     controles.add(Control().crear('', pagina, "etiImporteVenta",
-        entidadCaptura.importeVenta.toString(), 0, cambiarValor, validar));
-
-    controles.add(Control().crear('', pagina, "etiCantidadVenta",
-        entidadCaptura.cantidadVenta.toString(), 0, cambiarValor, validar));
-
-    controles.add(Control().crear('', pagina, "etiImporteCambio",
-        entidadCaptura.importeCambio.toString(), 0, cambiarValor, validar));
-
-    controles.add(Control().crear('', pagina, "etiSaldo",
-        entidadCaptura.saldo.toString(), 0, cambiarValor, validar));
+        entidadCaptura.importe.toString(), 0, cambiarValor, validar));
 
     return cargarControlesCaptura(
         context, controles, '', pagina, cambiarValor, validar, []);
@@ -308,30 +247,26 @@ class _Venta_captura_pagina_state extends State<Venta_captura_pagina> {
       print(valor);
 
       switch (control.idControl) {
-        case "txtFechaVenta":
-          entidadCaptura.fechaVenta = valor;
-          break;
-        case "autCliente":
+        case "autProducto":
           {
             entidadCaptura.nombre = valor;
-            entidadCaptura.idCliente = control.id;
+            entidadCaptura.idProducto = control.id;
+            entidadCaptura = ui.obtenerNombre(entidadCaptura);
             break;
           }
-        case "lisTipoVenta":
-          entidadCaptura.tipoVenta = valor;
+        case "txtCantidad":
+          entidadCaptura.cantidad = int.tryParse(valor);
           break;
-        case "lisFormaPago":
-          entidadCaptura.formaPago = valor;
+        case "txtPrecio":
+          entidadCaptura.precio = double.tryParse(valor);
           break;
-        case "etiImportePagado":
-          {
-            entidadCaptura.importePagado = double.parse(valor);
-            entidadCaptura = RN.calcularImportesTotales(entidadCaptura);
-            break;
-          }
       }
+      if (entidadCaptura.cantidad! != 0 && entidadCaptura.precio! != 0)
+        entidadCaptura.importe =
+            (entidadCaptura.precio! * entidadCaptura.cantidad!).toDouble();
       ui.tabla!.entidad = entidadCaptura;
     });
+
     return entidadCaptura;
   }
 }

@@ -9,22 +9,13 @@ import 'dart:ui';
 import 'package:provider/provider.dart';
 // import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
-//  librerias  proyecto
 
-import '../../../../inicializacion/inicializacion.dart';
-import '../../../../configuracion/configuracion.dart';
-import '../../../../administracion/administracion.dart';
+//  librerias  proyecto
 
 import '../../../../nucleo/nucleo.dart';
 import '../../../aplicacion.dart';
-import '../../../contexto/contexto.dart';
-import '../../../negocio/negocio.dart';
-
-import '../../../../nucleo/negocio/controladorEstado/controladorEstado.dart';
 
 //  librerias externas  flutter
-
-import '../../../../paquetesExternos/paquetesExternos.dart';
 
 class tema_pagina extends StatefulWidget {
   tema_pagina(
@@ -95,7 +86,7 @@ class _tema_pagina_state extends State<tema_pagina> {
       body: mostrarCaptura(context, formKey, cambiarValor, validar,
           definicionControles, entidadCaptura),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Boton.crearBotonFlotante(
+      floatingActionButton: Boton.botonFlotante(
         context,
         ElementoLista(icono: "save", accion: guardar),
       ),
@@ -176,7 +167,7 @@ class _tema_pagina_state extends State<tema_pagina> {
     );
 
     lisColoresTema = lisColoresTema.asignar('', ContextoUI.obtenerTipo(widget),
-        ParametrosSistema.colorPrimario, cambiarValor, validar);
+        ParametrosSistema.colorPrimario, 1, cambiarValor, validar);
     lisColoresTema.controlEdicion = _controllerListaColor;
     lisColoresTema.lista = _listaColores;
     controles.add(lisColoresTema);
@@ -186,6 +177,7 @@ class _tema_pagina_state extends State<tema_pagina> {
         '',
         ContextoUI.obtenerTipo(widget),
         ParametrosSistema.colorSecundario,
+        1,
         cambiarValor,
         validar);
     colorSecundario.controlEdicion = _controllerColorSecundario;
@@ -195,8 +187,14 @@ class _tema_pagina_state extends State<tema_pagina> {
     // controles.add(Control().crear('', widget.pagina!, "apaBrillo",
     //     ParametrosSistema.esModoObscuro == 1 ? true : false, cambiarValor, validar));
 
-    controles.add(Control().crear('', ContextoUI.obtenerTipo(widget),
-        "apaBrillo", ParametrosSistema.esModoObscuro, cambiarValor, validar));
+    controles.add(Control().crear(
+        '',
+        ContextoUI.obtenerTipo(widget),
+        "apaBrillo",
+        ParametrosSistema.esModoObscuro,
+        1,
+        cambiarValor,
+        validar));
 
 /* 
 

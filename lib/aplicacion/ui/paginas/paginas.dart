@@ -10,11 +10,19 @@ export 'ejemplos/prueba_pagina.dart';
 export 'ejemplos/botones_pagina.dart';
 export 'ejemplos/Modelo_pagina_lista.dart';
 export 'ejemplos/Modelo_pagina_captura.dart';
-export 'ventas/venta_lista_pagina.dart';
-export 'ventas/venta_captura_pagina.dart';
+
 export 'producto/Producto_lista_pagina.dart';
 export 'producto/Producto_captura_pagina.dart';
 
+export 'ventas/Pedido_pagina.dart';
+export 'ventas/Venta_lista_pagina.dart';
+export 'ventas/Venta_captura_pagina.dart';
+
+export 'ventas/Venta_producto_lista_pagina.dart';
+export 'ventas/Venta_producto_captura_pagina.dart';
+
+export 'cliente/Cliente_lista_pagina.dart';
+export 'cliente/Cliente_captura_pagina.dart';
 
 //  librerias externas  flutter
 
